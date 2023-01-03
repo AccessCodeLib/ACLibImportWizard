@@ -1,5 +1,5 @@
 # ACLib-Import-Wizard
-Import code from AccessCodeLib into application by add-in
+Import code from [AccessCodeLib](https://github.com/AccessCodeLib/AccessCodeLib) into application by add-in
 
 Details: https://wiki.access-codelib.net/ACLib-Import-Wizard
 
