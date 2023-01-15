@@ -215,9 +215,14 @@ Public Property Let ExportAllToApplicationSourceFolder(ByVal NewValue As Boolean
 End Property
 
 Public Sub ExportAll()
-   ExportAllModules
+
+   Dim ExportComponentsWithoutCodeLibInfo As Boolean
+   ExportComponentsWithoutCodeLibInfo = m_ExportAllToApplicationSourceFolder
+
+   ExportAllModules ExportComponentsWithoutCodeLibInfo
    ExportAllForms
    ExportAllReports
+   
 End Sub
 
 Public Sub ExportAllModules(Optional ExportComponentsWithoutCodeLibInfo As Boolean = False)
