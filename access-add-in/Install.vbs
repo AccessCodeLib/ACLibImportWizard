@@ -1,16 +1,18 @@
-const AddInName = "ACLib-Import-Wizard"
+const AddInName = "ACLib Import Wizard"
 const AddInFileName = "ACLibImportWizard.accda"
 const MsgBoxTitle = "Install/Update ACLib-Import-Wizard"
 
-MsgBox "Vor dem Aktualisieren der Add-In-Datei darf das Add-In nicht geladen sein!" & chr(13) & _
-       "Zur Sicherheit alle Access-Instanzen schlieﬂen.", , MsgBoxTitle & ": Hinweis"
+MsgBox "Before updating the add-in file, the add-in must not be loaded!" & chr(13) & _
+       "Close all access instances for safety.", , MsgBoxTitle & ": Information"
 
-Select Case MsgBox("Soll das Add-In als ACCDE verwendet werden?" + chr(13) & _
-                   "(Add-In wird kompiliert ins Add-In-Verzeichnis kopiert.)", 3, MsgBoxTitle)
+Select Case MsgBox("Should the add-in be used as ACCDE?" + chr(13) & _
+                   "(The compiled Add-In is copied into the Add-In directory.)", 3, MsgBoxTitle)
    case 6 ' vbYes
       CreateMde GetSourceFileFullName, GetDestFileFullName
+	MsgBox "Compiled add-in created"
    case 7 ' vbNo
       FileCopy GetSourceFileFullName, GetDestFileFullName
+	MsgBox "Add-In file was copied"
    case else
       
 End Select
@@ -59,5 +61,5 @@ Function CreateMde(SourceFilePath, DestFilePath)
 
    Set AccessApp = CreateObject("Access.Application")
    AccessApp.SysCmd 603, (SourceFilePath), (DestFilePath)
-
+   
 End Function
