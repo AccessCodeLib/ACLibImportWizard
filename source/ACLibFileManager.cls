@@ -9,23 +9,24 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek"
 '---------------------------------------------------------------------------------------
-' Klassenmodul: ACLibFileManager (Josef Pötzl)
+' Class: ACLibFileManager
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Import/Export der Access-Objekte in/aus lokaler Code-Bibliothek
-' </summary>
-' <remarks>
-' Das Modul "_config_Application" wird unabhängig vom Import-Modus nicht mehr überschrieben,
-' sobald es in der Anwendung vorhanden ist.
-' </remarks>
-'\ingroup ACLibAddInImportWizard
 '
-' @todo Abhängigkeit zu Verweisen berücksichtigen und fehlende Verweise einstellen
-' @todo getCodeLibInfoFromFile: Auslesen der CodeLib-Informationen aus Ac07-Formluaren/Berichten,
-'       die mit SaveAsText erstellt wurden (unicode-Text)
+' Import/export of Access objects to/from local code library
 '
-'**/
+' Author:
+'     Josef Poetzl
+'
+' Remarks:
+'---------------------------------------------------------------------------------------
+'| In m_ImportFileCollection an array is used for storage
+'|     (0) - File object
+'|     (1) - Import mod
+'| Reason: Type could not be used and an extra class is (still) too cumbersome
+'---------------------------------------------------------------------------------------
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>%AppFolder%/source/ACLibFileManager.cls</file>
@@ -39,12 +40,6 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '</codelib>
 '---------------------------------------------------------------------------------------
 '
-' !!! in m_ImportFileCollection wird ein Array zum Abspeichern verwendet
-'     (0): File-Object
-'     (1): Import-Modus
-'     Grund: Type konnte nicht verwendet werden und eine extra Klasse ist (noch) zu umständlich
-'
-'---------------------------------------------------------------------------------------
 Option Compare Text
 Option Explicit
 
@@ -116,8 +111,8 @@ Private m_FSO As Object
 #End If
 
 '
-Private m_LocalRepositoryRootDirectory As String   ' Lokales Root-Verzeichnis für Repository-Export in die CodeLib
-Private m_PrivateRepositoryRootDirectory As String ' Lokales Root-Verzeichnis für privaten Repository-Export
+Private m_LocalRepositoryRootDirectory As String   ' Local root directory for repository export to CodeLib
+Private m_PrivateRepositoryRootDirectory As String ' Local root directory for private repository export
 Private m_ExportAllToApplicationSourceFolder As Boolean
 
 ' Events
@@ -128,7 +123,7 @@ Public Event ImportRepositoryFile(ByVal ObjectName As String, ByVal RepositoryFi
 
 
 '---------------------------------------------------------------------------------------
-' Standard-Initialisierung von Erweiterungen
+' Standard initialization of extensions
 '---------------------------------------------------------------------------------------
 
 Private WithEvents m_ApplicationHandler As ApplicationHandler
@@ -147,7 +142,7 @@ Private Sub Class_Terminate()
 End Sub
 
 '---------------------------------------------------------------------------------------
-' Standard-Ereignisbehandlung von Erweiterungen
+' Standard event handling of extensions
 '---------------------------------------------------------------------------------------
 
 ' CheckExtension
@@ -177,14 +172,12 @@ End Sub
 ' AfterDispose
 Private Sub m_ApplicationHandler_AfterDispose(ByRef ResumeMode As ApplicationHandlerResumeModes, _
                                               ByRef ResumeMessage As Variant)
-'=> Referenz in m_ApplicationHandler auf Nothing setzen
    Set m_ApplicationHandler = Nothing
 End Sub
 
 
-
 '---------------------------------------------------------------------------------------
-' Ergänzungen für Ereiterung: ACLibFileManager
+' Additions for extension: ACLibFileManager
 '---------------------------------------------------------------------------------------
 
 Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
@@ -195,9 +188,9 @@ Private Sub GetExtensionPropertyLookup(ByVal PropertyName As String, _
    
    Select Case PropertyName
 
-      Case Else 'Property wurde nicht erkannt
+      Case Else 'Property was not recognized
          ResumeMode = AppResumeMode_Error
-         ResumeMessage = "Property '" & PropertyName & "' is not supported-"
+         ResumeMessage = "Property '" & PropertyName & "' is not supported"
          
    End Select
    
@@ -245,11 +238,7 @@ End Sub
 Public Sub ExportAllForms()
 
    Dim ao As AccessObject
-
-   If CheckDisallowExportFormReport() Then
-      Exit Sub
-   End If
-
+   
    ActivateCurrentProject
    DoCmd.RunCommand acCmdCompileAndSaveAllModules
    
@@ -262,17 +251,6 @@ Public Sub ExportAllForms()
 #End If
 
 End Sub
-
-Private Function CheckDisallowExportFormReport() As Boolean
-
-'2022-12-07: Ac2000-Dateiformat nicht mehr berücksichtigen
-'   If Val(CurrentDb.Version) >= 12 Then
-'      MsgBox "Formular und Berichte ab dem Access2007-Format dürfen nicht exportiert werden." & _
-'             "Siehe Bug #16"
-'      CheckDisallowExportFormReport = True
-'   End If
-
-End Function
 
 Public Sub ExportAllReports()
 
@@ -386,12 +364,13 @@ Private Sub ImportFilesFromImportCollection( _
    
    Dim ColItem As Variant
    
-   ' eine VB-Modul aus CurrentVbProject aktivieren, sonst wirkt RunCommand acCmdCompileAndSaveAllModules
-   ' möglicherweise im falschen VBProject
-   ' zur Sicherheit mit On error resume next, weil es nicht unbedingt notwendig ist und den Ablauf nicht stört
+   ' Activate a VB module from CurrentVbProject,
+   ' otherwise RunCommand acCmdCompileAndSaveAllModules may work in the wrong VBProject.
+   ' (For safety with On error resume next, because it is not absolutely necessary and does not disturb the flow.)
    On Error Resume Next
    ActivateCurrentProject
    On Error GoTo 0
+   
    If CurrentProject.AllModules.Count > 0 Then
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
@@ -399,8 +378,8 @@ Private Sub ImportFilesFromImportCollection( _
     MaxCnt = m_ImportFileCollection.Count
     
     '/*
-    ' * TODO: Bestimmung der Anzahl alle Dateien (inkl. Abhängigkeiten) vor dem Import
-    ' * TODO: Umbau AccessProgressBar auf einmaligen Durchlauf (Init nur einmal)
+    ' * TODO: Determination of the number of all files (incl. dependencies) before the import
+    ' * TODO: Conversion AccessProgressBar to single pass (Init only once)
     ' */
    
     i = 1
@@ -426,9 +405,9 @@ Private Sub ImportFilesFromImportCollection( _
       CurrentProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
    
-   'Executes ausführen
+   'Run Executes
    If (0 / 1) + (Not Not m_CLI.ExecuteList) Then
-      AccessProgressBar.Init "Executes ausführen...", UBound(m_CLI.ExecuteList) + 1, 1
+      AccessProgressBar.Init "Run executes ...", UBound(m_CLI.ExecuteList) + 1, 1
       For i = 0 To UBound(m_CLI.ExecuteList)
         AccessProgressBar.PerformStep
         If StringTools.Contains(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT) Then
@@ -440,7 +419,7 @@ Private Sub ImportFilesFromImportCollection( _
       If AccessProgressBar.IsInitialized Then AccessProgressBar.Clear
    End If
    
-   'Modul-Variablen aufräumen, da Import-Vorgang an dieser Stelle abgeschlossen ist
+   'Clean up module variables, since import process is completed at this point
    Set m_ImportFileCollection = Nothing
    Set m_ReplacedFilesCollection = Nothing
    Set m_FSO = Nothing
@@ -454,7 +433,7 @@ End Sub
 
 Private Function IgnoreFolder(ByRef TestFolder As Object) As Boolean
 '/*
-' * @todo Ausschlussliste für Verzeichnisse flexibler gestalten
+' * @todo Make exclusion list for directories more flexible
 '**/
 
    Select Case TestFolder.Name
@@ -468,7 +447,7 @@ End Function
 
 Private Function IgnoreFile(ByRef TestFile As Object) As Boolean
 '/*
-' * @todo Ausschlussliste für Dateien flexibler gestalten
+' * @todo Make exclusion list for files more flexible
 '**/
 
    Select Case TestFile.Name
@@ -495,7 +474,7 @@ Public Property Get CurrentVbProject() As Object
 
    If m_CurrentVbProject Is Nothing Then
       Set m_CurrentVbProject = VBE.ActiveVBProject
-      'Prüfen, ob das richtige VbProject gewählt wurde (muss das von CurrentDb sein)
+      'Check if the correct VbProject is selected (must be the one from CurrentDb):
       CurrentDbName = UncPath(CurrentDb.Name)
       If m_CurrentVbProject.FileName <> CurrentDbName Then
          Set m_CurrentVbProject = Nothing
@@ -522,7 +501,7 @@ Private Sub ActivateCurrentProject()
 #End If
 
    If CurrentVbProject.VBComponents.Count > 0 Then
-      'zuerst nur Code-Module verwenden, da sonst Formulare/Berichte im Entwurf geöffnet werden
+      'first use only code modules, otherwise forms/reports will be opened in the draft
       For Each vbc In CurrentVbProject.VBComponents
          If vbc.Type <> vbext_ct_Document Then
             vbc.Activate
@@ -530,7 +509,7 @@ Private Sub ActivateCurrentProject()
             Exit For
          End If
       Next
-      'falls nur vbext_ct_Document vorhanden sind, das erste verwenden
+      'if there are only vbext_ct_Document, use the first one
       If Not Activated Then
          CurrentVbProject.VBComponents(1).Activate
       End If
@@ -544,8 +523,8 @@ Private Property Get fso() As FileSystemObject
 Private Property Get fso() As Object
 #End If
 
-   If fso Is Nothing Then
-      'Set fso = New FileSystemObject
+   If m_FSO Is Nothing Then
+      'Set m_FSO = New FileSystemObject
       Set m_FSO = CreateObject("Scripting.FileSystemObject")
    End If
    Set fso = m_FSO
@@ -711,20 +690,20 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
       AddReplacedFilePath GetRepositoryFullPath(m_CLI.RepositoryFileReplacement)
    End If
    
-   'Abbruch ermöglichen
+   'Enable abort
    RaiseEvent ImportRepositoryFile(m_CLI.Name, m_CLI.RepositoryFile, m_CLI.Type, m_CLI.Dependency, ImportFile, CancelImport)
    If CancelImport Then
       Exit Sub
    End If
    
-   'Lizenz (LICENSE-Block)
+   'License (LICENSE block)
    If Len(m_CLI.LicenseFile) > 0 Then
       FilePath = GetRepositoryFullPath(m_CLI.LicenseFile)
       Set TempFile = fso.GetFile(FilePath)
       AddMissingFile TempFile, clim_ImportMissingItems
    End If
 
-   'Erforderliche Module (USE-Block)
+   'Required modules (USE block)
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not m_CLI.Dependency) Then
       For i = 0 To UBound(m_CLI.Dependency)
@@ -737,14 +716,14 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
       End If
    End If
    
-   'zuerst Verweise
+   'First references
    If (0 / 1) + (Not Not m_CLI.References) Then
       For i = 0 To UBound(m_CLI.References)
          AddMissingReference m_CLI.References(i)
       Next
    End If
    
-   'dann Codemodul
+   'then code module
    Select Case m_CLI.Type
       Case CodeLibElementType.clet_ClassModule, CodeLibElementType.clet_StdModule
          ImportVbComponent m_CLI, ImportFile, ImportMode
@@ -756,7 +735,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
          ' eventuell Fehler auslösen?
    End Select
       
-   'eventuell die Tests
+   'possibly the tests
    If ImportTestFiles Then
    If (0 / 1) + (Not Not m_CLI.TestFiles) Then
       For i = 0 To UBound(m_CLI.TestFiles)
@@ -788,7 +767,7 @@ Private Sub AddMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
             ReplaceRef = True
          ElseIf ref.Major = NewCodeLibRef.Major And ref.Minor < NewCodeLibRef.Minor Then
             ReplaceRef = True
-         Else 'Nicht ersetzen, Abbruch
+         Else 'Do not replace, cancel
             Exit Sub
          End If
          Exit For
@@ -844,7 +823,7 @@ End Sub
 Private Sub ExportAccessObjectCli(ByRef AoType As AcObjectType, ByRef AoName As String)
 
 '/**
-' * @todo Was ist mit Formularen und Berichten ohne Modul?
+' * @todo What about forms and reports without a module?
 '**/
    
    Dim cli As CodeLibInfo
@@ -919,7 +898,7 @@ Private Sub ExportVbComponent(ByRef VbcName As String, Optional ExportComponents
   
    Set vbc = CurrentVbProject.VBComponents(VbcName)
    
-   'Leerzeilen am Ende säubern
+   'Clean blank lines at the end
    Set cm = vbc.CodeModule
    Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
       cm.DeleteLines cm.CountOfLines
@@ -988,10 +967,10 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    For Each vbc In VbcCol
       If vbc.Name = CodeLibInf.Name Then
          If vbc.Type <> CodeLibInf.Type Then
-            ' trotz clim_ImportMissingItems importieren
-         ElseIf FileImportMode = clim_ImportMissingItems Then 'Abbruch, damit nicht überschrieben wird
+            ' import despite clim_ImportMissingItems
+         ElseIf FileImportMode = clim_ImportMissingItems Then 'Cancel so that is not overwritten
             Exit Sub
-         ElseIf vbc.Name = MODULNAME_CONFIG_APPLICATION Then ' _config_Application niemals überschreiben, wenn es schon existiert
+         ElseIf vbc.Name = MODULNAME_CONFIG_APPLICATION Then ' Never overwrite _config_Application if it already exists
             Exit Sub
          End If
          CodeModuleExists = True
@@ -999,7 +978,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
       End If
    Next
 
-   If CodeModuleExists Then   ' überprüfen, ob Typen übereinstimmen
+   If CodeModuleExists Then   ' check if types match
       If vbc.Type <> CodeLibInf.Type Then
          VbcCol.Remove vbc
          Set vbc = Nothing
@@ -1007,19 +986,19 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
       End If
    End If
 
-   If CodeModuleExists Then ' Inhalt über CodeModule ändern, damit MS-Add-In für Quellcodeverwaltung keine Schwierigkeiten macht
+   If CodeModuleExists Then ' Change content via CodeModule so that MS add-in for source code management does not cause trouble
       Set cm = vbc.CodeModule
       cm.DeleteLines 1, cm.CountOfLines
       cm.AddFromFile ImportFile.Path
       If CodeLibInf.Type = CodeLibElementType.clet_ClassModule Then
-         'wegschneiden von:
+         'cut away from:
          'VERSION 1.0 CLASS
          'BEGIN
          '  MultiUse = -1  'True
          'End
          DeleteClassHeaderLinesFromCodeModul cm
       End If
-      'Leerzeilen am Ende säubern
+      'Clean blank lines at the end
       Do While Len(Trim$(cm.Lines(cm.CountOfLines, 1))) = 0 And cm.CountOfLines > 1
          cm.DeleteLines cm.CountOfLines
       Loop
@@ -1036,7 +1015,7 @@ Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As CodeModule)
 Private Sub DeleteClassHeaderLinesFromCodeModul(ByRef cm As Object)
 #End If
 '
-'Header sieht so aus:
+'Header looks like this:
 '--
 'VERSION 1.0 CLASS
 'BEGIN
@@ -1090,11 +1069,11 @@ End Sub
 Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf As CodeLibInfo, _
                                ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode)
    
-   Dim col As Object ' AllForms oder AllReports
+   Dim col As Object ' AllForms or AllReports
    Dim AcObj As AccessObject
 
    If Len(Trim$(CodeLibInf.Name)) = 0 Then
-      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
+      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "An attempt was made to create a module without a name."
       Exit Sub
    End If
    
@@ -1105,22 +1084,21 @@ Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf
          Set col = CurrentProject.AllReports
       Case Else
 '/**
-' * @todo Import von Makros ermöglichen
+' * @todo Enable import of macros
 '**/
          Exit Sub
    
    End Select
    
-   'Sonderfall: ACLibImportWizardForm .. weil dieser Formularname vom Import-Wizard verwendet wird
-                                       ' und Access der Meinung ist, das Formular ist bereits geöffnet
+   'Special case: ACLibImportWizardForm .. because this form name is used by the import wizard and Access thinks the form is already open
    If CodeLibInf.Name = "ACLibImportWizardForm" Then
-      'immer umbennenen, da sonst bei ungeöffneten Formular das Formular des Add-Ins gelöscht wird!
-      CodeLibInf.Name = CodeLibInf.Name & "_NEU"
+      'always rename, otherwise the form of the add-in will be deleted if the form is not opened!
+      CodeLibInf.Name = CodeLibInf.Name & "__NEW"
    End If
 
    For Each AcObj In col
       If AcObj.Name = CodeLibInf.Name Then
-         If ImportMode = clim_ImportMissingItems Then 'Abbruch, damit nicht überschrieben wird
+         If ImportMode = clim_ImportMissingItems Then 'Cancel so that is not overwritten
             Exit Sub
          End If
          If AcObj.IsLoaded Then
@@ -1136,10 +1114,10 @@ Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf
    Application.LoadFromText AcOjbType, CodeLibInf.Name, ImportFile.Path
    DoCmd.Close AcOjbType, CodeLibInf.Name
 
-   'Sonderfall: ACLibImportWizardForm
-   If CodeLibInf.Name = "ACLibImportWizardForm_NEU" Then
-      MsgBox "Bitte das Formular ""ACLibImportWizardForm_NEU"" manuell in ""ACLibImportWizardForm"" umbennenen." & vbNewLine & _
-             "Es konnte nicht mit dem Originalnamen erstellt werden, da der Import-Assistent ein gleichnamiges Formular geöffnet hat."
+   'Special case: ACLibImportWizardForm
+   If CodeLibInf.Name = "ACLibImportWizardForm__NEW" Then
+      MsgBox "Please rename the form ""ACLibImportWizardForm__NEW"" manually to ""ACLibImportWizardForm""." & vbNewLine & _
+             "It could not be created with the original name because the Import Wizard opened a form with the same name."
    End If
 
 End Sub
@@ -1179,14 +1157,14 @@ Private Sub GetCodeLibInfoFromVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef
    
    CountOfCodeLines = VbComp.CodeModule.CountOfDeclarationLines
    If CountOfCodeLines < 3 Then
-      'Eventuell nur Prozeduren vorhanden und nach den Options eine Leerzeile
-      '=> zur Sicherheit den Code bis zur ersten Prozedur verwenden
+      'Possibly only procedures present and an empty line after the options
+      '=>
       CountOfCodeLines = GetFirstProcLine(VbComp.CodeModule) - 1
-      If CountOfCodeLines < 3 Then ' ist auch keine Prozedur vorhanden? => gesamten Code verwenden
+      If CountOfCodeLines < 3 Then ' is also no procedure available? => use entire code
          CountOfCodeLines = VbComp.CodeModule.CountOfLines
       End If
    End If
-   If CountOfCodeLines = 0 Then 'kein Code vorhanden, der ausgewertet werden könnte
+   If CountOfCodeLines = 0 Then 'No code available that could be evaluated
       Exit Sub
    End If
    CheckString = VbComp.CodeModule.Lines(1, CountOfCodeLines)
@@ -1237,7 +1215,7 @@ Private Sub GetCodeLibInfoFromAccessObject(ByRef CodeLibInf As CodeLibInfo, _
       GetCodeLibInfoFromVbComponent CodeLibInf, vbc
       If Len(CodeLibInf.RepositoryFile) > 0 Then
          CodeLibInf.LocalFile = GetRepositoryFullPath(CodeLibInf.RepositoryFile)
-      End If ' Rest ignorieren .. wenn im Code nicht steht, wird auch nicht exportiert
+      End If ' Ignore the rest ... if the code does not say, it will not be exported.
    End If
    
 #If DEBUGMODE Then
@@ -1287,29 +1265,27 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    Get FileNumber, , CheckString
    Close FileNumber
    
-   'Namen ermitteln
+   'Determine names
    CodeLibInf.Name = FindSubString(CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
    
-   If Len(CodeLibInf.Name) = 0 Then ' aus Dateinamen
+   If Len(CodeLibInf.Name) = 0 Then ' from filenames
       CodeLibInf.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
    End If
    
-   'Typ bestimmen
-   If Pos > 0 Then ' da SEARCHSTRING_ATTRIBUTNAME_BEGIN gefunden wurde,
-                   ' ist das definitiv ein Module oder eine Klasse
+   'Determine type
+   If Pos > 0 Then ' since SEARCHSTRING_ATTRIBUTNAME_BEGIN was found, this is definitely a module or class
       CodeLibInf.Type = clet_StdModule
       If InStr(1, Left$(CheckString, Pos - 1), "CLASS", vbBinaryCompare) Then
          CodeLibInf.Type = clet_ClassModule
       End If
-   Else ' nach "BEGIN FORM" bzw "BEGIN REPORT" suchen (steht immer in der 4. Zeile)
+   Else ' search for "BEGIN FORM" or "BEGIN REPORT" (always in the 4th line)
       
-      'SaveAsText bei Ac2007-Formularen ergibt unicode =>
-      'checkString = StrConv(checkString, vbFromUnicode)
+      'SaveAsText on Ac2007 forms and higher results in unicode => checkString = StrConv(checkString, vbFromUnicode)
 
 '/**
-' * @todo Auslesen der Daten aus Ac07-Formluaren (accdb-Format), die mit SaveAsText erstellt wurden (unicode!)
-' *       Wie findet man heraus, ob der String als Unicode ankommt?
-' *       Reicht die Erkennung über die ersten 2 Zeichen [chr(255) und chr(254)] aus?
+' * @todo Reading data from Ac07 formluars (accdb format) created with SaveAsText (unicode!)
+' *       How to find out if the string arrives as Unicode?
+' *       Is the recognition via the first 2 characters [chr(255) and chr(254)] sufficient?
 '**/
 
       Pos = 1
@@ -1326,7 +1302,7 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
       ElseIf TempString = SEARCHSTRING_REPORTIDENTIFER Then
          CodeLibInf.Type = clet_Report
    
-      Else 'aus Dateiendung
+      Else ' from file extension
       
          Select Case Mid$(InputFile.Name, InStrRev(InputFile.Name, ".") + 1)
             Case "frm", "acf"
@@ -1345,7 +1321,7 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
 
    End If
    
-   'CODELIB-Block auslesen
+   'Read CODELIB block
    CheckString = FindSubString(CheckString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
    If Len(CheckString) > 0 Then
       GetCodeLibInfoRepositoryFile CodeLibInf, CheckString
@@ -1514,21 +1490,17 @@ End Function
 '---------------------------------------------------------------------------------------
 ' Sub: RefreshAll
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle in der Anwendung vorhandenen Codelib-Elemente neu importieren
-' </summary>
-' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
-' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
-' <remarks>
-' </remarks>
-'**/
+'
+' Re-import all Codelib elements present in the application
+'
+' Parameters:
+'     ImportMode              - Import mode (Standard: clim_ImportAllUsedItems)
+'     ShowMessageAfterRefresh - Show message box after update is complete
+'
 '---------------------------------------------------------------------------------------
-Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = _
-                               CodeLibImportMode.clim_ImportAllUsedItems, _
+Public Sub RefreshAll(Optional ByVal ImportMode As CodeLibImportMode = CodeLibImportMode.clim_ImportAllUsedItems, _
                       Optional ByVal ShowMessageAfterRefresh As Boolean = False)
    
-
    RefreshAllAccessObjects AcObjectType.acDefault, ImportMode, ShowMessageAfterRefresh
 
 End Sub
@@ -1536,16 +1508,14 @@ End Sub
 '---------------------------------------------------------------------------------------
 ' Sub: RefreshAllModules
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Alle in der Anwendung vorhandenen Code-Module mit Codelib-Blcok neu importieren
-' (nur Module und Klassen, keine Formulare oder Berichte)
-' </summary>
-' <param name="ImportMode">Import-Modus (Standard: clim_ImportAllUsedItems)</param>
-' <param name="ShowMessageAfterRefresh">Messagebox nach Abschluss der Aktualiserung anzeigen</param>
-' <remarks>
-' </remarks>
-'**/
+'
+' Re-import all code modules present in the application with Codelib-Blcok
+' (only modules and classes, no forms or reports)
+'
+' Parameters:
+'     ImportMode              - Import mode (Standard: clim_ImportAllUsedItems)
+'     ShowMessageAfterRefresh - Show message box after update is complete
+'
 '---------------------------------------------------------------------------------------
 Public Sub RefreshAllModules(Optional ByVal ImportMode As CodeLibImportMode = _
                                       CodeLibImportMode.clim_ImportAllUsedItems, _
@@ -1560,11 +1530,10 @@ Private Sub RefreshAllAccessObjects(ByVal AoType As AcObjectType, _
                                     ByVal ShowMessageAfterRefresh As Boolean)
    
 '/**
-' * @todo Regelung finden, falls FileCollection noch Einträge enthält
+' * @todo Find regulation if FileCollection still contains entries
 '**/
 
    If CurrentFileCollection.Count > 0 Then
-      'leeren
       Set m_ImportFileCollection = New Collection
    End If
    
@@ -1580,7 +1549,7 @@ Private Sub RefreshAllAccessObjects(ByVal AoType As AcObjectType, _
    ImportFilesFromImportCollection
    
    If ShowMessageAfterRefresh Then
-      MsgBox "Aktualisierung ist abgeschlossen"
+      MsgBox "Update is completed"
    End If
 
 End Sub
@@ -1599,8 +1568,8 @@ Private Sub AddAccessObjectCollectionToRefreshFileCollection( _
          Set AoCol = CurrentProject.AllForms
       Case AcObjectType.acReport
          Set AoCol = CurrentProject.AllReports
-      Case Else 'Mit Fehler Abbrechen
-         Err.Raise vbObjectError, "refreshAccessObjects", "Nur Module, Formular und Berichte können aktualisiert werden"
+      Case Else ' cancel with error
+         Err.Raise vbObjectError, "AddAccessObjectCollectionToRefreshFileCollection", "Only modules, form and reports can be updated"
          Exit Sub
    End Select
 
@@ -1660,13 +1629,13 @@ Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLib
       "'<codelib>" & vbNewLine & _
       "'  <file>" & CodeLibInf.RepositoryFile & "</file>" & vbNewLine
       
-   '<replace>-Zeile
+   '<replace> line
    If Len(CodeLibInf.RepositoryFileReplacement) > 0 Then
       CodeLibInfoText = CodeLibInfoText & _
       "'  <replace>" & CodeLibInf.RepositoryFileReplacement & "</replace>" & vbNewLine
    End If
 
-   '<use>-Blöcke
+   '<use> blocks
    ClTagArray = CodeLibInf.Dependency
    If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
       For i = LBound(ClTagArray) To UBound(ClTagArray)
@@ -1674,7 +1643,7 @@ Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLib
       Next
    End If
    
-   '<ref>-Blöcke
+   '<ref> blocks
    ref = CodeLibInf.References
    If Not ((0 / 1) + (Not Not ref) = 0) Then
       For i = LBound(ref) To UBound(ref)
@@ -1687,7 +1656,7 @@ Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLib
       Next
    End If
    
-   '<test>-Blöcke
+   '<test> blocks
    ClTagArray = CodeLibInf.TestFiles
    If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
       For i = LBound(ClTagArray) To UBound(ClTagArray)
@@ -1695,7 +1664,7 @@ Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLib
       Next
    End If
    
-   '<execute>-Blöcke
+   '<execute> blocks
    ExecuteList = CodeLibInf.ExecuteList
    If Not ((0 / 1) + (Not Not ExecuteList) = 0) Then
       For i = LBound(ExecuteList) To UBound(ExecuteList)

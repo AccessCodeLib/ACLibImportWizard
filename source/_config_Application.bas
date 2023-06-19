@@ -1,5 +1,16 @@
 Attribute VB_Name = "_config_Application"
 '---------------------------------------------------------------------------------------
+' Modul: _initApplication
+'---------------------------------------------------------------------------------------
+'
+' Application configuration
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
+'---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>%AppFolder%/source/_config_Application.bas</file>
 '  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
@@ -20,12 +31,12 @@ Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.1.1"
+Private Const APPLICATION_VERSION As String = "1.2.0"
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
 
-Private Const APPLICATION_NAME As String = "ACLib Import Wizard"
+Public Const APPLICATION_NAME As String = "ACLib Import Wizard"
 Private Const APPLICATION_FULLNAME As String = "Access Code Library - Import Wizard"
 Private Const APPLICATION_TITLE As String = APPLICATION_FULLNAME
 Private Const APPLICATION_ICONFILE As String = "ACLib.ico"
@@ -38,34 +49,31 @@ Private m_Extensions As ApplicationHandler_ExtensionCollection
 '---------------------------------------------------------------------------------------
 ' Sub: InitConfig
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Konfigurationseinstellungen initialisieren
-' </summary>
-' <param name="oCurrentAppHandler">Möglichkeit einer Referenzübergabe, damit nicht CurrentApplication genutzt werden muss</param>
-' <returns></returns>
-' <remarks>
-' </remarks>
-'**/
+'
+' Init application configuration
+'
+' Parameters:
+'     CurrentAppHandlerRef - Possibility of a reference transfer so that CurrentApplication does not have to be used</param>
+'
 '---------------------------------------------------------------------------------------
 Public Sub InitConfig(Optional ByRef CurrentAppHandlerRef As ApplicationHandler = Nothing)
 
 On Error GoTo HandleErr
 
 '----------------------------------------------------------------------------
-' Fehlerbehandlung
+' Error handler
 '
 
    modErrorHandler.DefaultErrorHandlerMode = DEFAULT_ERRORHANDLERMODE
 
    
 '----------------------------------------------------------------------------
-' Globale Variablen einstellen
+' Set global variables
 '
    defGlobal_ACLibImportWizard.ACLibIconFileName = APPLICATION_ICONFILE
 
 '----------------------------------------------------------------------------
-' Anwendungsinstanz einstellen
+' Application instance
 '
    If CurrentAppHandlerRef Is Nothing Then
       Set CurrentAppHandlerRef = CurrentApplication
@@ -73,11 +81,11 @@ On Error GoTo HandleErr
 
    With CurrentAppHandlerRef
    
-      'Zur Sicherheit AccDb einstellen
-      Set .AppDb = CodeDb 'muss auf CodeDb zeigen,
-                          'da diese Anwendung als Add-In verwendet wird
+      'To be on the safe side, set AccDb
+      Set .AppDb = CodeDb 'must point to CodeDb,
+                          'as this application is used as an add-in
    
-      'Anwendungsname
+      ''Application name
       .ApplicationName = APPLICATION_NAME
       .ApplicationFullName = APPLICATION_FULLNAME
       .ApplicationTitle = APPLICATION_TITLE
@@ -85,13 +93,13 @@ On Error GoTo HandleErr
       'Version
       .Version = APPLICATION_VERSION
       
-      ' Formular, das am Ende von CurrentApplication.Start aufgerufen wird
+      'Form called at the end of CurrentApplication.Start
       .ApplicationStartFormName = APPLICATION_STARTFORMNAME
    
    End With
 
 '----------------------------------------------------------------------------
-' Erweiterungen:
+' Extensions:
 '
    Set m_Extensions = New ApplicationHandler_ExtensionCollection
    With m_Extensions
@@ -109,13 +117,6 @@ On Error GoTo HandleErr
       .Add New ACLibFileManager
    End With
 
-'----------------------------------------------------------------------------
-' Konfiguration nach Erweiterungen
-'
-
-   'AppIcon
-   'oCurrentAppHandler.SetAppIcon CodeProject.Path & "\" & m_ApplicationIconFile, True
-
 ExitHere:
    Exit Sub
 
@@ -131,14 +132,13 @@ HandleErr:
 
 End Sub
 
-
 '############################################################################
 '
-' Funktionen für die Anwendungswartung
-' (werden nur im Anwendungsentwurf benötigt)
+' Functions for application maintenance
+' (only needed in the application design)
 '
 '----------------------------------------------------------------------------
-' Hilfsfunktion zum Speichern von Dateien in die lokale AppFile-Tabelle
+' Auxiliary function for saving files to the local AppFile table
 '----------------------------------------------------------------------------
 Private Sub SetAppFiles()
 

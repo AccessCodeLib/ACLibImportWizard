@@ -1,16 +1,13 @@
 Attribute VB_Name = "defGlobal_ACLibImportWizard"
 '---------------------------------------------------------------------------------------
-' Modul: AcLib_defGlobal (Josef Pötzl, 2009-12-11)
+' Package: defGlobal_ACLibImportWizard
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Beispiel für Anwendungskonfiguration
-' </summary>
-' <remarks>
-' Indiviuell gestaltete Config-Module nicht in das Repositiory laden.
-' </remarks>
-' \ingroup ACLibAddInImportWizard
-'**/
+'
+' Global definitions for wizard
+'
+' Author:
+'     Josef Poetzl
+'
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>%AppFolder%/source/defGlobal_ACLibImportWizard.bas</file>

@@ -1,15 +1,16 @@
 Attribute VB_Name = "modErrorHandler"
 Attribute VB_Description = "Prozeduren für die Fehlerbehandlung"
 '---------------------------------------------------------------------------------------
-' Modul: modErrorHandler (2009-12-15)
+' Package: base.modErrorHandler
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Prozeduren für die Fehlerbehandlung
-' </summary>
-' <remarks></remarks>
-'\ingroup base
-'**/
+'
+' Error handling procedures
+'
+' Author:
+'     Josef Poetzl
+'
+'---------------------------------------------------------------------------------------
+
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>base/modErrorHandler.bas</file>
@@ -24,57 +25,48 @@ Option Private Module
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorHandlerMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ErrorHandler Modes (Fehlerbehandlungsvarianten)
-' </summary>
-' <list type="table">
-'   <item><term>aclibErrRaise (0)</term><description>Weitergabe an Anwendung</description></item>
-'   <item><term>aclibErrMsgBox (1)</term><description>Fehler in MsgBox anzeigen</description></item>
-'   <item><term>aclibErrIgnore (2)</term><description>keine Meldung ausgeben</description></item>
-'   <item><term>aclibErrFile (4)</term><description>Fehlerinformation in Datei schreiben</description></item>
-' </list>
-' <remarks>
-'   Die Werte {0,1,2} schließen sich gegenseitig aus. Der Werte 4 (aclibErrFile) kann beliebig zu {0,1,2} addiert werden.
-'   Beispiel: Init aclibErrRaise + aclibErrFile
-' </remarks>
-'**/
+'
+' ErrorHandler Modes (error handling variants)
+'
+'   aclibErrRaise    - (0) Pass error to application
+'   aclibErrMsgBox   - (1) Show error in MsgBox
+'   aclibErrIgnore   - (2) Ignore error, do not display any message
+'   aclibErrFile     - (4) Write error information to file
+'
+' Remarks:
+'   The values {0,1,2} exclude each other. The value 4 (aclibErrFile) can be added arbitrarily to {0,1,2}.
+'   Example: Init aclibErrRaise + aclibErrFile
+'
 Public Enum ACLibErrorHandlerMode
    [_aclibErr_default] = -1
-   aclibErrRaise = 0&    'Weitergabe an Anwendung
+   aclibErrRaise = 0&    'Pass error to application
    aclibErrMsgBox = 1&   'MsgBox
-   aclibErrIgnore = 2&   'keine Meldung ausgeben
-   aclibErrFile = 4&     'Ausgabe in Datei
+   aclibErrIgnore = 2&   'ignore error, do not display any message
+   aclibErrFile = 4&     'Output to file
 End Enum
 
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorResumeMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Verarbeitungsparamter bei aufgetretene Fehler
-' </summary>
-' <list type="table">
-'   <item><term>aclibErrExit (0)</term><description>Abbruch (Funktionsaustritt)</description></item>
-'   <item><term>aclibErrResume (1)</term><description>Resume, Problem von außen behoben</description></item>
-'   <item><term>aclibErrResumeNext (2)</term><description>Resume next, im Code an nächster Stelle weiterarbeiten</description></item>
-' </list>
-' <remarks>Wird bei Error-Events genutzt</remarks>
-'**/
+'
+' Processing parameters in case of errors
+'
+'     aclibErrExit         - (0) Termination (function exit)
+'     aclibErrResume       - (1) Resume, Problem fixed externally
+'     aclibErrResumeNext   - (2) Resume next, continue working in the code at the next point
+'
+' Remarks:
+'     Used for error events
+'
 Public Enum ACLibErrorResumeMode
-   aclibErrExit = 0       'Abbruch
-   aclibErrResume = 1     'Resume, Problem wurde (von außen) behoben
-   aclibErrResumeNext = 2 'Resume next, im Code weiterarbeiten
+   aclibErrExit = 0       'Termination (function exit)
+   aclibErrResume = 1     'Resume, Problem fixed externally
+   aclibErrResumeNext = 2 'Resume next, continue working in the code at the next point
 End Enum
 
 '---------------------------------------------------------------------------------------
 ' Enum: ACLibErrorNumbers
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' ErrorHandler Modes (Fehlerbehandlungsvarianten)
-' </summary>
-'**/
 Public Enum ACLibErrorNumbers
    ERRNR_NOOBJECT = vbObjectError + 1001
    ERRNR_NOCONFIG = vbObjectError + 1002
@@ -82,96 +74,71 @@ Public Enum ACLibErrorNumbers
    ERRNR_FORBIDDEN = vbObjectError + 9001
 End Enum
 
-'Voreinstellungen:
+'Default settings:
 Private Const DEFAULT_ERRORHANDLERMODE As Long = ACLibErrorHandlerMode.[_aclibErr_default]
 Private Const DEFAULT_ERRORRESUMEMODE As Long = ACLibErrorResumeMode.aclibErrExit
 
 Private Const ERRORSOURCE_DELIMITERSYMBOL As String = "->"
 
-
-'Hilfsvariablen
-Private m_DefaultErrorHandlerMode As Long 'Zwischenspeicher für Fehlerbehandlungsart
-Private m_ErrorHandlerLogFile As String   'Konfiguration des Logfiles
+'Auxiliary variables
+Private m_DefaultErrorHandlerMode As Long
+Private m_ErrorHandlerLogFile As String
 
 '---------------------------------------------------------------------------------------
 ' Property: DefaultErrorHandlerMode
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Standardverhalten der Fehlerbehandlung
-' </summary>
-'**/
+'
+' Default behaviour of error handling
+'
 '---------------------------------------------------------------------------------------
 Public Property Get DefaultErrorHandlerMode() As ACLibErrorHandlerMode
 On Error Resume Next
     DefaultErrorHandlerMode = m_DefaultErrorHandlerMode
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: DefaultErrorHandlerMode
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Standardverhalten der Fehlerbehandlung
-' </summary>
-' <param name="errMode">ACLibErrorHandlerMode</param>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let DefaultErrorHandlerMode(ByVal ErrMode As ACLibErrorHandlerMode)
-On Error Resume Next
     m_DefaultErrorHandlerMode = ErrMode
 End Property
 
 '---------------------------------------------------------------------------------------
 ' Property: ErrorHandlerLogFile
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Log file für Fehlermeldungen
-' </summary>
-'**/
+'
+' Log file for error message
+'
 '---------------------------------------------------------------------------------------
 Public Property Get ErrorHandlerLogFile() As String
-On Error Resume Next
     ErrorHandlerLogFile = m_ErrorHandlerLogFile
 End Property
 
-'---------------------------------------------------------------------------------------
-' Property: ErrorHandlerLogFile
-'---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Log file für Fehlermeldungen
-' </summary>
-' <param name="errMode">ACLibErrorHandlerMode</param>
-'**/
-'---------------------------------------------------------------------------------------
 Public Property Let ErrorHandlerLogFile(ByVal Path As String)
-On Error Resume Next
 '/**
-' * @todo Prüfung auf Existenz der Datei oder zumindest des Verzeichnisses
+' * @todo: Checking for the existence of the file or at least the directory
 '**/
     m_ErrorHandlerLogFile = Path
 End Property
 
 '---------------------------------------------------------------------------------------
-' Function: HandleError (Josef Pötzl, 2009-12-11)
+' Function: HandleError
 '---------------------------------------------------------------------------------------
-'/**
-' <summary>
-' Standard-Prozedur für Fehlerbehandlung
-' </summary>
-' <param name="lErrorNumber"></param>
-' <param name="sSource"></param>
-' <param name="sErrDescription"></param>
-' <param name="lErrHandlerMode"></param>
-' <returns>ACLibErrorResumeMode</returns>
-' <remarks>
-'Beispiel:
-'==<code>
-'Private Sub Beispiel() \n
-'\n
-'On Error GoTo HandleErr \n
+'
+' Standard procedure for error handling
+'
+' Parameters:
+'     ErrNumber"></param>
+'     ErrSource"></param>
+'     ErrDescription"></param>
+'     ErrHandlerMode"></param>
+'
+' Returns:
+'     ACLibErrorResumeMode
+'
+' Remarks:
+'Example:
+'<code>
+'Private Sub ExampleProc()
+'
+'On Error GoTo HandleErr
 '
 '[...]
 '
@@ -180,7 +147,7 @@ End Property
 '   Exit Sub
 '
 'HandleErr:
-'   Select Case HandleError(Err.Number, "Beispiel", Err.Description)
+'   Select Case HandleError(Err.Number, "ExampleProc", Err.Description)
 '   Case ACLibErrorResumeMode.aclibErrResume
 '      Resume
 '   Case ACLibErrorResumeMode.aclibErrResumeNext
@@ -190,15 +157,14 @@ End Property
 '   End Select
 '
 'End Sub
-'<code>==
-' </remarks>
-'**/
+'<code>
+'
 '---------------------------------------------------------------------------------------
 Public Function HandleError(ByVal ErrNumber As Long, ByVal ErrSource As String, _
                    Optional ByVal ErrDescription As String, _
                    Optional ByVal ErrHandlerMode As ACLibErrorHandlerMode = DEFAULT_ERRORHANDLERMODE _
             ) As ACLibErrorResumeMode
-'hier wäre auch das Aktivieren eine anderen ErrorHandlers möglich (z. B. ErrorHandler-Klasse)
+'Here it would also be possible to activate another ErrorHandler (e.g. ErrorHandler class).
 
    If ErrHandlerMode = ACLibErrorHandlerMode.[_aclibErr_default] Then
       ErrHandlerMode = m_DefaultErrorHandlerMode
@@ -233,28 +199,28 @@ On Error Resume Next
       NewErrDescription = ErrDescription
    End If
    
-   'Ausgabe in Datei
+   'Output to file
    If (ErrHandlerMode And ACLibErrorHandlerMode.aclibErrFile) Then
       PrintToFile ErrNumber, NewErrSource, NewErrDescription
       ErrHandlerMode = ErrHandlerMode - ACLibErrorHandlerMode.aclibErrFile
    End If
 
-   'Fehlerbehandlung
+'Error handler
    Err.Clear
 On Error GoTo 0
    Select Case ErrHandlerMode
-      Case ACLibErrorHandlerMode.aclibErrRaise 'Weitergabe an Anwendung
+      Case ACLibErrorHandlerMode.aclibErrRaise     ' Passing to the application
          Err.Raise ErrNumber, NewErrSource, NewErrDescription
-      Case ACLibErrorHandlerMode.aclibErrMsgBox  'Msgbox
+      Case ACLibErrorHandlerMode.aclibErrMsgBox    ' show Msgbox
          ShowErrorMessage ErrNumber, NewErrSource, NewErrDescription
-      Case ACLibErrorHandlerMode.aclibErrIgnore  'Fehlermeldung übergehen
+      Case ACLibErrorHandlerMode.aclibErrIgnore    'Skip error
          '
-      Case Else '(sollte eigentlich nie eintreten) .. an Anwendung weitergeben
+      Case Else '(should never actually occur) ... pass on to application
          Err.Raise ErrNumber, NewErrSource, NewErrDescription
    End Select
 
    'return resume mode
-   ProcHandleError = DEFAULT_ERRORRESUMEMODE ' Das würde erst bei einer Klasse etwas bringen
+   ProcHandleError = DEFAULT_ERRORRESUMEMODE ' This will help when using a class
 
 End Function
 
@@ -320,22 +286,25 @@ End Sub
 
 Private Function GetApplicationVbProjectName() As String
    
-   Dim VbProjectName As String
+   Static VbProjectName As String
+   
    Dim DbFile As String
    Dim vbp As Object
    
 On Error Resume Next
    
-   VbProjectName = Access.VBE.ActiveVBProject.Name
-   DbFile = CurrentDb.Name 'Auf UNCPath verzichtet, damit dieses Modul unabhängig bleibt
-   If Access.VBE.ActiveVBProject.FileName <> DbFile Then
-      For Each vbp In Access.VBE.VBProjects
-         If vbp.FileName = DbFile Then
-            VbProjectName = vbp.Name
-         End If
-      Next
+   If Len(VbProjectName) = 0 Then
+      VbProjectName = Access.VBE.ActiveVBProject.Name
+      DbFile = CurrentDb.Name
+      'Do not use UNCPath => Code module has no dependencies
+      If Access.VBE.ActiveVBProject.FileName <> DbFile Then
+         For Each vbp In Access.VBE.VBProjects
+            If vbp.FileName = DbFile Then
+               VbProjectName = vbp.Name
+            End If
+         Next
+      End If
    End If
-    
    GetApplicationVbProjectName = VbProjectName
    
 End Function
