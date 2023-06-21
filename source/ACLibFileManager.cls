@@ -117,6 +117,7 @@ Private m_ExportAllToApplicationSourceFolder As Boolean
 
 ' Events
 Public Event PropertyMissingLocalRepositoryRootDirectory(ByRef NewValue As String)
+Public Event MissingLocalRepositoryFile(ByVal ACLibPath As String, ByVal FullFilePath As String)
 Public Event ImportRepositoryFile(ByVal ObjectName As String, ByVal RepositoryFile As String, _
                                   ByVal ElementType As CodeLibElementType, ByRef Dependency As Variant, _
                                   ByRef ImportFile As Object, ByRef Cancel As Integer)
@@ -322,6 +323,8 @@ Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
    Dim PathString As String
 
    PathString = GetRepositoryFullPath(RepositoryPath)
+   
+   
    
    Dim TempFile As Object
    Set TempFile = fso.GetFile(PathString)
@@ -638,6 +641,7 @@ End Property
 Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
    Dim RepPath As String
+   Dim FullPath As String
 
    ReleativPath = Replace(ReleativPath, "/", "\")
    
@@ -671,8 +675,14 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
    Do While Left$(ReleativPath, 1) = "\"
       ReleativPath = Mid$(ReleativPath, 2)
    Loop
+   
+   FullPath = RepPath & ReleativPath
+   
+   If Len(VBA.Dir(FullPath)) = 0 Then
+      RaiseEvent MissingLocalRepositoryFile(ReleativPath, FullPath)
+   End If
 
-   GetRepositoryFullPath = RepPath & ReleativPath
+   GetRepositoryFullPath = FullPath
 
 End Function
 
@@ -1248,7 +1258,6 @@ Public Function GetCodeLibInfoFromFilePath(ByVal FilePath As String, Optional By
    GetCodeLibInfoFromFilePath = cli
 End Function
 
-
 Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputFile As Object, _
                           Optional ByVal FindDependency As Boolean = True, _
                           Optional ByVal FindTests As Boolean = True)
@@ -1258,8 +1267,10 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    Dim TempString As String
    Dim i As Long
    Dim FileNumber As Long
+   Dim StringCutPos As Long
 
    FileNumber = FreeFile
+   
    Open InputFile.Path For Binary Access Read As FileNumber
    CheckString = String$(LOF(FileNumber), 0)
    Get FileNumber, , CheckString
@@ -1269,7 +1280,12 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    CodeLibInf.Name = FindSubString(CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
    
    If Len(CodeLibInf.Name) = 0 Then ' from filenames
-      CodeLibInf.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
+      StringCutPos = InStrRev(InputFile.Name, ".")
+      If StringCutPos > 1 Then
+         CodeLibInf.Name = Left$(InputFile.Name, InStrRev(InputFile.Name, ".") - 1)
+      Else
+         CodeLibInf.Name = InputFile.Name
+      End If
    End If
    
    'Determine type
