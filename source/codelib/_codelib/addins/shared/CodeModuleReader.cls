@@ -347,7 +347,7 @@ Public Function ProcedureUsed(ByRef CodeModuleProc As CodeModuleProcedure) As Bo
       With RegEx
          .Pattern = SearchStringArray(i)
          .Global = False
-         IsUsed = .test(m_CodeModuleText)
+         IsUsed = .Test(m_CodeModuleText)
          If IsUsed Then
             Exit For
          End If
@@ -398,7 +398,7 @@ Public Function HeaderItemUsed(ByRef HdrItm As CodeModuleHeaderItem) As Boolean
       With RegEx
          .Pattern = SearchStringArray(i)
          .Global = False
-         IsUsed = .test(m_CodeModuleText)
+         IsUsed = .Test(m_CodeModuleText)
          If IsUsed Then Exit For
       End With
 #Else

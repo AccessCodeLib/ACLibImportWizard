@@ -64,11 +64,13 @@ Private Const SQL_CREATETABLE_CONFIGTABLE As String = _
 Private Const PROPNAME_LOCALREPOSITORYROOT As String = "LocalRepositoryRoot"
 Private Const PROPNAME_PRIVATEREPOSITORYROOT As String = "PrivateRepositoryRoot"
 Private Const PROPNAME_IMPORTTESTDEFAULTVALUE As String = "ImportTestDefaultValue"
+Private Const PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN As String = "GitHubAuthPersonalAccessToken"
 
 ' Hilfsvariablen
 Private m_LocalRepositoryPath As String   ' allg. Repository-Verzeichnis
 Private m_PrivateRepositoryPath As String ' privates Verzeichnis (nicht in CodeLib enthalten)
 Private m_ImportTestDefaultValue As Long
+Private m_GitHubAuthPersonalAccessToken As String
 Private m_ACLibPropertyDb As DAO.Database
 
 '---------------------------------------------------------------------------------------
@@ -172,7 +174,6 @@ Public Property Let LocalRepositoryPath(ByVal NewPath As String)
   
 End Property
 
-
 Public Property Get PrivateRepositoryPath() As String
 
    If Len(m_PrivateRepositoryPath) = 0 Then
@@ -224,7 +225,24 @@ Public Property Let ImportTestsDefaultValue(ByVal NewValue As Boolean)
 
 End Property
 
-Private Function GetACLibGlobalProperty(ByRef PropertyName As String) As String
+Public Property Get GitHubAuthPersonalAccessToken() As String
+'m_GitHubAuthPersonalAccessToken: vbnullstring = noch nicht abgefragt
+
+   If StrPtr(m_GitHubAuthPersonalAccessToken) = 0 Then
+      m_GitHubAuthPersonalAccessToken = GetACLibGlobalProperty(PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN) & ""
+   End If
+   GitHubAuthPersonalAccessToken = m_GitHubAuthPersonalAccessToken
+
+End Property
+
+Public Property Let GitHubAuthPersonalAccessToken(ByVal NewValue As String)
+
+   m_GitHubAuthPersonalAccessToken = NewValue
+   SetACLibGlobalProperty PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN, m_GitHubAuthPersonalAccessToken
+
+End Property
+
+Private Function GetACLibGlobalProperty(ByVal PropertyName As String) As String
    
    Dim rst As DAO.Recordset
    Dim SelectSql As String
@@ -240,7 +258,7 @@ Private Function GetACLibGlobalProperty(ByRef PropertyName As String) As String
 
 End Function
 
-Private Function SetACLibGlobalProperty(ByRef PropertyName As String, ByRef NewValue As String) As String
+Private Function SetACLibGlobalProperty(ByVal PropertyName As String, ByVal NewValue As String) As String
    
    Dim rst As DAO.Recordset
    Dim SelectSql As String
