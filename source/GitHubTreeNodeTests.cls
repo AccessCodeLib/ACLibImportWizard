@@ -70,8 +70,10 @@ Const TestJson As String = _
    Assert.That m_TreeNode.Properties.Count, Iz.EqualTo(2)
    Assert.That m_TreeNode.Nodes.Count, Iz.EqualTo(2)
    
+   Dim NodeKey As Variant
    Dim Node As GitHubTreeNode
-   For Each Node In m_TreeNode.Nodes
+   For Each NodeKey In m_TreeNode.Nodes.Keys
+      Set Node = m_TreeNode.Nodes(NodeKey)
       Assert.That Node.Nodes.Count, Iz.EqualTo(0)
    Next
 
@@ -84,8 +86,10 @@ Public Sub BuildFromSHA_master_CheckCount()
    Assert.That m_TreeNode.Properties.Count, Iz.EqualTo(3)
    Assert.That m_TreeNode.Nodes.Count, Iz.EqualTo(28)
 
+   Dim NodeKey As Variant
    Dim Node As GitHubTreeNode
-   For Each Node In m_TreeNode.Nodes
+   For Each NodeKey In m_TreeNode.Nodes.Keys
+      Set Node = m_TreeNode.Nodes(NodeKey)
       Assert.That Node.Nodes.Count, Iz.EqualTo(0)
    Next
    
