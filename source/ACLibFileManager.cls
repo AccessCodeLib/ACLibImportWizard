@@ -30,7 +30,7 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '---------------------------------------------------------------------------------------
 '<codelib>
 '  <file>%AppFolder%/source/ACLibFileManager.cls</file>
-'  <description>Kuemmert sich um den Import und Export der Codemodule aus dem und in das Repository</description>
+'  <description>Import/export of Access objects to/from local code library</description>
 '  <license>_codelib/license.bas</license>
 '  <use>base/ApplicationHandler.cls</use>
 '  <use>file/modFiles.bas</use>

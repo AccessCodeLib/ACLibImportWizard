@@ -69,10 +69,27 @@ Public Sub BuildFromSHA(ByVal Sha As String, _
          .GitHubApiAuthorizationToken = m_GitHubApiAuthToken
       End If
       JsonString = .GetJsonString(Replace(GitHubApiTreesUrl, "{SHA}", Sha))
+      
+      If JsonString Like "{""message"":*" Then
+         Err.Raise vbObjectError, "GitHubTreeNode.BuildFromSHA", BuildErrMsgFromGitHubApiMessage(JsonString)
+      End If
+      
       BuildFromJson JsonString, ReadSubTreeLevel
    End With
 
 End Sub
+
+Private Function BuildErrMsgFromGitHubApiMessage(ByVal MsgJson As String) As String
+' {"message":"API rate limit exceeded for 84.112.118.32. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)","documentation_url":"https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+   Dim Msg As String
+   Msg = Replace(MsgJson, "{""message"":""", vbNullString)
+   Msg = Replace(Msg, """,""documentation_url"":""", vbNewLine & "URL: ")
+   Msg = Replace(Msg, """}", vbNullString)
+   
+   BuildErrMsgFromGitHubApiMessage = Msg
+
+End Function
 
 Friend Sub BuildFromJson(ByVal JsonString As String, Optional ByVal ReadSubTreeLevel As Long = 0)
 
@@ -86,10 +103,15 @@ Friend Sub BuildFromJson(ByVal JsonString As String, Optional ByVal ReadSubTreeL
    
 End Sub
 
-Friend Sub InitFromJsonProperties(ByVal Props As JsonProperties, Optional ByVal ReadSubTreeLevel As Long = 0)
+Friend Sub InitFromJsonProperties(ByVal Props As JsonProperties, Optional ByVal ReadSubTreeLevel As Long = 0, _
+                         Optional ByVal GitHubApiAuthToken As String = vbNullString)
 
    Dim Prop As JsonProperty
    Dim i As Long
+   
+   If Len(GitHubApiAuthToken) > 0 Then
+      m_GitHubApiAuthToken = GitHubApiAuthToken
+   End If
    
    For i = 1 To Props.Count
       Set Prop = Props.Item(i)
@@ -108,7 +130,7 @@ Private Sub AddNodesfromJsonCollection(ByVal JsonNodeCollection As Collection, O
    Dim Node As GitHubTreeNode
    
    For Each NodeProps In JsonNodeCollection
-      Set Node = GetNoteFromNodeProps(NodeProps)
+      Set Node = GetNodeFromNodeProps(NodeProps)
       Set m_Nodes(Node.Path) = Node
    Next
    
@@ -118,24 +140,29 @@ Private Sub AddNodesfromJsonCollection(ByVal JsonNodeCollection As Collection, O
 
 End Sub
 
-Private Function GetNoteFromNodeProps(ByVal NodeProps As JsonProperties) As GitHubTreeNode
+Private Function GetNodeFromNodeProps(ByVal NodeProps As JsonProperties) As GitHubTreeNode
 
    Dim Node As GitHubTreeNode
    
    Set Node = New GitHubTreeNode
-   Node.InitFromJsonProperties NodeProps
+   Node.InitFromJsonProperties NodeProps, , m_GitHubApiAuthToken
    
-   Set GetNoteFromNodeProps = Node
+   Set GetNodeFromNodeProps = Node
    
 End Function
 
-Friend Sub FillNextTreeLevel(Optional ByVal ReadSubTreeLevel As Long = 0)
+Friend Sub FillNextTreeLevel(Optional ByVal ReadSubTreeLevel As Long = 0, _
+                             Optional ByVal GitHubApiAuthToken As String = vbNullString)
 
    Dim Node As GitHubTreeNode
    Dim NodeKey As Variant
    
    If Not IsFolder Then
       Exit Sub
+   End If
+   
+   If Len(GitHubApiAuthToken) > 0 Then
+      m_GitHubApiAuthToken = GitHubApiAuthToken
    End If
 
    If m_Nodes.Count = 0 Then
