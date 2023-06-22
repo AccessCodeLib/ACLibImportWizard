@@ -179,7 +179,7 @@ Friend Function GetJsonString(ByVal ApiUrl As String) As String
    Dim ApiResponse As String
    Dim ApiAuthToken As String
    Dim json As Object
-   Dim xml As MSXML2.XMLHTTP60
+   Dim xml As Object 'MSXML2.XMLHTTP60
    
    ApiAuthToken = GitHubApiAuthorizationToken
 
