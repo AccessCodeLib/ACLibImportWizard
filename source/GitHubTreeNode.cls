@@ -10,11 +10,10 @@ Attribute VB_Exposed = False
 Option Compare Database
 Option Explicit
 
-Private Const GitHubApiTreesUrl As String = "https://api.github.com/repos/AccessCodeLib/AccessCodeLib/git/trees/{SHA}"
+Private Const GitHubApiTreesUrl As String = "https://api.github.com/repos/{owner}/{repo}/git/trees/{SHA}"
 
 Private m_Properties As Dictionary
 Private m_Nodes As Dictionary
-Private m_GitHubApiAuthToken As String
 
 Private Sub Class_Initialize()
    Set m_Properties = New Dictionary
@@ -56,18 +55,12 @@ Public Property Get Sha() As String
 End Property
 
 Public Sub BuildFromSHA(ByVal Sha As String, _
-               Optional ByVal ReadSubTreeLevel As Long = 0, _
-               Optional ByVal GitHubApiAuthToken As String = vbNullString)
+               Optional ByVal ReadSubTreeLevel As Long = 0)
 
    Dim JsonString As String
 
-   With New ACLibGitHubImporter
-      If Len(GitHubApiAuthToken) > 0 Then
-         m_GitHubApiAuthToken = GitHubApiAuthToken
-      End If
-      If Len(m_GitHubApiAuthToken) > 0 Then
-         .GitHubApiAuthorizationToken = m_GitHubApiAuthToken
-      End If
+   With ACLibGitHubImporter
+   
       JsonString = .GetJsonString(Replace(GitHubApiTreesUrl, "{SHA}", Sha))
       
       If JsonString Like "{""message"":*" Then
@@ -75,6 +68,7 @@ Public Sub BuildFromSHA(ByVal Sha As String, _
       End If
       
       BuildFromJson JsonString, ReadSubTreeLevel
+      
    End With
 
 End Sub
@@ -103,15 +97,10 @@ Friend Sub BuildFromJson(ByVal JsonString As String, Optional ByVal ReadSubTreeL
    
 End Sub
 
-Friend Sub InitFromJsonProperties(ByVal Props As JsonProperties, Optional ByVal ReadSubTreeLevel As Long = 0, _
-                         Optional ByVal GitHubApiAuthToken As String = vbNullString)
+Friend Sub InitFromJsonProperties(ByVal Props As JsonProperties, Optional ByVal ReadSubTreeLevel As Long = 0)
 
    Dim Prop As JsonProperty
    Dim i As Long
-   
-   If Len(GitHubApiAuthToken) > 0 Then
-      m_GitHubApiAuthToken = GitHubApiAuthToken
-   End If
    
    For i = 1 To Props.Count
       Set Prop = Props.Item(i)
@@ -145,14 +134,13 @@ Private Function GetNodeFromNodeProps(ByVal NodeProps As JsonProperties) As GitH
    Dim Node As GitHubTreeNode
    
    Set Node = New GitHubTreeNode
-   Node.InitFromJsonProperties NodeProps, , m_GitHubApiAuthToken
+   Node.InitFromJsonProperties NodeProps
    
    Set GetNodeFromNodeProps = Node
    
 End Function
 
-Friend Sub FillNextTreeLevel(Optional ByVal ReadSubTreeLevel As Long = 0, _
-                             Optional ByVal GitHubApiAuthToken As String = vbNullString)
+Friend Sub FillNextTreeLevel(Optional ByVal ReadSubTreeLevel As Long = 0)
 
    Dim Node As GitHubTreeNode
    Dim NodeKey As Variant
@@ -160,13 +148,9 @@ Friend Sub FillNextTreeLevel(Optional ByVal ReadSubTreeLevel As Long = 0, _
    If Not IsFolder Then
       Exit Sub
    End If
-   
-   If Len(GitHubApiAuthToken) > 0 Then
-      m_GitHubApiAuthToken = GitHubApiAuthToken
-   End If
 
    If m_Nodes.Count = 0 Then
-      Me.BuildFromSHA Me.Sha, ReadSubTreeLevel, m_GitHubApiAuthToken
+      Me.BuildFromSHA Me.Sha, ReadSubTreeLevel
       Exit Sub
    End If
 
