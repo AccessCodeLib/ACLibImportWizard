@@ -1,6 +1,16 @@
 name: Build-self-hosted (on release)
 
 on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - bugfix/**
+    paths:
+      - 'source/**'
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
