@@ -123,7 +123,6 @@ Begin Form
                     Width =5385
                     Height =6803
                     AutoActivate =1
-                    BorderColor =10921638
                     Name ="tvRepositoryTree"
                     OleData = Begin
                         0x00120000d0cf11e0a1b11ae1000000000000000000000000000000003e000300 ,
@@ -276,7 +275,6 @@ Begin Form
                     OnLostFocus ="[Event Procedure]"
                     OLEClass ="TreeCtrl"
                     Class ="MSComctlLib.TreeCtrl.2"
-                    GridlineColor =10921638
                     HorizontalAnchor =2
                     VerticalAnchor =2
 
@@ -291,23 +289,15 @@ Begin Form
                     Top =113
                     Height =340
                     TabIndex =1
-                    ForeColor =4210752
                     Name ="cmdCommit"
                     Caption ="Commit"
                     OnClick ="[Event Procedure]"
-                    GridlineColor =10921638
                     HorizontalAnchor =1
 
                     LayoutCachedLeft =5555
                     LayoutCachedTop =113
                     LayoutCachedWidth =7256
                     LayoutCachedHeight =453
-                    BackColor =14461583
-                    BorderColor =14461583
-                    HoverColor =15189940
-                    PressedColor =9917743
-                    HoverForeColor =4210752
-                    PressedForeColor =4210752
                 End
                 Begin CommandButton
                     Cancel = NotDefault
@@ -316,23 +306,15 @@ Begin Form
                     Top =850
                     Height =340
                     TabIndex =2
-                    ForeColor =4210752
                     Name ="cmdCancel"
                     Caption ="Cancel"
                     OnClick ="[Event Procedure]"
-                    GridlineColor =10921638
                     HorizontalAnchor =1
 
                     LayoutCachedLeft =5555
                     LayoutCachedTop =850
                     LayoutCachedWidth =7256
                     LayoutCachedHeight =1190
-                    BackColor =14461583
-                    BorderColor =14461583
-                    HoverColor =15189940
-                    PressedColor =9917743
-                    HoverForeColor =4210752
-                    PressedForeColor =4210752
                 End
                 Begin Label
                     OverlapFlags =247
@@ -342,10 +324,9 @@ Begin Form
                     Width =5214
                     Height =1981
                     FontSize =14
-                    BorderColor =8355711
+                    ForeColor =0
                     Name ="labStartInfo"
                     Caption ="Loading ..."
-                    GridlineColor =10921638
                     LayoutCachedLeft =110
                     LayoutCachedTop =283
                     LayoutCachedWidth =5324

@@ -13,20 +13,6 @@ Attribute VB_Exposed = False
 '
 '---------------------------------------------------------------------------------------
 
-'---------------------------------------------------------------------------------------
-'<codelib>
-'  <file>%AppFolder%/source/ACLibImportWizardForm.frm</file>
-'  <description>Maske für Import-Wizard</description>
-'  <use>base/modErrorHandler.bas</use>
-'  <use>%AppFolder%/source/defGlobal_ACLibImportWizard.bas</use>
-'  <use>api/winapi/WinApiShellTools.cls</use>
-'  <use>api/winapi/WinApiShortcutMenu.cls</use>
-'  <use>file/modFiles.bas</use>
-'  <use>data/dao/TempDbHandler.cls</use>
-'  <use>data/modSQL_Tools.bas</use>
-'</codelib>
-'---------------------------------------------------------------------------------------
-'
 Option Compare Database
 Option Explicit
 

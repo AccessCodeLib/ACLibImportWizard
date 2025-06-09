@@ -17,10 +17,10 @@ Begin Form
     Width =10214
     DatasheetFontHeight =11
     ItemSuffix =91
-    Left =1560
-    Top =2933
-    Right =14280
-    Bottom =12743
+    Left =3255
+    Top =2940
+    Right =15975
+    Bottom =12750
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -174,6 +174,7 @@ Begin Form
                     Tag ="LANG:"
                     ControlTipText ="Select local root directory"
                     HorizontalAnchor =1
+
                     LayoutCachedLeft =9698
                     LayoutCachedTop =548
                     LayoutCachedWidth =10095
@@ -208,6 +209,7 @@ Begin Form
                     ControlTipText ="Attach file(s) with selection dialog"
                     UnicodeAccessKey =83
                     HorizontalAnchor =1
+
                     LayoutCachedLeft =9695
                     LayoutCachedTop =1350
                     LayoutCachedWidth =10092
@@ -230,6 +232,7 @@ Begin Form
                     BeforeUpdate ="[Event Procedure]"
                     AfterUpdate ="[Event Procedure]"
                     HorizontalAnchor =2
+
                     LayoutCachedLeft =4709
                     LayoutCachedTop =593
                     LayoutCachedWidth =9605
@@ -266,6 +269,7 @@ Begin Form
                     OnGotFocus ="[Event Procedure]"
                     UnicodeAccessKey =65
                     HorizontalAnchor =2
+
                     LayoutCachedLeft =120
                     LayoutCachedTop =1375
                     LayoutCachedWidth =9141
@@ -303,6 +307,7 @@ Begin Form
                     Tag ="LANG:"
                     ControlTipText ="Attach file from text line"
                     HorizontalAnchor =1
+
                     LayoutCachedLeft =9202
                     LayoutCachedTop =1350
                     LayoutCachedWidth =9599
@@ -333,6 +338,7 @@ Begin Form
                     UnicodeAccessKey =102
                     HorizontalAnchor =2
                     VerticalAnchor =2
+
                     LayoutCachedLeft =120
                     LayoutCachedTop =2114
                     LayoutCachedWidth =10099
@@ -370,6 +376,7 @@ Begin Form
                     UnicodeAccessKey =73
                     HorizontalAnchor =1
                     VerticalAnchor =1
+
                     LayoutCachedLeft =7042
                     LayoutCachedTop =7456
                     LayoutCachedWidth =9247
@@ -389,6 +396,7 @@ Begin Form
                     UnicodeAccessKey =109
                     HorizontalAnchor =2
                     VerticalAnchor =1
+
                     LayoutCachedLeft =120
                     LayoutCachedTop =5520
                     LayoutCachedWidth =10102
@@ -416,6 +424,7 @@ Begin Form
                             OptionValue =0
                             Name ="Option17"
                             VerticalAnchor =1
+
                             LayoutCachedLeft =359
                             LayoutCachedTop =6350
                             LayoutCachedWidth =619
@@ -445,6 +454,7 @@ Begin Form
                             OptionValue =2
                             Name ="Option19"
                             VerticalAnchor =1
+
                             LayoutCachedLeft =359
                             LayoutCachedTop =6740
                             LayoutCachedWidth =619
@@ -474,6 +484,7 @@ Begin Form
                             OptionValue =1
                             Name ="Option21"
                             VerticalAnchor =1
+
                             LayoutCachedLeft =359
                             LayoutCachedTop =7595
                             LayoutCachedWidth =619
@@ -542,6 +553,7 @@ Begin Form
                     Tag ="LANG:"
                     HorizontalAnchor =1
                     VerticalAnchor =1
+
                     LayoutCachedLeft =7042
                     LayoutCachedTop =6196
                     LayoutCachedWidth =9967
@@ -575,6 +587,7 @@ Begin Form
                     Width =0
                     Height =0
                     Name ="sysFirst"
+
                 End
                 Begin CheckBox
                     OverlapFlags =215
@@ -589,6 +602,7 @@ Begin Form
                     UnicodeAccessKey =116
                     HorizontalAnchor =1
                     VerticalAnchor =1
+
                     LayoutCachedLeft =7042
                     LayoutCachedTop =5640
                     LayoutCachedWidth =7302
@@ -623,6 +637,7 @@ Begin Form
                     Name ="cmdClose"
                     Caption ="Schließen"
                     OnClick ="[Event Procedure]"
+
                 End
                 Begin TextBox
                     Locked = NotDefault
@@ -637,6 +652,7 @@ Begin Form
                     TabIndex =16
                     BorderColor =0
                     Name ="txtCodeModuleDescription"
+
                     LayoutCachedLeft =6986
                     LayoutCachedTop =2436
                     LayoutCachedWidth =10106
@@ -656,6 +672,7 @@ Begin Form
                     TabIndex =15
                     BorderColor =0
                     Name ="txtCodeModuleName"
+
                     LayoutCachedLeft =6986
                     LayoutCachedTop =2114
                     LayoutCachedWidth =10106
@@ -676,6 +693,7 @@ Begin Form
                     Caption ="Show description"
                     Tag ="LANG:"
                     HorizontalAnchor =1
+
                     LayoutCachedLeft =6982
                     LayoutCachedTop =1800
                     LayoutCachedWidth =10087
@@ -695,6 +713,7 @@ Begin Form
                     ControlTipText ="Other actions ..."
                     HorizontalAnchor =1
                     VerticalAnchor =1
+
                     LayoutCachedLeft =9364
                     LayoutCachedTop =7456
                     LayoutCachedWidth =9919
@@ -727,6 +746,7 @@ Begin Form
                     HorizontalAnchor =1
                     AllowValueListEdits =0
                     InheritValueList =0
+
                     LayoutCachedLeft =9581
                     LayoutCachedTop =56
                     LayoutCachedWidth =10142
@@ -751,6 +771,7 @@ Begin Form
                     TabIndex =3
                     Name ="ogRepositorySource"
                     AfterUpdate ="[Event Procedure]"
+
                     LayoutCachedLeft =113
                     LayoutCachedTop =105
                     LayoutCachedWidth =8443
@@ -762,6 +783,7 @@ Begin Form
                             Top =203
                             OptionValue =1
                             Name ="Option56"
+
                             LayoutCachedLeft =3855
                             LayoutCachedTop =203
                             LayoutCachedWidth =4115
@@ -789,6 +811,7 @@ Begin Form
                             TabIndex =1
                             OptionValue =2
                             Name ="Option58"
+
                             LayoutCachedLeft =6292
                             LayoutCachedTop =203
                             LayoutCachedWidth =6552
@@ -838,6 +861,7 @@ Begin Form
                     Name ="txtGitHubAuthPersonalAccessToken"
                     AfterUpdate ="[Event Procedure]"
                     HorizontalAnchor =2
+
                     LayoutCachedLeft =5212
                     LayoutCachedTop =593
                     LayoutCachedWidth =10085
@@ -887,6 +911,7 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
                     HorizontalAnchor =2
+
                     LayoutCachedLeft =6135
                     LayoutCachedTop =960
                     LayoutCachedWidth =7838
@@ -902,7 +927,7 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =5363
+                            Left =5370
                             Top =960
                             Width =705
                             Height =293
@@ -910,9 +935,9 @@ Begin Form
                             Caption ="Name:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =5363
+                            LayoutCachedLeft =5370
                             LayoutCachedTop =960
-                            LayoutCachedWidth =6068
+                            LayoutCachedWidth =6075
                             LayoutCachedHeight =1253
                             ColumnStart =3
                             ColumnEnd =3
@@ -937,6 +962,7 @@ Begin Form
                     DefaultValue ="\"AccessCodeLib\""
                     GroupTable =1
                     BottomPadding =150
+
                     LayoutCachedLeft =3600
                     LayoutCachedTop =960
                     LayoutCachedWidth =5303
@@ -951,7 +977,7 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =2723
+                            Left =2730
                             Top =960
                             Width =810
                             Height =293
@@ -959,9 +985,9 @@ Begin Form
                             Caption ="Owner:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =2723
+                            LayoutCachedLeft =2730
                             LayoutCachedTop =960
-                            LayoutCachedWidth =3533
+                            LayoutCachedWidth =3540
                             LayoutCachedHeight =1253
                             ColumnStart =1
                             ColumnEnd =1
@@ -975,7 +1001,7 @@ Begin Form
                 Begin Label
                     OverlapFlags =215
                     TextAlign =3
-                    Left =1418
+                    Left =1425
                     Top =960
                     Width =1245
                     Height =293
@@ -984,9 +1010,9 @@ Begin Form
                     Caption ="Repository:"
                     GroupTable =1
                     BottomPadding =150
-                    LayoutCachedLeft =1418
+                    LayoutCachedLeft =1425
                     LayoutCachedTop =960
-                    LayoutCachedWidth =2663
+                    LayoutCachedWidth =2670
                     LayoutCachedHeight =1253
                     LayoutGroup =1
                     GridlineThemeColorIndex =1
@@ -1008,6 +1034,7 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
                     HorizontalAnchor =2
+
                     LayoutCachedLeft =8805
                     LayoutCachedTop =960
                     LayoutCachedWidth =10095
@@ -1023,7 +1050,7 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =7898
+                            Left =7905
                             Top =960
                             Width =840
                             Height =293
@@ -1031,9 +1058,9 @@ Begin Form
                             Caption ="Branch:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =7898
+                            LayoutCachedLeft =7905
                             LayoutCachedTop =960
-                            LayoutCachedWidth =8738
+                            LayoutCachedWidth =8745
                             LayoutCachedHeight =1253
                             ColumnStart =5
                             ColumnEnd =5

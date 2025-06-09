@@ -52,6 +52,10 @@
       "Value": 1,
       "Type": 4
     },
+    "Clear Cache on Close": {
+      "Value": 0,
+      "Type": 4
+    },
     "CollatingOrder": {
       "Value": 1033,
       "Type": 3
@@ -63,10 +67,6 @@
     "Continuous Form Record Navigation Keys": {
       "Value": 0,
       "Type": 4
-    },
-    "DefaultBackupLocation": {
-      "Value": "\u0000",
-      "Type": 10
     },
     "DesignMasterID": {
       "Value": "",
@@ -101,7 +101,15 @@
       "Type": 4
     },
     "NavPane Width": {
-      "Value": 719,
+      "Value": 215,
+      "Type": 4
+    },
+    "Never Cache": {
+      "Value": 0,
+      "Type": 4
+    },
+    "Option to enable Monaco SQL Editor": {
+      "Value": 1,
       "Type": 4
     },
     "Perform Name AutoCorrect": {
@@ -133,7 +141,7 @@
       "Type": 4
     },
     "Show Navigation Pane Search Bar": {
-      "Value": 0,
+      "Value": 1,
       "Type": 4
     },
     "Show Values in Indexed": {
@@ -208,6 +216,10 @@
       "Value": 0,
       "Type": 4
     },
+    "Use Microsoft Access 2007 compatible cache": {
+      "Value": 0,
+      "Type": 4
+    },
     "UseAppIconForFrmRpt": {
       "Value": true,
       "Type": 1
@@ -217,7 +229,7 @@
       "Type": 2
     },
     "Version": {
-      "Value": "14.0",
+      "Value": "12.0",
       "Type": 12
     },
     "WebDesignMode": {

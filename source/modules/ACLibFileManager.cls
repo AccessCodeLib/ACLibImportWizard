@@ -25,27 +25,12 @@ Attribute VB_Description = "Import/Export der Access-Objekte in/aus lokaler Code
 '| Reason: Type could not be used and an extra class is (still) too cumbersome
 '---------------------------------------------------------------------------------------
 '
-'---------------------------------------------------------------------------------------
-
-'---------------------------------------------------------------------------------------
-'<codelib>
-'  <file>%AppFolder%/source/ACLibFileManager.cls</file>
-'  <description>Import/export of Access objects to/from local code library</description>
-'  <license>_codelib/license.bas</license>
-'  <use>base/ApplicationHandler.cls</use>
-'  <use>file/modFiles.bas</use>
-'  <use>text/StringTools.bas</use>
-'  <use>utils/AccessProgressBar.cls</use>
-'  <use>%AppFolder%/source/defGlobal_ACLibImportWizard.bas</use>
-'</codelib>
-'---------------------------------------------------------------------------------------
-'
 Option Compare Text
 Option Explicit
 
 Private Const EXTENSION_KEY As String = "ACLibFileManager"
 
-' Integrierte Erweiterungen
+' Integrated extensions
 Private Const EXTENSION_KEY_ACLIBCONFIG As String = "ACLibConfiguration"
 Private Const EXTENSION_PROPNAME_LOCALREPOSITORYROOT As String = "LocalRepositoryRoot"
 Private Const EXTENSION_PROPNAME_PRIVATEREPOSITORYROOT As String = "PrivateRepositoryRoot"
@@ -231,7 +216,7 @@ Public Sub ExportAllModules(Optional ExportComponentsWithoutCodeLibInfo As Boole
    Next
 
 #If DEBUGMODE Then
-   Debug.Print "Module-Export abgeschlossen"
+   Debug.Print "Module export completed"
 #End If
 
 End Sub
@@ -248,7 +233,7 @@ Public Sub ExportAllForms()
    Next
 
 #If DEBUGMODE Then
-   Debug.Print "Formular-Export abgeschlossen"
+   Debug.Print "Form export completed"
 #End If
 
 End Sub
@@ -652,7 +637,7 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
    ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PRIVATEROOT)) = REPOSTITORY_ROOT_CODE_PRIVATEROOT Then
       RepPath = PrivateRepositoryRootDirectory
       If Len(RepPath) = 0 Then
-         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für privates Root-Verzeichnise fehlt (PrivateRepositoryRootDirectory = '')."
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für privates Root-Verzeichnis fehlt (PrivateRepositoryRootDirectory = '')."
          Exit Function
       End If
       ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PRIVATEROOT) + 1)
@@ -665,7 +650,7 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
       End If
 
       If Len(RepPath) = 0 Then
-         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales Root-Verzeichnise fehlt (LocalRepositoryRootDirectory = '')."
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales Root-Verzeichnis fehlt (LocalRepositoryRootDirectory = '')."
          Exit Function
       End If
 

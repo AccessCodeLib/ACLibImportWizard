@@ -13,13 +13,6 @@ Attribute VB_Exposed = False
 '
 '---------------------------------------------------------------------------------------
 
-'---------------------------------------------------------------------------------------
-'<codelib>
-'  <file>%AppFolder%/source/ACLibRepositoryTreeForm.frm</file>
-'  <description>Treeview for repository files</description>
-'</codelib>
-'---------------------------------------------------------------------------------------
-'
 Option Compare Database
 Option Explicit
 
