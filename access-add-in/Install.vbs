@@ -79,7 +79,6 @@ End Function
 
 Function CreateMde(SourceFilePath, DestFilePath)
    Set AccessApp = CreateObject("Access.Application")
-   msgbox SourceFilePath & " -> " & DestFilePath
    AccessApp.SysCmd 603, (SourceFilePath), (DestFilePath)
    CreateMde = True
 End Function
