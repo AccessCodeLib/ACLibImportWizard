@@ -10,12 +10,15 @@ MsgBox "Before updating the add-in file, the add-in must not be loaded!" & chr(1
 Select Case MsgBox("Should the add-in be used as a compiled file (accde)?" + chr(13) & _
                    "(Add-In is compiled and copied to the Add-In directory.)", 3, MsgBoxTitle)
    case 6 ' vbYes
-      AddInFileInstalled = CreateMde(GetSourceFileFullName, GetDestFileFullName)
+      tempAccdb = GetDestFileFullName & ".accdb"
+	  FileCopy GetSourceFileFullName, tempAccdb
+      AddInFileInstalled = CreateMde(tempAccdb, GetDestFileFullName)
       If AddInFileInstalled Then
 	      CompletedMsg = "Add-In was compiled and saved in '" + GetAddInLocation + "'."
       Else
          CompletedMsg = "Error! Compiled file was not created."
       End If
+	  DeleteFile tempAccdb
    case 7 ' vbNo
       AddInFileInstalled = FileCopy(GetSourceFileFullName, GetDestFileFullName)
       If AddInFileInstalled Then
@@ -68,8 +71,15 @@ Function FileCopy(SourceFilePath, DestFilePath)
    FileCopy = True
 End Function
 
+Function DeleteFile(FilePath)
+   set fso = CreateObject("Scripting.FileSystemObject") 
+   fso.DeleteFile FilePath
+   DeleteFile = True
+End Function
+
 Function CreateMde(SourceFilePath, DestFilePath)
    Set AccessApp = CreateObject("Access.Application")
+   msgbox SourceFilePath & " -> " & DestFilePath
    AccessApp.SysCmd 603, (SourceFilePath), (DestFilePath)
    CreateMde = True
 End Function
