@@ -1,0 +1,22 @@
+﻿{
+  "Info": {
+    "Class": "clsDbDocument",
+    "Description": "Database Documents Properties (DAO)"
+  },
+  "Items": {
+    "Databases": {
+      "SummaryInfo": {
+        "Author": "Josef Pötzl",
+        "Comments": "Access add-in for importing elements from the Access Code Library.",
+        "Company": "access-codelib.net",
+        "Manager": "Josef Pötzl",
+        "Title": "Access Code Library - Import Wizard"
+      }
+    },
+    "Tables": {
+      "tab1DS": {
+        "Description": "Tabelle mit einem DS (ist in Abfragen hilfeich)"
+      }
+    }
+  }
+}

@@ -1,0 +1,396 @@
+﻿<?xml version="1.0"?>
+<dataroot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>&amp;Attach file</KeyText>
+    <LngText>Datei &amp;anfügen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>&amp;Import files</KeyText>
+    <LngText>Dateien &amp;importieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>&amp;Select File</KeyText>
+    <LngText>&amp;Datei auswählen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>...</KeyText>
+    <LngText>…</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>+</KeyText>
+    <LngText>+</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Attach file from text line</KeyText>
+    <LngText>Datei aus Textzeile anfügen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Attach file(s) with selection dialog</KeyText>
+    <LngText>Datei(en) mit Auswahldialog anfügen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Automatically fill in missing dependencies</KeyText>
+    <LngText>fehlende Abhängigkeiten automatisch ergänzen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>CheckDependency has not been executed yet</KeyText>
+    <LngText>CheckDependency wurde noch nicht ausgeführt</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Data is loaded …</KeyText>
+    <LngText>Daten werden geladen …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>do not overwrite existing elements</KeyText>
+    <LngText>vorhandene Elemente nicht überschreiben</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Export</KeyText>
+    <LngText>Exportieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Export all existing CodeModules</KeyText>
+    <LngText>Alle vorhandenen Module exportieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Export all existing objects</KeyText>
+    <LngText>Alle vorhandenen Elemente exportieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Export all existing objects to the application folder</KeyText>
+    <LngText>Alle vorhandenen Elemente ins Anwendungsverzeichnis exportieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Files have been imported</KeyText>
+    <LngText>Dateien wurden importiert</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>GitHub Authorization PersonalAccessToken (optional):</KeyText>
+    <LngText>GitHub Authorization PersonalAccessToken (optional):</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Import &amp;mode</KeyText>
+    <LngText>Import-&amp;Modus</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>import only the selected file(s)</KeyText>
+    <LngText>nur die ausgewählte Datei(en) importieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Import process running …</KeyText>
+    <LngText>Importvorgang läuft …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>incl. &amp;test classes</KeyText>
+    <LngText>inkl. &amp;Test-Klassen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>List of files to import
+Marked entries can be removed from the list with {Del} key.</KeyText>
+    <LngText>Liste der zu importierenden Dateien
+Markierte Einträge können mit {Entf}-Taste aus der Liste entfernt werden.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Local root directory of the code library:</KeyText>
+    <LngText>Lokales Root-Verzeichnis der Code-Bibliothek:</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>no dependency check</KeyText>
+    <LngText>keine Abhängigkeitsprüfung</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>No files selected</KeyText>
+    <LngText>Es sind keine Dateien ausgewählt</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Nothing has been selected.</KeyText>
+    <LngText>Es wurde nichts ausgewählt.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Other actions ...</KeyText>
+    <LngText>Weitere Aktionen …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>overwrite existing elements</KeyText>
+    <LngText>vorhandene Elemente überschreiben</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Select local root directory</KeyText>
+    <LngText>Lokales Root-Verzeichnis auswählen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Selected &amp;files:</KeyText>
+    <LngText>Ausgewählte &amp;Dateien:</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Show dependencies</KeyText>
+    <LngText>Abhängigkeiten anzeigen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Show description</KeyText>
+    <LngText>Beschreibung anzeigen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>This file does not exist</KeyText>
+    <LngText>Diese Datei ist nicht vorhanden</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Update</KeyText>
+    <LngText>Aktualisieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Update all existing CodeModules</KeyText>
+    <LngText>Alle vorhandenen Module aktualisieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Update all existing objects</KeyText>
+    <LngText>Alle vorhandenen Elemente aktualisieren</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>&amp;Attach file</KeyText>
+    <LngText>&amp;Attach file</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>&amp;Import files</KeyText>
+    <LngText>&amp;Import files</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>&amp;Select File</KeyText>
+    <LngText>&amp;Select File</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>...</KeyText>
+    <LngText>...</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>+</KeyText>
+    <LngText>+</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>ACLib Import Wizard</KeyText>
+    <LngText>ACLib Import Wizard</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Attach file from text line</KeyText>
+    <LngText>Attach file from text line</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Attach file(s) with selection dialog</KeyText>
+    <LngText>Attach file(s) with selection dialog</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Automatically fill in missing dependencies</KeyText>
+    <LngText>Automatically fill in missing dependencies</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>CheckDependency has not been executed yet</KeyText>
+    <LngText>CheckDependency has not been executed yet</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Data is loaded …</KeyText>
+    <LngText>Data is loaded …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>do not overwrite existing elements</KeyText>
+    <LngText>Do not overwrite existing elements</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Export</KeyText>
+    <LngText>Export</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Export all existing CodeModules</KeyText>
+    <LngText>Export all existing CodeModules</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Export all existing objects</KeyText>
+    <LngText>Export all existing objects</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Export all existing objects to the application folder</KeyText>
+    <LngText>Export all existing objects to the application folder</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>File not found
+
+C:\Daten\Projekte\CodeLib\GitHub\base\SqlTools.cls</KeyText>
+    <LngText>File not found
+
+C:\Daten\Projekte\CodeLib\GitHub\base\SqlTools.cls</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Files have been imported</KeyText>
+    <LngText>Files have been imported</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>GitHub Authorization PersonalAccessToken (optional):</KeyText>
+    <LngText>GitHub Authorization PersonalAccessToken (optional):</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Import &amp;mode</KeyText>
+    <LngText>Import &amp;mode</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>import only the selected file(s)</KeyText>
+    <LngText>import only the selected file(s)</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Import process running ...</KeyText>
+    <LngText>Import process running ...</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Import process running …</KeyText>
+    <LngText>Import process running …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>incl. &amp;test classes</KeyText>
+    <LngText>incl. &amp;test classes</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>List of files to import
+Marked entries can be removed from the list with {Del} key.</KeyText>
+    <LngText>List of files to import
+Marked entries can be removed from the list with {Del} key.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Local root directory of the code library:</KeyText>
+    <LngText>Local root directory of the code library:</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>no dependency check</KeyText>
+    <LngText>no dependency check</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>No files selected</KeyText>
+    <LngText>No files selected</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Nothing has been selected.</KeyText>
+    <LngText>Nothing has been selected.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Other actions ...</KeyText>
+    <LngText>Other actions …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>overwrite existing elements</KeyText>
+    <LngText>overwrite existing elements</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Select local root directory</KeyText>
+    <LngText>Select local root directory</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Selected &amp;files:</KeyText>
+    <LngText>Selected &amp;files:</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Show dependencies</KeyText>
+    <LngText>Show dependencies</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Show description</KeyText>
+    <LngText>Show description</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>This file does not exist</KeyText>
+    <LngText>This file does not exist</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Update</KeyText>
+    <LngText>Update</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Update all existing CodeModules</KeyText>
+    <LngText>Update all existing CodeModules</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>Update all existing objects</KeyText>
+    <LngText>Update all existing objects</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</KeyText>
+    <LngText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
+    <KeyText>ACLib Import Wizard: Incorrect start</KeyText>
+    <LngText>ACLib Import Wizard: Incorrect start</LngText>
+  </L10n_Dict>
+</dataroot>
