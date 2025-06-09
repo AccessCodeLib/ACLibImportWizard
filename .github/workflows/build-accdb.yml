@@ -1,4 +1,4 @@
-name: Build-self-hosted (on release)
+name: Build-accdb (on push, pull)
 
 on:
   push:
