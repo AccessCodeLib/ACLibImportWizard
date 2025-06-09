@@ -1,0 +1,198 @@
+﻿-------------------------------------
+Beginning build from Source
+ACLibImportWizard.accdb
+VCS Version 4.1.2-jp.2
+Full Path: C:\Daten\Projekte\CodeLib\ACLibImportWizard\ACLibImportWizard.accdb
+Export Folder: C:\Daten\Projekte\CodeLib\ACLibImportWizard\source\
+09.06.2025 13:55:00
+-------------------------------------
+Saving backup of original database...
+Saved as ACLibImportWizard_VCSBackup.accdb.
+Created blank database for import. (v12)
+Removing non built-in references...
+  Removed DAO
+  Removed stdole
+Scanning source files...
+No db connections source files found.
+No vbe forms source files found.
+No saved specs source files found.
+No commandbars source files found.
+No shared images source files found.
+No imex specs source files found.
+No queries source files found.
+No reports source files found.
+No table data macros source files found.
+No relations source files found.
+-------------------------------------
+-------------------------------------
+Importing project...          
+  project.json
+[1]
+-------------------------------------
+Importing vb project...       
+  vbe-project.json
+[1]
+-------------------------------------
+Importing vbe references...   
+  vbe-references.json
+[1]
+-------------------------------------
+Importing proj properties...  
+  proj-properties.json
+[1]
+-------------------------------------
+Importing modules...          
+  AccUnit_Factory.bas
+  AccUnit_TestClassFactory.bas
+  DaoTools.bas
+  defGlobal_ACLibImportWizard.bas
+  FileTools.bas
+  L10nTools.bas
+  modApplication.bas
+  modErrorHandler.bas
+  modMSAccessVcsSupport.bas
+  modWizardTools.bas
+  StringTools.bas
+  WinApiToolsFactory.bas
+  _AccessCodeLib_license.bas
+  _config_Application.bas
+  _initApplication.bas
+  AccessProgressBar.cls
+  ACLibConfiguration.cls
+  ACLibFileManager.cls
+  ACLibGitHubImporter.cls
+  ApplicationHandler.cls
+  ApplicationHandler_AppFile.cls
+  ApplicationHandler_DirTextbox.cls
+  ApplicationHandler_ExtensionCollection.cls
+  CodeModuleHeaderItem.cls
+  CodeModuleProcedure.cls
+  CodeModuleReader.cls
+  DaoHandler.cls
+  GitHubTreeJsonConverter.cls
+  GitHubTreeNode.cls
+  GitHubTreeNodeTests.cls
+  JsonProperties.cls
+  JsonProperty.cls
+  L10nDict.cls
+  SqlTools.cls
+  StringCollection.cls
+  TempDbHandler.cls
+  WinApiFileInfo.cls
+  WinApiImageTools.cls
+  WinApiLayoutTools.cls
+  WinApiShellTools.cls
+  WinApiShortcutMenu.cls
+  WinApiTools.cls
+  WinApiWindowTools.cls
+[43]
+-------------------------------------
+Importing themes...           
+  Office.thmx
+[1]
+-------------------------------------
+Importing db properties...    
+  dbs-properties.json
+[1]
+-------------------------------------
+Importing tables...           
+  L10n_Dict.xml
+  tab1DS.xml
+  USysRegInfo.xml
+  USys_AppFiles.xml
+[4]
+-------------------------------------
+Importing forms...            
+  ACLibImportWizardForm.bas
+  ACLibRepositoryTreeForm.bas
+[2]
+-------------------------------------
+Importing macros...           
+  Autoexec.bas
+[1]
+-------------------------------------
+Importing table data...       
+  L10n_Dict.xml
+  tab1DS.xml
+  USysRegInfo.xml
+  USys_AppFiles.xml
+[4]
+-------------------------------------
+Importing doc properties...   
+  documents.json
+[1]
+-------------------------------------
+Importing nav pane groups...  
+  nav-pane-groups.json
+[1]
+-------------------------------------
+Importing hidden attributes...
+  hidden-attributes.json
+[1]
+-------------------------------------
+Done. (1,89 seconds)
+
+--------------------------------------------------
+                PERFORMANCE REPORTS
+--------------------------------------------------
+Category                      Count     Seconds
+--------------------------------------------------
+Modules                       43        0,85
+Forms                         2         0,22
+Tables                        4         0,13
+DB Properties                 1         0,04
+Themes                        1         0,03
+Table Data                    4         0,03
+Macros                        1         0,03
+Doc Properties                1         0,02
+Nav Pane Groups               1         0,02
+VBE References                1         0,02
+Hidden Attributes             1         0,02
+Proj Properties               1         0,02
+Project                       1         0,01
+VB Project                    1         0,01
+--------------------------------------------------
+TOTALS:                       63        1,45
+--------------------------------------------------
+
+--------------------------------------------------
+Operations                    Count     Seconds
+--------------------------------------------------
+Import VBE Module             43        0,46
+Create new database           1         0,20
+Increment Progress            63        0,14
+App.LoadFromText()            3         0,12
+Read File                     57        0,11
+Read File Bytes               9         0,04
+Convert to JSON               228       0,03
+Get File List                 18        0,02
+Console Updates               4         0,02
+Parse VBA Module              43        0,02
+Get File Property Hash        59        0,02
+Get VBA Hash                  45        0,02
+Delete File                   53        0,01
+Write File                    45        0,01
+Create MSysResources Table    1         0,01
+Parse JSON                    10        0,01
+Scan Source Files             1         0,01
+modVCSUtility.LoadComponentFr 
+omText                        3         0,01
+Get Modified Date             112       0,01
+modFileAccess.VerifyPath      52        0,00
+Compute SHA256                118       0,00
+Clear References              1         0,00
+Save Stream to File           3         0,00
+Parse JSON ISO Date           61        0,00
+Add GUID References           3         0,00
+Check for linked table        1         0,00
+App.SaveAsText()              1         0,00
+Load Stream from File         3         0,00
+Write Binary File             1         0,00
+Enc. utf-8 as utf-16          3         0,00
+Copy Stream                   3         0,00
+modFileAccess.GetUncPath      1         0,00
+--------------------------------------------------
+Other Operations                        0,61
+--------------------------------------------------
+
+

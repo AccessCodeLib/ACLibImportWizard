@@ -9,14 +9,6 @@
 '     Josef Poetzl
 '
 '---------------------------------------------------------------------------------------
-'<codelib>
-'  <file>%AppFolder%/source/defGlobal_ACLibImportWizard.bas</file>
-'  <license>_codelib/license.bas</license>
-'  <use>%AppFolder%/source/ACLibFileManager.cls</use>
-'  <use>_codelib/addins/shared/ACLibConfiguration.cls</use>
-'</codelib>
-'---------------------------------------------------------------------------------------
-'
 Option Compare Database
 Option Explicit
 

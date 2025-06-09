@@ -9,29 +9,11 @@
 '     Josef Poetzl
 '
 '---------------------------------------------------------------------------------------
-
-'---------------------------------------------------------------------------------------
-'<codelib>
-'  <file>%AppFolder%/source/_config_Application.bas</file>
-'  <replace>base/_config_Application.bas</replace> 'dieses Modul ersetzt base/_config_Application.bas
-'  <license>_codelib/license.bas</license>
-'  <use>%AppFolder%/source/defGlobal_ACLibImportWizard.bas</use>
-'  <use>base/modApplication.bas</use>
-'  <use>base/ApplicationHandler.cls</use>
-'  <use>base/ApplicationHandler_AppFile.cls</use>
-'  <use>base/modErrorHandler.bas</use>
-'  <use>_codelib/addins/shared/ACLibConfiguration.cls</use>
-'  <use>%AppFolder%/source/ACLibFileManager.cls</use>
-'  <use>%AppFolder%/source/ACLibImportWizardForm.frm</use>
-'  <use>usability/ApplicationHandler_DirTextbox.cls</use>
-'</codelib>
-'---------------------------------------------------------------------------------------
-'
 Option Compare Database
 Option Explicit
 
 'Versionsnummer
-Private Const APPLICATION_VERSION As String = "1.3.2"
+Private Const APPLICATION_VERSION As String = "1.3.3"
 
 #Const USE_CLASS_ApplicationHandler_AppFile = 1
 #Const USE_CLASS_ApplicationHandler_DirTextbox = 1
