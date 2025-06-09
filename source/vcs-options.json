@@ -1,0 +1,75 @@
+﻿{
+  "Info": {
+    "AddinVersion": "4.1.2-jp.2",
+    "AccessVersion": "16.0 64-bit"
+  },
+  "Options": {
+    "ExportFolder": "\\source",
+    "ShowDebug": false,
+    "UseFastSave": true,
+    "UseMergeBuild": false,
+    "UseGitIntegration": false,
+    "SavePrintVars": true,
+    "ExportPrintSettings": {
+      "Orientation": true,
+      "PaperSize": true,
+      "Duplex": false,
+      "PrintQuality": false,
+      "DisplayFrequency": false,
+      "Collate": false,
+      "Resolution": false,
+      "DisplayFlags": false,
+      "Color": false,
+      "Copies": false,
+      "ICMMethod": false,
+      "DefaultSource": false,
+      "Scale": false,
+      "ICMIntent": false,
+      "FormName": false,
+      "PaperLength": false,
+      "DitherType": false,
+      "MediaType": false,
+      "PaperWidth": false,
+      "TTOption": false
+    },
+    "SaveQuerySQL": true,
+    "FormatSQL": true,
+    "ForceImportOriginalQuerySQL": false,
+    "SaveTableSQL": true,
+    "SplitLayoutFromVBA": true,
+    "StripPublishOption": true,
+    "SanitizeColors": 1,
+    "SanitizeLevel": 2,
+    "ExtractThemeFiles": false,
+    "TablesToExportData": {
+      "L10n_Dict": {
+        "Format": "XML Format"
+      },
+      "tab1DS": {
+        "Format": "XML Format"
+      },
+      "USys_AppFiles": {
+        "Format": "XML Format"
+      },
+      "USysRegInfo": {
+        "Format": "XML Format"
+      },
+      "USysRibbons": {
+        "Format": "Tab Delimited"
+      }
+    },
+    "SchemaExports": {
+    },
+    "RunBeforeExport": "VcsRunBeforeExport",
+    "RunAfterExport": "",
+    "RunBeforeBuild": "",
+    "RunAfterBuild": "",
+    "RunBeforeMerge": "",
+    "RunAfterMerge": "",
+    "ShowVCSLegacy": true,
+    "HashAlgorithm": "SHA256",
+    "UseShortHash": true,
+    "BreakOnError": false,
+    "PreserveRubberDuckID": false
+  }
+}

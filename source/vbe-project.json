@@ -1,0 +1,17 @@
+﻿{
+  "Info": {
+    "Class": "clsDbVbeProject",
+    "Description": "VBE Project"
+  },
+  "Items": {
+    "Name": "ACLibImportWizard",
+    "Description": "Access-Add-In für den Import von Dateien aus der Access Code Library (http://access-codelib.net)",
+    "FileName": "ACLibImportWizard.accdb",
+    "HelpFile": "",
+    "HelpContextId": 0,
+    "ConditionalCompilationArguments": "L10nMsgBoxReplacement = 1",
+    "Mode": 0,
+    "Protection": 0,
+    "Type": 100
+  }
+}

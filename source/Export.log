@@ -1,0 +1,216 @@
+﻿-------------------------------------
+Beginning Export of Source Files
+ACLibImportWizard.accdb
+VCS Version 4.1.2-jp.2
+Full Path: C:\Daten\Projekte\CodeLib\ACLibImportWizard\ACLibImportWizard.accdb
+Export Folder: C:\Daten\Projekte\CodeLib\ACLibImportWizard\source\
+Performing Full Export
+09.06.2025 13:22:32
+Running VcsRunBeforeExport...
+-------------------------------------
+Scanning source files...
+No db connections found in this database.
+No vbe forms found in this database.
+No saved specs found in this database.
+No commandbars found in this database.
+No shared images found in this database.
+No imex specs found in this database.
+No queries found in this database.
+No reports found in this database.
+No table data macros found in this database.
+No relations found in this database.
+-------------------------------------
+Exporting project...          
+  ACLibImportWizard.accdb
+[1]
+-------------------------------------
+Exporting vb project...       
+  ACLibImportWizard
+[1]
+-------------------------------------
+Exporting vbe references...   
+  VBIDE
+[3]
+-------------------------------------
+Exporting proj properties...  
+  Current Project Properties (Access)
+[1]
+-------------------------------------
+Exporting modules...          
+  AccUnit_TestClassFactory
+  ApplicationHandler_DirTextbox
+  WinApiToolsFactory
+  _config_Application
+  ACLibConfiguration
+  modWizardTools
+  WinApiFileInfo
+  StringTools
+  ApplicationHandler_ExtensionCollection
+  L10nDict
+  FileTools
+  _initApplication
+  CodeModuleProcedure
+  StringCollection
+  CodeModuleHeaderItem
+  ACLibFileManager
+  modErrorHandler
+  ApplicationHandler
+  CodeModuleReader
+  DaoHandler
+  TempDbHandler
+  GitHubTreeNodeTests
+  AccessProgressBar
+  L10nTools
+  WinApiLayoutTools
+  WinApiShellTools
+  WinApiTools
+  ACLibGitHubImporter
+  defGlobal_ACLibImportWizard
+  _AccessCodeLib_license
+  ApplicationHandler_AppFile
+  modApplication
+  WinApiWindowTools
+  JsonProperties
+  DaoTools
+  SqlTools
+  WinApiImageTools
+  WinApiShortcutMenu
+  GitHubTreeJsonConverter
+  JsonProperty
+  GitHubTreeNode
+  AccUnit_Factory
+  modMSAccessVcsSupport
+[43]
+-------------------------------------
+Exporting themes...           
+  Office
+[1]
+-------------------------------------
+Exporting db properties...    
+  Database Properties (DAO)
+[56]
+-------------------------------------
+Exporting tables...           
+  L10n_Dict
+    Sanitized in 0,001 seconds.
+  L10n_Dict (SQL)
+  tab1DS
+    Sanitized in 0,001 seconds.
+  tab1DS (SQL)
+  USys_AppFiles
+    Sanitized in 0,001 seconds.
+  USys_AppFiles (SQL)
+  USysRegInfo
+    Sanitized in 0,001 seconds.
+  USysRegInfo (SQL)
+[4]
+-------------------------------------
+Exporting forms...            
+  ACLibRepositoryTreeForm
+    Sanitized in 0,003 seconds.
+  ACLibImportWizardForm
+    Sanitized in 0,009 seconds.
+[2]
+-------------------------------------
+Exporting macros...           
+  Autoexec
+    Sanitized in 0,000 seconds.
+[1]
+-------------------------------------
+Exporting table data...       
+  L10n_Dict
+    Sanitized in 0,002 seconds.
+  tab1DS
+    Sanitized in 0,001 seconds.
+  USys_AppFiles
+    Sanitized in 0,001 seconds.
+  USysRegInfo
+    Sanitized in 0,001 seconds.
+[4]
+-------------------------------------
+Exporting doc properties...   
+  Database Documents
+[6]
+-------------------------------------
+Exporting nav pane groups...  
+  Groups
+[1]
+-------------------------------------
+Exporting hidden attributes...
+  Database hidden attributes
+[3]
+-------------------------------------
+Done. (1,55 seconds)
+
+--------------------------------------------------
+                PERFORMANCE REPORTS
+--------------------------------------------------
+Category                      Count     Seconds
+--------------------------------------------------
+Modules                       43        0,80
+Forms                         2         0,19
+Table Data                    4         0,13
+Tables                        4         0,06
+DB Properties                 56        0,05
+Doc Properties                6         0,04
+Themes                        1         0,04
+Project                       1         0,03
+Nav Pane Groups               1         0,03
+Hidden Attributes             3         0,03
+VBE References                3         0,02
+Proj Properties               1         0,02
+Macros                        1         0,02
+VB Project                    1         0,02
+CommandBars                   0         0,02
+DB Connections                0         0,00
+Shared Images                 0         0,00
+Table Data Macros             0         0,00
+Relations                     0         0,00
+IMEX Specs                    0         0,00
+Queries                       0         0,00
+VBE Forms                     0         0,00
+Saved Specs                   0         0,00
+Reports                       0         0,00
+--------------------------------------------------
+TOTALS:                       127       1,49
+--------------------------------------------------
+
+--------------------------------------------------
+Operations                    Count     Seconds
+--------------------------------------------------
+Read File Bytes               55        0,31
+Increment Progress            126       0,28
+Read File                     54        0,23
+Export VBE Module             43        0,14
+App.ExportXML()               8         0,06
+Convert to JSON               430       0,06
+Console Updates               4         0,05
+Scan DB Objects               1         0,04
+App.SaveAsText()              3         0,03
+Write File                    68        0,03
+Sanitize VBA Code             45        0,02
+Get VBA Hash                  45        0,02
+Get File Property Hash        59        0,02
+Delete File                   51        0,01
+Sanitize File                 3         0,01
+Compute SHA256                174       0,01
+modFileAccess.VerifyPath      80        0,01
+Get Modified Date             112       0,00
+Sanitize XML                  8         0,00
+Format XML                    8         0,00
+RunBeforeExport               1         0,00
+Save Table SQL                4         0,00
+Read File DevMode             2         0,00
+Check for linked table        4         0,00
+Quick Count Objects           1         0,00
+Export Theme                  1         0,00
+Quick Count Files             1         0,00
+Clear Orphaned Files          9         0,00
+Close Open Objects            1         0,00
+Clear Files by Ext            6         0,00
+modFileAccess.GetUncPath      1         0,00
+--------------------------------------------------
+Other Operations                        0,19
+--------------------------------------------------
+
+

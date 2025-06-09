@@ -1,0 +1,67 @@
+﻿<?xml version="1.0"?>
+<root xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:od="urn:schemas-microsoft-com:officedata">
+  <xsd:schema>
+    <xsd:element name="dataroot">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element ref="USys_AppFiles" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="generated" type="xsd:dateTime"></xsd:attribute>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="USys_AppFiles">
+      <xsd:annotation>
+        <xsd:appinfo>
+          <od:index index-name="PrimaryKey" index-key="id " primary="yes" unique="yes" clustered="no" order="asc"></od:index>
+        </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="id" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="20"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="version" minOccurs="0" od:jetType="text" od:sqlSType="nvarchar">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:string">
+                <xsd:maxLength value="10"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+          <xsd:element name="file" minOccurs="0" od:jetType="oleobject" od:sqlSType="image">
+            <xsd:simpleType>
+              <xsd:restriction base="xsd:base64Binary">
+                <xsd:maxLength value="1476395008"></xsd:maxLength>
+              </xsd:restriction>
+            </xsd:simpleType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <dataroot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <USys_AppFiles>
+      <id>AppIcon</id>
+      <file>AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAgEAAAP9eXgAA6AAAJ5sAAP//AAAAAIAAeVywAAAA
+/wD/AP8AAICAAAD//wCAgIAA0L7gAJsAmwD///8AAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAB3AAAAAAAAAAAAAAAAAAB8wHAAAAAAAAAAAAAAAAB3/9wMAAAAAAAAAAAA
+AAB3/93M0HAAAAAAAAAAAAB3/9wADN0HAAAAAAAAAAB3/9wADdDN0HAAAAAAAAB3
+/9wADd3dDN0HAAAAAAAgcNwADd3d3dDN0LuwAAAAIHAADd3czd3dDAAAqgAAACBw
+Dd3czd3d3dALuwqgAAAgBw3d3d3d3d3dALuwoAAAIQdw3d3d3dzN0NALuwAAACEQ
+dw3d0AzN0A0FAADAAAAhEQdw3QiA3QUFANAAAAAAIREQdwCICABQAADdADREACER
+EAcIgIgFBVVQAAMwAAAhERCwCAiIAFVVAAAzAzMwIREQuggIiAVVUFAAMDMzACER
+ELsICIBQAAAFDwMzMAAhERC6sAgAAAAAAFBQAAAAIREQu6sABQAAAAAFAAAAACER
+ELq6oKBQAAAAUFAAAAAgAAC7q6CgBQAABQAFCqAAAN8Au7ugoACQ4FAAALCqAA8N
+8LAAAKAAkO4AAAC7CqBg8NAA3wCgAJDu4AAAu7CgZg8ADw3woACZDuAAAAuwoAYA
+AADw3wAACZDgAAAAsACAAAAADwDwAACZAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAD//P////B////AP///AB///AAP//AAB//AAAP/AAAAfwAA
+AD8AAAAfAAAADwAAAA8AAAAfAAAAHwAAAEMAAAABAAAAAAAAAgAAAAIBAAAQAwAA
++AcAAfx/AAD4JwAAEQMAAgOBAAIHgAACA4AAAgPABgMD4R8Dh/Mfk8//n////wA=
+</file>
+    </USys_AppFiles>
+  </dataroot>
+</root>
