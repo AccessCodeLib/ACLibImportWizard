@@ -22,6 +22,7 @@ Public Enum CodeLibElementType  'angelehnt an Enum vbext_ComponentType
    clet_ClassModule = 2         ' = vbext_ComponentType.vbext_ct_ClassModule
    clet_Form = 101              ' = vbext_ComponentType.vbext_ct_Document + 1
    clet_Report = 102            ' = vbext_ComponentType.vbext_ct_Document + 2
+   clet_Package = 256           ' = Package (don't import file, only interpret codelib block)
 End Enum
 
 Public Enum CodeLibImportMode
