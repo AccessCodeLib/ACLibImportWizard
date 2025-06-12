@@ -79,9 +79,10 @@ Private Const SEARCHSTRING_REPORTIDENTIFER As String = "Begin Report"
 
 Private Const MODULNAME_CONFIG_APPLICATION As String = "_config_Application"
 
-Private Const REPOSTITORY_ROOT_CODE_APPLICATIONROOT As String = "%AppFolder%"
 Private Const REPOSTITORY_ROOT_CODE_WithoutCodeLibInfoExportFolder As String = "source"
+Private Const REPOSTITORY_ROOT_CODE_APPLICATIONROOT As String = "%AppFolder%"
 Private Const REPOSTITORY_ROOT_CODE_PRIVATEROOT As String = "%PrivateRoot%"
+Private Const REPOSTITORY_ROOT_CODE_GITHUBROOT As String = "%GitHub%"
 
 Private m_ImportFileCollection As Collection
 Private m_ReplacedFilesCollection As Collection
@@ -184,9 +185,18 @@ End Sub
 
 Private Sub Dispose()
 On Error Resume Next
+   RemoveTempFiles
    Set m_ImportFileCollection = Nothing
    Set m_FSO = Nothing
    Set m_CurrentVbProject = Nothing
+End Sub
+
+Private Sub RemoveTempFiles()
+
+   If FileTools.DirExists(GitHubTempRepositoryPath) Then
+      CreateObject("Scripting.FileSystemObject").DeleteFolder GitHubTempRepositoryPath, True
+   End If
+
 End Sub
 
 Public Property Let ExportAllToApplicationSourceFolder(ByVal NewValue As Boolean)
@@ -308,8 +318,6 @@ Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
    Dim PathString As String
 
    PathString = GetRepositoryFullPath(RepositoryPath)
-
-
 
    Dim TempFile As Object
    Set TempFile = fso.GetFile(PathString)
@@ -642,7 +650,21 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
       End If
       ReleativPath = Mid$(ReleativPath, Len(REPOSTITORY_ROOT_CODE_PRIVATEROOT) + 1)
 
+   ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_GITHUBROOT)) = REPOSTITORY_ROOT_CODE_GITHUBROOT Then
+      ' %GITHUB%\owner\repo@branch\Path
+      ReleativPath = Replace(ReleativPath, "\", "/")
+      If Not DownLoadFromGitHub(ReleativPath, RepPath) Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
+         Exit Function
+      End If
+
+      If Len(RepPath) = 0 Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales GitHub-Temp-Verzeichnis fehlt."
+         Exit Function
+      End If
+
    Else
+
       If m_ExportAllToApplicationSourceFolder Then
          RepPath = CurrentProject.Path & "\source\codelib\"
       Else
@@ -653,7 +675,6 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
          Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales Root-Verzeichnis fehlt (LocalRepositoryRootDirectory = '')."
          Exit Function
       End If
-
 
    End If
 
@@ -670,6 +691,48 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
    GetRepositoryFullPath = FullPath
 
 End Function
+
+Private Function DownLoadFromGitHub(ByVal ReleativPath As String, ByRef RepPath As String) As Boolean
+' %GITHUB%/owner/repo@branch/Path
+
+   Dim FullFilePath As String
+   Dim GitHubDataCutPos As Long
+   Dim GitHubUrlDataString As String
+   Dim GitHubPath As String
+   Dim GitHubUrlData() As String
+   Dim RelativeFileUrl As String
+
+   '%GITHUB%/owner/repo@branch/Path
+   GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
+   GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
+   GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
+   RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
+   GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
+
+   GitHubUrlData = Split(GitHubUrlDataString, "/")
+   RepPath = GitHubTempRepositoryPath & "\"
+   ReleativPath = Replace(RelativeFileUrl, "/", "\")
+   FullFilePath = RepPath & ReleativPath
+
+   If Not FileTools.FileExists(FullFilePath) Then
+
+      With New ACLibGitHubImporter
+         .RepositoryOwner = GitHubUrlData(0)
+         .RepositoryName = GitHubUrlData(1)
+         .BranchName = GitHubUrlData(2)
+         CreateDirectoryIfMissing FileTools.PathFromFullFileName(FullFilePath)
+         .DownloadACLibFileFromWeb RelativeFileUrl, FullFilePath
+      End With
+
+   End If
+
+   DownLoadFromGitHub = True
+
+End Function
+
+Private Property Get GitHubTempRepositoryPath() As String
+   GitHubTempRepositoryPath = FileTools.TempPath & "ACLibTempRepo"
+End Property
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
               Optional ByVal ImportTestFiles As Boolean = False)

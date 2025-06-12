@@ -22,7 +22,6 @@ Private Const APPFILE_PROPNAME_APPICON As String = "AppIcon"
 Private Const RepositorySource_GitHub As Long = 1
 Private Const RepositorySource_LocalRepository As Long = 2
 
-
 Private Const TEMPDB_TABNAME As String = "tRepositoryFiles"
 Private Const TEMPDB_TABDDL As String = "create table " & TEMPDB_TABNAME & " (LocalRepositoryPath varchar(255) primary key, ObjectName varchar(255), Description memo)"
 Private m_TempDb As TempDbHandler
@@ -172,7 +171,7 @@ On Error GoTo HandleErr
    Me.Repaint
 
    Set ACLibFileMngr = CurrentACLibFileManager
-   If Me.ogRepositorySource = 1 Then
+   If Me.ogRepositorySource = RepositorySource_GitHub Then
       Set m_ACLibFileManager = ACLibFileMngr
    Else '
       Set m_ACLibFileManager = Nothing
