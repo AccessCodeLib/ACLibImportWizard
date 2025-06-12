@@ -48,6 +48,8 @@ Private Const SEARCHSTRING_CODELIB_BEGIN As String = "<codelib>"
 Private Const SEARCHSTRING_CODELIB_END   As String = "</codelib>"
 Private Const SEARCHSTRING_FILE_BEGIN As String = "<file>"
 Private Const SEARCHSTRING_FILE_END   As String = "</file>"
+Private Const SEARCHSTRING_PACKAGE_BEGIN As String = "<package>"
+Private Const SEARCHSTRING_PACKAGE_END   As String = "</package>"
 Private Const SEARCHSTRING_LICENSE_BEGIN As String = "<license>"
 Private Const SEARCHSTRING_LICENSE_END   As String = "</license>"
 Private Const SEARCHSTRING_DESCRIPTION_BEGIN As String = "<description>"
@@ -692,7 +694,7 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
 End Function
 
-Private Function DownLoadFromGitHub(ByVal ReleativPath As String, ByRef RepPath As String) As Boolean
+Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath As String) As Boolean
 ' %GITHUB%/owner/repo@branch/Path
 
    Dim FullFilePath As String
@@ -789,6 +791,8 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
          ImportAccessObject acForm, m_CLI, ImportFile, ImportMode
       Case CodeLibElementType.clet_Report
          ImportAccessObject acReport, m_CLI, ImportFile, ImportMode
+      Case CodeLibElementType.clet_Package
+         ' don't import package file
       Case Else
          ' eventuell Fehler auslösen?
    End Select
@@ -1388,8 +1392,11 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    'Read CODELIB block
    CheckString = FindSubString(CheckString, SEARCHSTRING_CODELIB_BEGIN, SEARCHSTRING_CODELIB_END)
    If Len(CheckString) > 0 Then
-      GetCodeLibInfoRepositoryFile CodeLibInf, CheckString
-      GetCodeLibInfoRepositoryFileReplacement CodeLibInf, CheckString
+      GetCodeLibInfoPackage CodeLibInf, CheckString
+      If CodeLibInf.Type <> clet_Package Then
+         GetCodeLibInfoRepositoryFile CodeLibInf, CheckString
+         GetCodeLibInfoRepositoryFileReplacement CodeLibInf, CheckString
+      End If
       GetCodeLibInfoLicenseFile CodeLibInf, CheckString
       If FindDependency Then GetCodeLibInfoDependency CodeLibInf, CheckString
       GetCodeLibInfoReferences CodeLibInf, CheckString
@@ -1398,6 +1405,15 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
       GetCodeLibInfoExecuteList CodeLibInf, CheckString
    End If
 
+End Sub
+
+Private Sub GetCodeLibInfoPackage(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+   Dim PackageName As String
+   PackageName = Trim(FindSubString(SourceString, SEARCHSTRING_PACKAGE_BEGIN, SEARCHSTRING_PACKAGE_END))
+   If Len(PackageName) > 0 Then
+      CodeLibInf.Name = PackageName
+      CodeLibInf.Type = clet_Package
+   End If
 End Sub
 
 Private Sub GetCodeLibInfoRepositoryFile(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
