@@ -1,8 +1,7 @@
 # Version Control Add-in Binaries
 # (This should be built from source and not committed to version control)
 *.mdb
-*.accda
-*.accdb
+*.accd[aber]
 *.zip
 
 # Database lock files
