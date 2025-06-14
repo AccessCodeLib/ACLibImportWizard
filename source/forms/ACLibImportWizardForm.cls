@@ -19,8 +19,9 @@ Option Explicit
 ' verwendete Erweiterungen
 Private Const EXTENSION_KEY_APPFILE As String = "AppFile"
 Private Const APPFILE_PROPNAME_APPICON As String = "AppIcon"
-Private Const RepositorySource_GitHub As Long = 1
-Private Const RepositorySource_LocalRepository As Long = 2
+Private Const RepositorySource_LocalRepository As Long = 1
+Private Const RepositorySource_GitHub As Long = 2
+Private Const RepositorySource_Package As Long = 4
 
 Private Const TEMPDB_TABNAME As String = "tRepositoryFiles"
 Private Const TEMPDB_TABDDL As String = "create table " & TEMPDB_TABNAME & " (LocalRepositoryPath varchar(255) primary key, ObjectName varchar(255), Description memo)"
@@ -171,7 +172,7 @@ On Error GoTo HandleErr
    Me.Repaint
 
    Set ACLibFileMngr = CurrentACLibFileManager
-   If Me.ogRepositorySource = RepositorySource_GitHub Then
+   If (Me.ogRepositorySource And RepositorySource_GitHub) = RepositorySource_GitHub Then
       Set m_ACLibFileManager = ACLibFileMngr
    Else '
       Set m_ACLibFileManager = Nothing
@@ -672,11 +673,28 @@ Private Sub ConfigReproSourceMode(Optional NewMode As Long = 0)
 End Sub
 
 Private Sub SetACLibGitHubImporterConfig()
-   If Me.ogRepositorySource = RepositorySource_GitHub Then
-   If Len(Me.txtGitHubAuthPersonalAccessToken.Value) > 0 Then
-      ACLibGitHubImporter.GitHubApiAuthorizationToken = Me.txtGitHubAuthPersonalAccessToken.Value
+   If (Me.ogRepositorySource.Value And RepositorySource_GitHub) = RepositorySource_GitHub Then
+      If Len(Me.txtGitHubAuthPersonalAccessToken.Value) > 0 Then
+         ACLibGitHubImporter.GitHubApiAuthorizationToken = Me.txtGitHubAuthPersonalAccessToken.Value
+      End If
+      If (Me.ogRepositorySource.Value And RepositorySource_Package) = RepositorySource_Package Then
+         SetRepositoryData "AccessCodeLib", "ACLibImportWizard-PackageTest", "main"
+      ElseIf Me.txtRepoName.Value = "ACLibImportWizard-PackageTest" Then
+         SetRepositoryData "AccessCodeLib", "AccessCodeLib", "master"
+      End If
    End If
-   End If
+End Sub
+
+Private Sub SetRepositoryData(ByVal RepositoryOwner As String, ByVal RepositoryName As String, ByVal BranchName As String)
+
+   Me.txtRepoOwner.Value = RepositoryOwner
+   Me.txtRepoName.Value = RepositoryName
+   Me.txtRepoBranch.Value = BranchName
+
+   ACLibGitHubImporter.RepositoryOwner = RepositoryOwner
+   ACLibGitHubImporter.RepositoryName = RepositoryName
+   ACLibGitHubImporter.BranchName = BranchName
+
 End Sub
 
 Private Sub Form_Unload(ByRef Cancel As Integer)
@@ -848,7 +866,7 @@ Private Sub AddFileFromFileName(ByVal ACLibFileString As String)
 
 On Error GoTo HandleErr
 
-   If Me.ogRepositorySource = RepositorySource_GitHub Then
+   If (Me.ogRepositorySource.Value And RepositorySource_GitHub) = RepositorySource_GitHub Then
 
       FileArray(0) = ACLibFileString
       DownLoadFiles FileArray
@@ -1141,7 +1159,7 @@ Private Sub OpenRepositoryFileInTextViewer(ByVal ACLibPath As String)
 
    Dim FullPath As String
 
-   If Me.ogRepositorySource = RepositorySource_GitHub Then
+   If (Me.ogRepositorySource.Value And RepositorySource_GitHub) = RepositorySource_GitHub Then
       FullPath = DownLoadFile(ACLibPath)
    Else
       FullPath = CurrentACLibFileManager.GetRepositoryFullPath(ACLibPath)

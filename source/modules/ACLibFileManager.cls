@@ -764,7 +764,7 @@ Private Property Get GitHubTempRepositoryPath() As String
 End Property
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
-              Optional ByVal ImportTestFiles As Boolean = False, Optional DownloadBase As String)
+              Optional ByVal ImportTestFiles As Boolean = False, Optional ByVal DownloadBase As String)
 
    Dim i As Long
    Dim TempFile As Object
@@ -775,6 +775,12 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
 
    If Len(m_CLI.RepositoryFileReplacement) > 0 Then
       AddReplacedFilePath GetRepositoryFullPath(m_CLI.RepositoryFileReplacement)
+   End If
+
+   If Len(DownloadBase) > 0 Then
+      m_CLI.ForceRemoveIfExists = True
+   Else
+      Stop
    End If
 
    'Enable abort
@@ -831,7 +837,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
          FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            AddMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode, DownloadBase
          End If
       Next
    End If
@@ -1048,7 +1054,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    Dim CodeModuleExists As Boolean
 
    If Len(Trim$(CodeLibInf.Name)) = 0 Then
-      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
+      Err.Raise vbObjectError, "ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
       Exit Sub
    End If
 
@@ -1068,7 +1074,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    Next
 
    If CodeModuleExists Then   ' check if types match
-      If vbc.Type <> CodeLibInf.Type Then
+      If CodeLibInf.ForceRemoveIfExists Or vbc.Type <> CodeLibInf.Type Then
          VbcCol.Remove vbc
          Set vbc = Nothing
          CodeModuleExists = False
@@ -1162,7 +1168,7 @@ Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf
    Dim AcObj As AccessObject
 
    If Len(Trim$(CodeLibInf.Name)) = 0 Then
-      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "An attempt was made to create a module without a name."
+      Err.Raise vbObjectError, "ImportExport.importVbComponent", "An attempt was made to create a module without a name."
       Exit Sub
    End If
 
