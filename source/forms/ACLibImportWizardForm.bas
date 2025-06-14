@@ -16,11 +16,11 @@ Begin Form
     GridY =10
     Width =10214
     DatasheetFontHeight =11
-    ItemSuffix =91
-    Left =3255
-    Top =2940
-    Right =15975
-    Bottom =12750
+    ItemSuffix =93
+    Left =5355
+    Top =3278
+    Right =17190
+    Bottom =10020
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -733,7 +733,7 @@ Begin Form
                     Width =561
                     Height =228
                     FontSize =8
-                    TabIndex =2
+                    TabIndex =3
                     BackColor =14151142
                     BorderColor =0
                     ForeColor =0
@@ -764,71 +764,100 @@ Begin Form
                     SpecialEffect =0
                     OldBorderStyle =0
                     OverlapFlags =93
-                    Left =113
-                    Top =105
-                    Width =8330
-                    Height =397
-                    TabIndex =3
+                    Left =53
+                    Top =53
+                    Width =9414
+                    Height =454
+                    TabIndex =2
                     Name ="ogRepositorySource"
                     AfterUpdate ="[Event Procedure]"
 
-                    LayoutCachedLeft =113
-                    LayoutCachedTop =105
-                    LayoutCachedWidth =8443
-                    LayoutCachedHeight =502
+                    LayoutCachedLeft =53
+                    LayoutCachedTop =53
+                    LayoutCachedWidth =9467
+                    LayoutCachedHeight =507
                     Begin
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =3855
-                            Top =203
-                            OptionValue =1
+                            Left =3878
+                            Top =195
+                            OptionValue =2
                             Name ="Option56"
 
-                            LayoutCachedLeft =3855
-                            LayoutCachedTop =203
-                            LayoutCachedWidth =4115
-                            LayoutCachedHeight =443
+                            LayoutCachedLeft =3878
+                            LayoutCachedTop =195
+                            LayoutCachedWidth =4138
+                            LayoutCachedHeight =435
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =4085
-                                    Top =173
+                                    Left =4108
+                                    Top =165
                                     Width =1921
                                     Height =293
                                     Name ="Label57"
                                     Caption ="GitHub (web access)"
-                                    LayoutCachedLeft =4085
-                                    LayoutCachedTop =173
-                                    LayoutCachedWidth =6006
-                                    LayoutCachedHeight =466
+                                    LayoutCachedLeft =4108
+                                    LayoutCachedTop =165
+                                    LayoutCachedWidth =6029
+                                    LayoutCachedHeight =458
                                 End
                             End
                         End
                         Begin OptionButton
                             OverlapFlags =87
-                            Left =6292
-                            Top =203
+                            Left =6180
+                            Top =195
+                            Width =365
                             TabIndex =1
-                            OptionValue =2
-                            Name ="Option58"
+                            OptionValue =6
+                            Name ="Option91"
 
-                            LayoutCachedLeft =6292
-                            LayoutCachedTop =203
-                            LayoutCachedWidth =6552
-                            LayoutCachedHeight =443
+                            LayoutCachedLeft =6180
+                            LayoutCachedTop =195
+                            LayoutCachedWidth =6545
+                            LayoutCachedHeight =435
                             Begin
                                 Begin Label
                                     OverlapFlags =247
-                                    Left =6522
-                                    Top =173
+                                    Left =6410
+                                    Top =165
+                                    Width =1013
+                                    Height =293
+                                    Name ="Label92"
+                                    Caption ="Packages"
+                                    LayoutCachedLeft =6410
+                                    LayoutCachedTop =165
+                                    LayoutCachedWidth =7423
+                                    LayoutCachedHeight =458
+                                End
+                            End
+                        End
+                        Begin OptionButton
+                            OverlapFlags =87
+                            Left =7507
+                            Top =195
+                            TabIndex =2
+                            OptionValue =1
+                            Name ="Option58"
+
+                            LayoutCachedLeft =7507
+                            LayoutCachedTop =195
+                            LayoutCachedWidth =7767
+                            LayoutCachedHeight =435
+                            Begin
+                                Begin Label
+                                    OverlapFlags =247
+                                    Left =7737
+                                    Top =165
                                     Width =1643
                                     Height =293
                                     Name ="Label59"
                                     Caption ="Local repository"
-                                    LayoutCachedLeft =6522
-                                    LayoutCachedTop =173
-                                    LayoutCachedWidth =8165
-                                    LayoutCachedHeight =466
+                                    LayoutCachedLeft =7737
+                                    LayoutCachedTop =165
+                                    LayoutCachedWidth =9380
+                                    LayoutCachedHeight =458
                                 End
                             End
                         End
@@ -900,9 +929,9 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =6135
+                    Left =6143
                     Top =960
-                    Width =1703
+                    Width =1786
                     Height =293
                     TabIndex =8
                     Name ="txtRepoName"
@@ -912,9 +941,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =6135
+                    LayoutCachedLeft =6143
                     LayoutCachedTop =960
-                    LayoutCachedWidth =7838
+                    LayoutCachedWidth =7929
                     LayoutCachedHeight =1253
                     ColumnStart =4
                     ColumnEnd =4
@@ -952,7 +981,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =3600
+                    Left =3608
                     Top =960
                     Width =1703
                     Height =293
@@ -963,9 +992,9 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
 
-                    LayoutCachedLeft =3600
+                    LayoutCachedLeft =3608
                     LayoutCachedTop =960
-                    LayoutCachedWidth =5303
+                    LayoutCachedWidth =5311
                     LayoutCachedHeight =1253
                     ColumnStart =2
                     ColumnEnd =2
@@ -1023,7 +1052,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =8805
+                    Left =8813
                     Top =960
                     Width =1290
                     Height =293
@@ -1035,9 +1064,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =8805
+                    LayoutCachedLeft =8813
                     LayoutCachedTop =960
-                    LayoutCachedWidth =10095
+                    LayoutCachedWidth =10103
                     LayoutCachedHeight =1253
                     ColumnStart =6
                     ColumnEnd =6
@@ -1050,15 +1079,15 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =7905
+                            Left =7988
                             Top =960
-                            Width =840
+                            Width =757
                             Height =293
                             Name ="Label78"
                             Caption ="Branch:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =7905
+                            LayoutCachedLeft =7988
                             LayoutCachedTop =960
                             LayoutCachedWidth =8745
                             LayoutCachedHeight =1253

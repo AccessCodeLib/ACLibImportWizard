@@ -338,12 +338,14 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
    Dim i As Long
    Dim PathString As String
    Dim TempFile As Object
+   Dim DownloadBase As String
 
    ArraySize = UBound(RepositoryPathArray)
    For i = LBound(RepositoryPathArray) To ArraySize - 1
-      PathString = GetRepositoryFullPath(RepositoryPathArray(i))
+      DownloadBase = vbNullString
+      PathString = GetRepositoryFullPath(RepositoryPathArray(i), DownloadBase)
       Set TempFile = fso.GetFile(PathString)
-      AddMissingFile TempFile, ImportMode
+      AddMissingFile TempFile, ImportMode, DownloadBase
    Next
    Set TempFile = Nothing
 
@@ -357,6 +359,7 @@ Private Sub ImportFilesFromImportCollection( _
 
    Dim TempFile As Object
    Dim FileImportMode As CodeLibImportMode
+   Dim DownloadBase As String
    Dim i As Long
    Dim MaxCnt As Long
 
@@ -373,28 +376,29 @@ Private Sub ImportFilesFromImportCollection( _
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
 
-    MaxCnt = m_ImportFileCollection.Count
+   MaxCnt = m_ImportFileCollection.Count
 
-    '/*
-    ' * TODO: Determination of the number of all files (incl. dependencies) before the import
-    ' * TODO: Conversion AccessProgressBar to single pass (Init only once)
-    ' */
+   '/*
+   ' * TODO: Determination of the number of all files (incl. dependencies) before the import
+   ' * TODO: Conversion AccessProgressBar to single pass (Init only once)
+   ' */
 
-    i = 1
-    Do While i <= MaxCnt
-        ColItem = m_ImportFileCollection(i)
-        Set TempFile = ColItem(0)
-        FileImportMode = ColItem(1)
+   i = 1
+   Do While i <= MaxCnt
+       ColItem = m_ImportFileCollection(i)
+       Set TempFile = ColItem(0)
+       FileImportMode = ColItem(1)
+       DownloadBase = ColItem(2)
 
-        AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
-        AccessProgressBar.PerformStep
+       AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
+       AccessProgressBar.PerformStep
 
-        ImportFile TempFile, FileImportMode, ImportTestFiles
+       ImportFile TempFile, FileImportMode, ImportTestFiles, DownloadBase
 
-        AccessProgressBar.PerformStep
-        MaxCnt = m_ImportFileCollection.Count
-        i = i + 1
-    Loop
+       AccessProgressBar.PerformStep
+       MaxCnt = m_ImportFileCollection.Count
+       i = i + 1
+   Loop
 
 
 
@@ -633,7 +637,7 @@ Private Property Let PrivateRepositoryRootDirectory(ByVal PrivatePath As String)
 
 End Property
 
-Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
+Public Function GetRepositoryFullPath(ByVal ReleativPath As String, Optional ByRef DownloadBase As String) As String
 
    Dim RepPath As String
    Dim FullPath As String
@@ -655,7 +659,20 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
    ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_GITHUBROOT)) = REPOSTITORY_ROOT_CODE_GITHUBROOT Then
       ' %GITHUB%\owner\repo@branch\Path
       ReleativPath = Replace(ReleativPath, "\", "/")
-      If Not DownLoadFromGitHub(ReleativPath, RepPath) Then
+      If Not DownLoadFromGitHub(ReleativPath, RepPath, DownloadBase) Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
+         Exit Function
+      End If
+
+      If Len(RepPath) = 0 Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales GitHub-Temp-Verzeichnis fehlt."
+         Exit Function
+      End If
+
+   ElseIf Len(DownloadBase) > 0 Then
+      ' %GITHUB%\owner\repo@branch\Path
+      ReleativPath = Replace(ReleativPath, "/", "\")
+      If Not DownLoadFromGitHub(ReleativPath, RepPath, DownloadBase) Then
          Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
          Exit Function
       End If
@@ -694,7 +711,7 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
 End Function
 
-Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath As String) As Boolean
+Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath As String, ByRef DownloadBase As String) As Boolean
 ' %GITHUB%/owner/repo@branch/Path
 
    Dim FullFilePath As String
@@ -704,16 +721,26 @@ Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath 
    Dim GitHubUrlData() As String
    Dim RelativeFileUrl As String
 
-   '%GITHUB%/owner/repo@branch/Path
-   GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
-   GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
-   GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
-   RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
-   GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
+   If Len(DownloadBase) > 0 And InStr(1, ReleativPath, REPOSTITORY_ROOT_CODE_GITHUBROOT) = 0 Then
+      GitHubUrlDataString = DownloadBase
+      ReleativPath = Replace(ReleativPath, "/", "\")
+      If Left(ReleativPath, 1) = "\" Then
+         ReleativPath = Mid(ReleativPath, 2)
+      End If
+      RelativeFileUrl = Replace(ReleativPath, "\", "/")
+   Else
+      '%GITHUB%/owner/repo@branch/Path
+      GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
+      GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
+      GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
+      RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
+      ReleativPath = Replace(RelativeFileUrl, "/", "\")
+      GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
+      DownloadBase = GitHubUrlDataString
+   End If
 
    GitHubUrlData = Split(GitHubUrlDataString, "/")
-   RepPath = GitHubTempRepositoryPath & "\"
-   ReleativPath = Replace(RelativeFileUrl, "/", "\")
+   RepPath = GitHubTempRepositoryPath & "\" & Replace(GitHubUrlDataString, "/", "\") & "\"
    FullFilePath = RepPath & ReleativPath
 
    If Not FileTools.FileExists(FullFilePath) Then
@@ -737,7 +764,7 @@ Private Property Get GitHubTempRepositoryPath() As String
 End Property
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
-              Optional ByVal ImportTestFiles As Boolean = False)
+              Optional ByVal ImportTestFiles As Boolean = False, Optional ByVal DownloadBase As String)
 
    Dim i As Long
    Dim TempFile As Object
@@ -750,6 +777,12 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
       AddReplacedFilePath GetRepositoryFullPath(m_CLI.RepositoryFileReplacement)
    End If
 
+   If Len(DownloadBase) > 0 Then
+      m_CLI.ForceRemoveIfExists = True
+   Else
+      Stop
+   End If
+
    'Enable abort
    RaiseEvent ImportRepositoryFile(m_CLI.Name, m_CLI.RepositoryFile, m_CLI.Type, m_CLI.Dependency, ImportFile, CancelImport)
    If CancelImport Then
@@ -758,19 +791,19 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
 
    'License (LICENSE block)
    If Len(m_CLI.LicenseFile) > 0 Then
-      FilePath = GetRepositoryFullPath(m_CLI.LicenseFile)
+      FilePath = GetRepositoryFullPath(m_CLI.LicenseFile, DownloadBase)
       Set TempFile = fso.GetFile(FilePath)
-      AddMissingFile TempFile, clim_ImportMissingItems
+      AddMissingFile TempFile, clim_ImportMissingItems, DownloadBase
    End If
 
    'Required modules (USE block)
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not m_CLI.Dependency) Then
       For i = 0 To UBound(m_CLI.Dependency)
-         FilePath = GetRepositoryFullPath(m_CLI.Dependency(i))
+         FilePath = GetRepositoryFullPath(m_CLI.Dependency(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            AddMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode, DownloadBase
          End If
       Next
       End If
@@ -801,10 +834,10 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If ImportTestFiles Then
    If (0 / 1) + (Not Not m_CLI.TestFiles) Then
       For i = 0 To UBound(m_CLI.TestFiles)
-         FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i))
+         FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            AddMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode, DownloadBase
          End If
       Next
    End If
@@ -844,7 +877,7 @@ Private Sub AddMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
 
 End Sub
 
-Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode)
+Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode, Optional ByVal DownloadBase As String = vbNullString)
 
    Dim FileColItem As Variant
    Dim TempFile As Object
@@ -863,7 +896,7 @@ Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLib
       End If
    Next
 
-   FileColItem = Array(UsedFile, ImportMode)
+   FileColItem = Array(UsedFile, ImportMode, DownloadBase)
    m_ImportFileCollection.Add FileColItem, UsedFile.Path
 
 End Sub
@@ -1021,7 +1054,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    Dim CodeModuleExists As Boolean
 
    If Len(Trim$(CodeLibInf.Name)) = 0 Then
-      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
+      Err.Raise vbObjectError, "ImportExport.importVbComponent", "Es wurde versucht ein Module ohne Namen zu erstellen."
       Exit Sub
    End If
 
@@ -1041,7 +1074,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    Next
 
    If CodeModuleExists Then   ' check if types match
-      If vbc.Type <> CodeLibInf.Type Then
+      If CodeLibInf.ForceRemoveIfExists Or vbc.Type <> CodeLibInf.Type Then
          VbcCol.Remove vbc
          Set vbc = Nothing
          CodeModuleExists = False
@@ -1135,7 +1168,7 @@ Private Sub ImportAccessObject(ByRef AcOjbType As AcObjectType, ByRef CodeLibInf
    Dim AcObj As AccessObject
 
    If Len(Trim$(CodeLibInf.Name)) = 0 Then
-      Err.Raise vbObjectError, "ADF_ImportExport.importVbComponent", "An attempt was made to create a module without a name."
+      Err.Raise vbObjectError, "ImportExport.importVbComponent", "An attempt was made to create a module without a name."
       Exit Sub
    End If
 
@@ -1295,7 +1328,9 @@ Private Function CodeModuleExits(ByVal CodeModuleName As String) As Boolean
 #End If
 
    For Each vbc In CurrentVbProject.VBComponents
+#If DEBUGMODE Then
       Debug.Print vbc.Name, CodeModuleName
+#End If
       If vbc.Name = CodeModuleName Then
          CodeModuleExits = True
          Exit Function

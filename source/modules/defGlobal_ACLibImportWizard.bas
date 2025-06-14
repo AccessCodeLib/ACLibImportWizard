@@ -50,6 +50,7 @@ Public Type CodeLibInfo
    ExecuteList() As String
    LicenseFile As String
    Description As String
+   ForceRemoveIfExists As Boolean
 End Type
 
 
