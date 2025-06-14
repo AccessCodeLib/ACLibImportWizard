@@ -669,9 +669,9 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String, Optional ByR
          Exit Function
       End If
 
-   ElseIf Left(DownloadBase, Len(REPOSTITORY_ROOT_CODE_GITHUBROOT)) = REPOSTITORY_ROOT_CODE_GITHUBROOT Then
+   ElseIf Len(DownloadBase) > 0 Then
       ' %GITHUB%\owner\repo@branch\Path
-      ReleativPath = Replace(ReleativPath, "\", "/")
+      ReleativPath = Replace(ReleativPath, "/", "\")
       If Not DownLoadFromGitHub(ReleativPath, RepPath, DownloadBase) Then
          Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
          Exit Function
@@ -723,19 +723,24 @@ Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath 
 
    If Len(DownloadBase) > 0 And InStr(1, ReleativPath, REPOSTITORY_ROOT_CODE_GITHUBROOT) = 0 Then
       GitHubUrlDataString = DownloadBase
+      ReleativPath = Replace(ReleativPath, "/", "\")
+      If Left(ReleativPath, 1) = "\" Then
+         ReleativPath = Mid(ReleativPath, 2)
+      End If
+      RelativeFileUrl = Replace(ReleativPath, "\", "/")
    Else
       '%GITHUB%/owner/repo@branch/Path
       GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
       GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
       GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
       RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
+      ReleativPath = Replace(RelativeFileUrl, "/", "\")
       GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
       DownloadBase = GitHubUrlDataString
    End If
 
    GitHubUrlData = Split(GitHubUrlDataString, "/")
    RepPath = GitHubTempRepositoryPath & "\"
-   ReleativPath = Replace(RelativeFileUrl, "/", "\")
    FullFilePath = RepPath & ReleativPath
 
    If Not FileTools.FileExists(FullFilePath) Then
@@ -792,7 +797,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
          FilePath = GetRepositoryFullPath(m_CLI.Dependency(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
-            AddMissingFile TempFile, ImportMode
+            AddMissingFile TempFile, ImportMode, DownloadBase
          End If
       Next
       End If
@@ -1317,7 +1322,9 @@ Private Function CodeModuleExits(ByVal CodeModuleName As String) As Boolean
 #End If
 
    For Each vbc In CurrentVbProject.VBComponents
+#If DEBUGMODE Then
       Debug.Print vbc.Name, CodeModuleName
+#End If
       If vbc.Name = CodeModuleName Then
          CodeModuleExits = True
          Exit Function

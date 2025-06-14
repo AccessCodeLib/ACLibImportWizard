@@ -409,7 +409,9 @@ On Error GoTo HandleErr
       Loop
    End If
 
-   StartFolder = CurrentLocalRepositoryPath & StartFolder
+   If Mid(StartFolder, 2, 1) <> ":" Then
+      StartFolder = CurrentLocalRepositoryPath & StartFolder
+   End If
    Do While Not DirExists(StartFolder)
       Pos = InStrRev(StartFolder, "\")
       If Pos = 0 Then Exit Do
