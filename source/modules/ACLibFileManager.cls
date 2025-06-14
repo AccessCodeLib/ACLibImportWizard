@@ -740,7 +740,7 @@ Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath 
    End If
 
    GitHubUrlData = Split(GitHubUrlDataString, "/")
-   RepPath = GitHubTempRepositoryPath & "\"
+   RepPath = GitHubTempRepositoryPath & "\" & Replace(GitHubUrlDataString, "/", "\") & "\"
    FullFilePath = RepPath & ReleativPath
 
    If Not FileTools.FileExists(FullFilePath) Then
