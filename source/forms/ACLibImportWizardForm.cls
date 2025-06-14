@@ -678,8 +678,8 @@ Private Sub SetACLibGitHubImporterConfig()
          ACLibGitHubImporter.GitHubApiAuthorizationToken = Me.txtGitHubAuthPersonalAccessToken.Value
       End If
       If (Me.ogRepositorySource.Value And RepositorySource_Package) = RepositorySource_Package Then
-         SetRepositoryData "AccessCodeLib", "ACLibImportWizard-Package", "main"
-      ElseIf Me.txtRepoName.Value = "ACLibImportWizard-Package" Then
+         SetRepositoryData "AccessCodeLib", "ACLibImportWizard-Packages", "main"
+      ElseIf Me.txtRepoName.Value = "ACLibImportWizard-Packages" Then
          SetRepositoryData "AccessCodeLib", "AccessCodeLib", "master"
       End If
    End If
