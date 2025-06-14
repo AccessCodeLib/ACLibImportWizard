@@ -338,12 +338,14 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
    Dim i As Long
    Dim PathString As String
    Dim TempFile As Object
+   Dim DownloadBase As String
 
    ArraySize = UBound(RepositoryPathArray)
    For i = LBound(RepositoryPathArray) To ArraySize - 1
-      PathString = GetRepositoryFullPath(RepositoryPathArray(i))
+      DownloadBase = vbNullString
+      PathString = GetRepositoryFullPath(RepositoryPathArray(i), DownloadBase)
       Set TempFile = fso.GetFile(PathString)
-      AddMissingFile TempFile, ImportMode
+      AddMissingFile TempFile, ImportMode, DownloadBase
    Next
    Set TempFile = Nothing
 
@@ -357,6 +359,7 @@ Private Sub ImportFilesFromImportCollection( _
 
    Dim TempFile As Object
    Dim FileImportMode As CodeLibImportMode
+   Dim DownloadBase As String
    Dim i As Long
    Dim MaxCnt As Long
 
@@ -373,28 +376,29 @@ Private Sub ImportFilesFromImportCollection( _
       DoCmd.RunCommand acCmdCompileAndSaveAllModules
    End If
 
-    MaxCnt = m_ImportFileCollection.Count
+   MaxCnt = m_ImportFileCollection.Count
 
-    '/*
-    ' * TODO: Determination of the number of all files (incl. dependencies) before the import
-    ' * TODO: Conversion AccessProgressBar to single pass (Init only once)
-    ' */
+   '/*
+   ' * TODO: Determination of the number of all files (incl. dependencies) before the import
+   ' * TODO: Conversion AccessProgressBar to single pass (Init only once)
+   ' */
 
-    i = 1
-    Do While i <= MaxCnt
-        ColItem = m_ImportFileCollection(i)
-        Set TempFile = ColItem(0)
-        FileImportMode = ColItem(1)
+   i = 1
+   Do While i <= MaxCnt
+       ColItem = m_ImportFileCollection(i)
+       Set TempFile = ColItem(0)
+       FileImportMode = ColItem(1)
+       DownloadBase = ColItem(2)
 
-        AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
-        AccessProgressBar.PerformStep
+       AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
+       AccessProgressBar.PerformStep
 
-        ImportFile TempFile, FileImportMode, ImportTestFiles
+       ImportFile TempFile, FileImportMode, ImportTestFiles, DownloadBase
 
-        AccessProgressBar.PerformStep
-        MaxCnt = m_ImportFileCollection.Count
-        i = i + 1
-    Loop
+       AccessProgressBar.PerformStep
+       MaxCnt = m_ImportFileCollection.Count
+       i = i + 1
+   Loop
 
 
 
@@ -633,7 +637,7 @@ Private Property Let PrivateRepositoryRootDirectory(ByVal PrivatePath As String)
 
 End Property
 
-Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
+Public Function GetRepositoryFullPath(ByVal ReleativPath As String, Optional ByRef DownloadBase As String) As String
 
    Dim RepPath As String
    Dim FullPath As String
@@ -655,7 +659,20 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
    ElseIf Left(ReleativPath, Len(REPOSTITORY_ROOT_CODE_GITHUBROOT)) = REPOSTITORY_ROOT_CODE_GITHUBROOT Then
       ' %GITHUB%\owner\repo@branch\Path
       ReleativPath = Replace(ReleativPath, "\", "/")
-      If Not DownLoadFromGitHub(ReleativPath, RepPath) Then
+      If Not DownLoadFromGitHub(ReleativPath, RepPath, DownloadBase) Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
+         Exit Function
+      End If
+
+      If Len(RepPath) = 0 Then
+         Err.Raise vbObjectError, "getRepositoryFullPath", "Wert für lokales GitHub-Temp-Verzeichnis fehlt."
+         Exit Function
+      End If
+
+   ElseIf Left(DownloadBase, Len(REPOSTITORY_ROOT_CODE_GITHUBROOT)) = REPOSTITORY_ROOT_CODE_GITHUBROOT Then
+      ' %GITHUB%\owner\repo@branch\Path
+      ReleativPath = Replace(ReleativPath, "\", "/")
+      If Not DownLoadFromGitHub(ReleativPath, RepPath, DownloadBase) Then
          Err.Raise vbObjectError, "getRepositoryFullPath", "Download aus GitHub ist fehlgeschlagen"
          Exit Function
       End If
@@ -694,7 +711,7 @@ Public Function GetRepositoryFullPath(ByVal ReleativPath As String) As String
 
 End Function
 
-Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath As String) As Boolean
+Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath As String, ByRef DownloadBase As String) As Boolean
 ' %GITHUB%/owner/repo@branch/Path
 
    Dim FullFilePath As String
@@ -704,12 +721,17 @@ Private Function DownLoadFromGitHub(ByRef ReleativPath As String, ByRef RepPath 
    Dim GitHubUrlData() As String
    Dim RelativeFileUrl As String
 
-   '%GITHUB%/owner/repo@branch/Path
-   GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
-   GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
-   GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
-   RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
-   GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
+   If Len(DownloadBase) > 0 And InStr(1, ReleativPath, REPOSTITORY_ROOT_CODE_GITHUBROOT) = 0 Then
+      GitHubUrlDataString = DownloadBase
+   Else
+      '%GITHUB%/owner/repo@branch/Path
+      GitHubPath = Mid(Replace(ReleativPath, "\", "/"), Len(REPOSTITORY_ROOT_CODE_GITHUBROOT) + 2)
+      GitHubDataCutPos = InStr(InStr(1, GitHubPath, "@") + 1, GitHubPath, "/")
+      GitHubUrlDataString = Left(GitHubPath, GitHubDataCutPos - 1)
+      RelativeFileUrl = Mid(GitHubPath, GitHubDataCutPos + 1)
+      GitHubUrlDataString = Replace(GitHubUrlDataString, "@", "/")
+      DownloadBase = GitHubUrlDataString
+   End If
 
    GitHubUrlData = Split(GitHubUrlDataString, "/")
    RepPath = GitHubTempRepositoryPath & "\"
@@ -737,7 +759,7 @@ Private Property Get GitHubTempRepositoryPath() As String
 End Property
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
-              Optional ByVal ImportTestFiles As Boolean = False)
+              Optional ByVal ImportTestFiles As Boolean = False, Optional DownloadBase As String)
 
    Dim i As Long
    Dim TempFile As Object
@@ -758,16 +780,16 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
 
    'License (LICENSE block)
    If Len(m_CLI.LicenseFile) > 0 Then
-      FilePath = GetRepositoryFullPath(m_CLI.LicenseFile)
+      FilePath = GetRepositoryFullPath(m_CLI.LicenseFile, DownloadBase)
       Set TempFile = fso.GetFile(FilePath)
-      AddMissingFile TempFile, clim_ImportMissingItems
+      AddMissingFile TempFile, clim_ImportMissingItems, DownloadBase
    End If
 
    'Required modules (USE block)
    If ImportMode <> clim_ImportSelectedOnly Then
       If (0 / 1) + (Not Not m_CLI.Dependency) Then
       For i = 0 To UBound(m_CLI.Dependency)
-         FilePath = GetRepositoryFullPath(m_CLI.Dependency(i))
+         FilePath = GetRepositoryFullPath(m_CLI.Dependency(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
             AddMissingFile TempFile, ImportMode
@@ -801,7 +823,7 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If ImportTestFiles Then
    If (0 / 1) + (Not Not m_CLI.TestFiles) Then
       For i = 0 To UBound(m_CLI.TestFiles)
-         FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i))
+         FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
             AddMissingFile TempFile, ImportMode
@@ -844,7 +866,7 @@ Private Sub AddMissingReference(ByRef NewCodeLibRef As CodeLibInfoReference)
 
 End Sub
 
-Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode)
+Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLibImportMode, Optional ByVal DownloadBase As String = vbNullString)
 
    Dim FileColItem As Variant
    Dim TempFile As Object
@@ -863,7 +885,7 @@ Private Sub AddMissingFile(ByVal UsedFile As Object, ByVal ImportMode As CodeLib
       End If
    Next
 
-   FileColItem = Array(UsedFile, ImportMode)
+   FileColItem = Array(UsedFile, ImportMode, DownloadBase)
    m_ImportFileCollection.Add FileColItem, UsedFile.Path
 
 End Sub
