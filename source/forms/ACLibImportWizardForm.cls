@@ -317,7 +317,7 @@ Private Sub cmdSelectFile_Click()
 
 On Error GoTo HandleErr
 
-   If Me.ogRepositorySource.Value = 2 Then
+   If Me.ogRepositorySource.Value = RepositorySource_LocalRepository Then
       SelectFileFromLocalRepository
    Else
       SelectFileFromGitHubRepositoryApi
