@@ -68,6 +68,8 @@ Private Const SEARCHSTRING_REF_GUID_BEGIN As String = "<guid>"
 Private Const SEARCHSTRING_REF_GUID_END   As String = "</guid>"
 Private Const SEARCHSTRING_TEST_BEGIN As String = "<test>"
 Private Const SEARCHSTRING_TEST_END   As String = "</test>"
+Private Const SEARCHSTRING_EXAMPLE_BEGIN As String = "<example>"
+Private Const SEARCHSTRING_EXAMPLE_END   As String = "</example>"
 
 Private Const SEARCHSTRING_EXECUTE_BEGIN As String = "<execute>"
 Private Const SEARCHSTRING_EXECUTE_END As String = "</execute>"
@@ -268,7 +270,8 @@ Public Sub ExportAllReports()
 End Sub
 
 Public Sub ImportAllFilesFromRepository(Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                                        Optional ByVal ImportTestFiles As Boolean = False)
+                                        Optional ByVal ImportTestFiles As Boolean = False, _
+                                        Optional ByVal ImportExampleFiles As Boolean = False)
 
    Dim FolderCol As Collection
 #If EARLYBINDING Then
@@ -309,13 +312,14 @@ Public Sub ImportAllFilesFromRepository(Optional ByVal ImportMode As CodeLibImpo
    Set TempFile = Nothing
    Set FolderCol = Nothing
 
-   ImportFilesFromImportCollection True, ImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles, ImportExampleFiles
 
 End Sub
 
 Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
                        Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                       Optional ByVal ImportTestFiles As Boolean = False)
+                       Optional ByVal ImportTestFiles As Boolean = False, _
+                       Optional ByVal ImportExampleFiles As Boolean = False)
 
    Dim PathString As String
 
@@ -326,13 +330,14 @@ Public Sub ImportRepositoryFile(ByVal RepositoryPath As String, _
    AddMissingFile TempFile, ImportMode
    Set TempFile = Nothing
 
-   ImportFilesFromImportCollection True, ImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles, ImportExampleFiles
 
 End Sub
 
 Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
                         Optional ByVal ImportMode As CodeLibImportMode = clim_ImportMissingItems, _
-                        Optional ByVal ImportTestFiles As Boolean = False)
+                        Optional ByVal ImportTestFiles As Boolean = False, _
+                        Optional ByVal ImportExampleFiles As Boolean = False)
 
    Dim ArraySize As Long
    Dim i As Long
@@ -349,13 +354,14 @@ Public Sub ImportRepositoryFiles(ByRef RepositoryPathArray() As String, _
    Next
    Set TempFile = Nothing
 
-   ImportFilesFromImportCollection True, ImportTestFiles
+   ImportFilesFromImportCollection True, ImportTestFiles, ImportExampleFiles
 
 End Sub
 
 Private Sub ImportFilesFromImportCollection( _
                                    Optional ByRef CompileAfterImport As Boolean = True, _
-                                   Optional ByVal ImportTestFiles As Boolean = False)
+                                   Optional ByVal ImportTestFiles As Boolean = False, _
+                                   Optional ByVal ImportExampleFiles As Boolean = False)
 
    Dim TempFile As Object
    Dim FileImportMode As CodeLibImportMode
@@ -393,7 +399,7 @@ Private Sub ImportFilesFromImportCollection( _
        AccessProgressBar.Init "Importiere " & TempFile & "...", 2, 1
        AccessProgressBar.PerformStep
 
-       ImportFile TempFile, FileImportMode, ImportTestFiles, DownloadBase
+       ImportFile TempFile, FileImportMode, ImportTestFiles, ImportExampleFiles, DownloadBase
 
        AccessProgressBar.PerformStep
        MaxCnt = m_ImportFileCollection.Count
@@ -764,7 +770,8 @@ Private Property Get GitHubTempRepositoryPath() As String
 End Property
 
 Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibImportMode, _
-              Optional ByVal ImportTestFiles As Boolean = False, Optional ByVal DownloadBase As String)
+              Optional ByVal ImportTestFiles As Boolean = False, Optional ByRef ImportExampleFiles As Boolean = False, _
+              Optional ByVal DownloadBase As String)
 
    Dim i As Long
    Dim TempFile As Object
@@ -779,8 +786,6 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
 
    If Len(DownloadBase) > 0 Then
       m_CLI.ForceRemoveIfExists = True
-   Else
-      Stop
    End If
 
    'Enable abort
@@ -835,6 +840,19 @@ Private Sub ImportFile(ByRef ImportFile As Object, ByRef ImportMode As CodeLibIm
    If (0 / 1) + (Not Not m_CLI.TestFiles) Then
       For i = 0 To UBound(m_CLI.TestFiles)
          FilePath = GetRepositoryFullPath(m_CLI.TestFiles(i), DownloadBase)
+         If fso.FileExists(FilePath) Then
+            Set TempFile = fso.GetFile(FilePath)
+            AddMissingFile TempFile, ImportMode, DownloadBase
+         End If
+      Next
+   End If
+   End If
+
+   'possibly the examples
+   If ImportExampleFiles Then
+   If (0 / 1) + (Not Not m_CLI.ExampleFiles) Then
+      For i = 0 To UBound(m_CLI.ExampleFiles)
+         FilePath = GetRepositoryFullPath(m_CLI.ExampleFiles(i), DownloadBase)
          If fso.FileExists(FilePath) Then
             Set TempFile = fso.GetFile(FilePath)
             AddMissingFile TempFile, ImportMode, DownloadBase
@@ -1347,7 +1365,8 @@ End Function
 
 Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputFile As Object, _
                           Optional ByVal FindDependency As Boolean = True, _
-                          Optional ByVal FindTests As Boolean = True)
+                          Optional ByVal FindTests As Boolean = True, _
+                          Optional ByVal FindExamples As Boolean = True)
 
    Dim Pos As Long
    Dim CheckString As String
@@ -1436,6 +1455,7 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
       If FindDependency Then GetCodeLibInfoDependency CodeLibInf, CheckString
       GetCodeLibInfoReferences CodeLibInf, CheckString
       If FindTests Then GetCodeLibInfoTests CodeLibInf, CheckString
+      If FindExamples Then GetCodeLibInfoExamples CodeLibInf, CheckString
       GetCodeLibInfoDescription CodeLibInf, CheckString
       GetCodeLibInfoExecuteList CodeLibInf, CheckString
    End If
@@ -1493,6 +1513,16 @@ Private Sub GetCodeLibInfoTests(ByRef CodeLibInf As CodeLibInfo, ByRef SourceStr
 
    If GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_TEST_BEGIN, SEARCHSTRING_TEST_END, Tests) > 0 Then
       CodeLibInf.TestFiles = Tests
+   End If
+
+End Sub
+
+Private Sub GetCodeLibInfoExamples(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
+
+   Dim Examples() As String
+
+   If GetCodelibInfoTagStrings(SourceString, SEARCHSTRING_EXAMPLE_BEGIN, SEARCHSTRING_EXAMPLE_END, Examples) > 0 Then
+      CodeLibInf.ExampleFiles = Examples
    End If
 
 End Sub
@@ -1776,6 +1806,14 @@ Public Sub InsertCodeLibInfo(ByRef CodMod As Object, ByRef CodeLibInf As CodeLib
    If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
       For i = LBound(ClTagArray) To UBound(ClTagArray)
          CodeLibInfoText = CodeLibInfoText & "'  <test>" & ClTagArray(i) & "</test>" & vbNewLine
+      Next
+   End If
+
+   '<example> blocks
+   ClTagArray = CodeLibInf.ExampleFiles
+   If Not ((0 / 1) + (Not Not ClTagArray) = 0) Then
+      For i = LBound(ClTagArray) To UBound(ClTagArray)
+         CodeLibInfoText = CodeLibInfoText & "'  <example>" & ClTagArray(i) & "</example>" & vbNewLine
       Next
    End If
 
