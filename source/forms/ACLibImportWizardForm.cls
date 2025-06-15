@@ -626,7 +626,7 @@ On Error GoTo HandleErr
       Me.chkImportTests.Value = .ImportTestsDefaultValue
    End With
 
-   ConfigReproSourceMode 1 + Abs(Len(Me.txtLocalRepositoryPath.Value & vbNullString) > 0)
+   ConfigReproSourceMode 2 - Abs(Len(Me.txtLocalRepositoryPath.Value & vbNullString) > 0)
    EnableCodeModuleDescription Me.tbViewCodeModuleDescription.Value
 
    SetEnableMode
