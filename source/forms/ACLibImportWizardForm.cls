@@ -177,7 +177,7 @@ On Error GoTo HandleErr
    Else '
       Set m_ACLibFileManager = Nothing
    End If
-   ACLibFileMngr.ImportRepositoryFiles FileNameArray, Nz(Me.ogImportMode.Value, 0), Nz(Me.chkImportTests.Value, False)
+   ACLibFileMngr.ImportRepositoryFiles FileNameArray, Nz(Me.ogImportMode.Value, 0), Nz(Me.chkImportTests.Value, False), Nz(Me.chkExamples.Value, False)
 
    Me.labInfo.Caption = L10n.Text("Files have been imported")
    Me.Repaint

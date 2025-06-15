@@ -16,11 +16,11 @@ Begin Form
     GridY =10
     Width =10214
     DatasheetFontHeight =11
-    ItemSuffix =93
-    Left =5355
-    Top =3278
-    Right =17190
-    Bottom =10020
+    ItemSuffix =95
+    Left =4178
+    Top =3030
+    Right =16673
+    Bottom =12195
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -367,7 +367,7 @@ Begin Form
                     Top =7456
                     Width =2205
                     Height =555
-                    TabIndex =20
+                    TabIndex =19
                     Name ="cmdImportFiles"
                     Caption ="&Import files"
                     OnClick ="[Event Procedure]"
@@ -539,27 +539,6 @@ Begin Form
                     LayoutCachedWidth =6815
                     LayoutCachedHeight =7501
                 End
-                Begin CommandButton
-                    Visible = NotDefault
-                    Enabled = NotDefault
-                    OverlapFlags =215
-                    Left =7042
-                    Top =6196
-                    Width =2925
-                    Height =555
-                    TabIndex =19
-                    Name ="Command25"
-                    Caption ="Show dependencies"
-                    Tag ="LANG:"
-                    HorizontalAnchor =1
-                    VerticalAnchor =1
-
-                    LayoutCachedLeft =7042
-                    LayoutCachedTop =6196
-                    LayoutCachedWidth =9967
-                    LayoutCachedHeight =6751
-                    Overlaps =1
-                End
                 Begin Label
                     Visible = NotDefault
                     OverlapFlags =215
@@ -598,7 +577,7 @@ Begin Form
                     Name ="chkImportTests"
                     AfterUpdate ="[Event Procedure]"
                     DefaultValue ="False"
-                    ControlTipText ="Die Testklassen der importierten Code-Modulen ebenfalls importieren"
+                    ControlTipText ="Import tests for imported code modules"
                     UnicodeAccessKey =116
                     HorizontalAnchor =1
                     VerticalAnchor =1
@@ -705,7 +684,7 @@ Begin Form
                     Top =7456
                     Width =555
                     Height =555
-                    TabIndex =21
+                    TabIndex =20
                     Name ="cmdOpenMenu"
                     Caption ="..."
                     OnClick ="[Event Procedure]"
@@ -1097,6 +1076,42 @@ Begin Form
                             GridlineThemeColorIndex =1
                             GridlineShade =65.0
                             GroupTable =1
+                        End
+                    End
+                End
+                Begin CheckBox
+                    OverlapFlags =215
+                    AccessKey =69
+                    Left =7043
+                    Top =6015
+                    TabIndex =21
+                    Name ="chkExamples"
+                    DefaultValue ="False"
+                    ControlTipText ="Import example code modules"
+                    UnicodeAccessKey =101
+                    HorizontalAnchor =1
+                    VerticalAnchor =1
+
+                    LayoutCachedLeft =7043
+                    LayoutCachedTop =6015
+                    LayoutCachedWidth =7303
+                    LayoutCachedHeight =6255
+                    Begin
+                        Begin Label
+                            OverlapFlags =215
+                            Left =7319
+                            Top =5955
+                            Width =2730
+                            Height =315
+                            Name ="Label94"
+                            Caption ="incl. &examples"
+                            Tag ="LANG:"
+                            HorizontalAnchor =1
+                            VerticalAnchor =1
+                            LayoutCachedLeft =7319
+                            LayoutCachedTop =5955
+                            LayoutCachedWidth =10049
+                            LayoutCachedHeight =6270
                         End
                     End
                 End
