@@ -390,17 +390,7 @@ Marked entries can be removed from the list with {Del} key.</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
-    <KeyText>ACLib Import Wizard: Incorrect start</KeyText>
-    <LngText>ACLib Import Wizard: Incorrect start</LngText>
-  </L10n_Dict>
-  <L10n_Dict>
-    <LangCode>DE</LangCode>
-    <KeyText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</KeyText>
-    <LngText>DE:The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</LngText>
-  </L10n_Dict>
-  <L10n_Dict>
-    <LangCode>DE</LangCode>
-    <KeyText>ACLib Import Wizard: Incorrect start</KeyText>
-    <LngText>DE:ACLib Import Wizard: Incorrect start</LngText>
+    <KeyText>incl. &amp;examples</KeyText>
+    <LngText>incl. &amp;examples</LngText>
   </L10n_Dict>
 </dataroot>

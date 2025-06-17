@@ -908,9 +908,9 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =6143
+                    Left =6135
                     Top =960
-                    Width =1786
+                    Width =1785
                     Height =293
                     TabIndex =8
                     Name ="txtRepoName"
@@ -920,9 +920,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =6143
+                    LayoutCachedLeft =6135
                     LayoutCachedTop =960
-                    LayoutCachedWidth =7929
+                    LayoutCachedWidth =7920
                     LayoutCachedHeight =1253
                     ColumnStart =4
                     ColumnEnd =4
@@ -960,9 +960,9 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =3608
+                    Left =3600
                     Top =960
-                    Width =1703
+                    Width =1710
                     Height =293
                     TabIndex =7
                     Name ="txtRepoOwner"
@@ -971,9 +971,9 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
 
-                    LayoutCachedLeft =3608
+                    LayoutCachedLeft =3600
                     LayoutCachedTop =960
-                    LayoutCachedWidth =5311
+                    LayoutCachedWidth =5310
                     LayoutCachedHeight =1253
                     ColumnStart =2
                     ColumnEnd =2
@@ -1031,7 +1031,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =8813
+                    Left =8790
                     Top =960
                     Width =1290
                     Height =293
@@ -1043,9 +1043,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =8813
+                    LayoutCachedLeft =8790
                     LayoutCachedTop =960
-                    LayoutCachedWidth =10103
+                    LayoutCachedWidth =10080
                     LayoutCachedHeight =1253
                     ColumnStart =6
                     ColumnEnd =6
@@ -1058,17 +1058,17 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =7988
+                            Left =7980
                             Top =960
-                            Width =757
+                            Width =750
                             Height =293
                             Name ="Label78"
                             Caption ="Branch:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =7988
+                            LayoutCachedLeft =7980
                             LayoutCachedTop =960
-                            LayoutCachedWidth =8745
+                            LayoutCachedWidth =8730
                             LayoutCachedHeight =1253
                             ColumnStart =5
                             ColumnEnd =5
