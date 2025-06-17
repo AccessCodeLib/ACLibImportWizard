@@ -41,6 +41,27 @@ Private Sub Form_Load()
    End With
 
    LoadDataFromConfiguration True
+   CheckInstalled
+
+End Sub
+
+Private Sub CheckInstalled()
+
+   Dim TargetAddInPath As String
+
+   With Configuration
+      If .AddInRegFilePath Like "|ACCDIR\*" Then
+         With New AddInInstaller
+            TargetAddInPath = .GetAddInLocation
+         End With
+         TargetAddInPath = TargetAddInPath & .FileName
+         If CurrentDb.Name = TargetAddInPath Then
+            Me.cbCompileAddIn.Visible = False
+            Me.cmdInstallAddIn.Visible = False
+            Me.Caption = "Installed Add-In"
+         End If
+      End If
+   End With
 
 End Sub
 
