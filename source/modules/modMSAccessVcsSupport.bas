@@ -11,4 +11,6 @@ Public Sub VcsRunBeforeExport()
       DBEngine.Idle dbRefreshCache
    End If
 
+   CurrentApplication.SetApplicationProperty "StartUpForm", vbNullString
+
 End Sub

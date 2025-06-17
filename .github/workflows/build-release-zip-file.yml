@@ -26,6 +26,7 @@ jobs:
         source-dir: "source"
         target-dir: "access-add-in"
         file-name: "ACLibImportWizard.accda"
+        app-config: "deployment/AddIn-Config.json"
       timeout-minutes: 10
 
     - name: "Create versioned ZIP file"

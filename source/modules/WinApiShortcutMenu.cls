@@ -221,7 +221,7 @@ Private Declare Function TranslateMessage _
 Private Declare Function GetWindowRect _
       Lib "user32.dll" ( _
          ByVal Hwnd As Long, _
-         ByRef lpRect As Rect _
+         ByRef lpRect As RECT _
       ) As Long
 
 Private Declare Function SetMenuDefaultItem _

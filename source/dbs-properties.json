@@ -101,7 +101,7 @@
       "Type": 4
     },
     "NavPane Width": {
-      "Value": 557,
+      "Value": 215,
       "Type": 4
     },
     "Never Cache": {
@@ -109,7 +109,7 @@
       "Type": 4
     },
     "Option to enable Monaco SQL Editor": {
-      "Value": 1,
+      "Value": 0,
       "Type": 4
     },
     "Perform Name AutoCorrect": {
