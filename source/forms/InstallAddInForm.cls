@@ -19,6 +19,8 @@ Attribute VB_Exposed = False
 '  <license>_codelib/license.bas</license>
 '  <use>_codelib/addins/shared/AddInConfiguration.cls</use>
 '  <use>_codelib/addins/shared/AddInInstaller.cls</use>
+'  <use>base/modApplication.bas</use>
+'  <use>base/modErrorHandler.bas</use>
 '</codelib>
 '---------------------------------------------------------------------------------------
 '

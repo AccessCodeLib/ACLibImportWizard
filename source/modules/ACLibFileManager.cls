@@ -1100,6 +1100,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
    End If
 
    If CodeModuleExists Then ' Change content via CodeModule so that MS add-in for source code management does not cause trouble
+      ' TODO: check if invisible properties changed
       Set cm = vbc.CodeModule
       cm.DeleteLines 1, cm.CountOfLines
       cm.AddFromFile ImportFile.Path
@@ -1117,7 +1118,7 @@ Private Sub ImportVbComponent(ByRef CodeLibInf As CodeLibInfo, ByRef ImportFile 
       Loop
 
    Else
-      VbcCol.import ImportFile.Path
+      VbcCol.Import ImportFile.Path
    End If
 
 End Sub
@@ -1372,15 +1373,9 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    Dim CheckString As String
    Dim TempString As String
    Dim i As Long
-   Dim FileNumber As Long
    Dim StringCutPos As Long
 
-   FileNumber = FreeFile
-
-   Open InputFile.Path For Binary Access Read As FileNumber
-   CheckString = String$(LOF(FileNumber), 0)
-   Get FileNumber, , CheckString
-   Close FileNumber
+   CheckString = ReadSourceFile(InputFile)
 
    'Determine names
    CodeLibInf.Name = FindSubString(CheckString, SEARCHSTRING_ATTRIBUTNAME_BEGIN, SEARCHSTRING_ATTRIBUTNAME_END, Pos)
@@ -1461,6 +1456,61 @@ Private Sub GetCodeLibInfoFromFile(ByRef CodeLibInf As CodeLibInfo, ByVal InputF
    End If
 
 End Sub
+
+Private Function ReadSourceFile(ByVal InputFile As Object) As String
+
+   Dim FileNumber As Long
+   Dim StringCutPos As Long
+   Dim CheckString As String
+
+   Dim CheckBytes(1 To 3) As Byte
+   Dim FileCharset As String
+
+   FileNumber = FreeFile
+
+   Open InputFile.Path For Binary Access Read As FileNumber
+
+   If LOF(FileNumber) >= 3 Then
+
+     Get #FileNumber, , CheckBytes
+
+     If CheckBytes(1) = &HEF And CheckBytes(2) = &HBB And CheckBytes(3) = &HBF Then
+         FileCharset = "utf-8"
+     ElseIf (CheckBytes(1) = &HFF And CheckBytes(2) = &HFE) Or (CheckBytes(1) = &HFE And CheckBytes(2) = &HFF) Then
+         FileCharset = "utf-16"
+     Else
+         Seek #FileNumber, 1
+         CheckString = String$(LOF(FileNumber), 0)
+         Get #FileNumber, , CheckString
+     End If
+
+   End If
+
+   Close FileNumber
+
+   If Len(FileCharset) > 0 Then
+      CheckString = ReadUtfFileToString(InputFile, FileCharset)
+   End If
+
+   ReadSourceFile = CheckString
+
+End Function
+
+Function ReadUtfFileToString(ByVal InputFile As Object, ByVal FileCharset As String) As String
+
+    Dim Stream As Object ' Late Binding für ADODB.Stream
+    Set Stream = CreateObject("ADODB.Stream")
+
+    With Stream
+        .Type = 2 ' Text
+        .Charset = FileCharset
+        .Open
+        .LoadFromFile InputFile.Path
+        ReadUtfFileToString = .ReadText
+        .Close
+    End With
+
+End Function
 
 Private Sub GetCodeLibInfoPackage(ByRef CodeLibInf As CodeLibInfo, ByRef SourceString As String)
    Dim PackageName As String
