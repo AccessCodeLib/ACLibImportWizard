@@ -417,12 +417,12 @@ Private Sub ImportFilesFromImportCollection( _
    If (0 / 1) + (Not Not m_CLI.ExecuteList) Then
       AccessProgressBar.Init "Run executes ...", UBound(m_CLI.ExecuteList) + 1, 1
       For i = 0 To UBound(m_CLI.ExecuteList)
-        AccessProgressBar.PerformStep
-        If StringTools.Contains(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT) Then
-            Eval VBA.Strings.Replace(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT, LocalRepositoryRootDirectory())
-        Else
-            Eval (m_CLI.ExecuteList(i))
-        End If
+         AccessProgressBar.PerformStep
+         If StringTools.Contains(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT) Then
+            ApplicationRunProcedure VBA.Strings.Replace(m_CLI.ExecuteList(i), REPOSTITORY_ROOT_CODE_PRIVATEROOT, LocalRepositoryRootDirectory())
+         Else
+            ApplicationRunProcedure m_CLI.ExecuteList(i)
+         End If
       Next
       If AccessProgressBar.IsInitialized Then AccessProgressBar.Clear
    End If
@@ -438,6 +438,99 @@ Private Sub ImportFilesFromImportCollection( _
 
 End Sub
 
+Private Sub ApplicationRunProcedure(ByVal ProcedureCall As String)
+
+    If InStr(1, ProcedureCall, ".") Then
+        If TryRunAddInProcedure(ProcedureCall) Then
+            Exit Sub
+        End If
+    End If
+
+    CallApplicationRun ProcedureCall
+
+End Sub
+
+Private Function TryRunAddInProcedure(ByVal ProcedureCall As String) As Boolean
+
+   Dim AddInFilePath As String
+
+   ProcedureCall = Replace(ProcedureCall, "%addins%", Environ$("appdata") & "\Microsoft\AddIns", , , vbTextCompare)
+   ProcedureCall = Replace(ProcedureCall, "%appdata%", Environ("appdata"), , , vbTextCompare)
+
+   AddInFilePath = Left(ProcedureCall, InStrRev(ProcedureCall, ".")) & "accda"
+   If Len(VBA.Dir(AddInFilePath)) = 0 Then
+      If Mid(ProcedureCall, 2, 1) = ":" Then ' is an add-in call, but add-in is not available => ignore it
+         VBA.MsgBox "Add-in '" & AddInFilePath & "' is not available, procedure call is skipped", vbInformation, "Call procedure skipped"
+         TryRunAddInProcedure = True
+      End If
+      Exit Function
+   End If
+
+   TryRunAddInProcedure = True
+   CallApplicationRun ProcedureCall
+
+End Function
+
+Private Function CallApplicationRun(ByVal ProcedureCall As String)
+
+   Dim ProcName As String
+   Dim ProcParams() As String
+   Dim ParamCount As Long
+
+   ParamCount = GetProcNameAndParams(ProcedureCall, ProcName, ProcParams)
+
+   Select Case ParamCount
+      Case 0
+         Application.Run ProcName
+      Case 1
+         Application.Run ProcName, ProcParams(0)
+      Case 2
+         Application.Run ProcName, ProcParams(0), ProcParams(1)
+      Case 3
+         Application.Run ProcName, ProcParams(0), ProcParams(1), ProcParams(2)
+      Case 4
+         Application.Run ProcName, ProcParams(0), ProcParams(1), ProcParams(2), ProcParams(3)
+      Case Else
+         Err.Raise vbObjectError, "ACLibFileManager.CallApplicationRun", "Only 4 parameters implemented"
+   End Select
+
+End Function
+
+Private Function GetProcNameAndParams(ByVal ProcedureCall As String, ByRef ProcName As String, ByRef ProcParams() As String) As Long
+
+   Dim ProcParamString As String
+   Dim ParamPos As Long
+
+   ProcedureCall = Replace(ProcedureCall, "()", vbNullString)
+
+   ParamPos = InStr(1, ProcedureCall, "(")
+
+   If ParamPos = 0 Then
+      ProcName = ProcedureCall
+      GetProcNameAndParams = 0
+      Exit Function
+   End If
+
+   ProcName = Left(ProcedureCall, ParamPos - 1)
+   ProcParamString = Trim(Mid(ProcedureCall, ParamPos + 1))
+
+   If Right(ProcParamString, 1) = ")" Then
+      ProcParamString = Left(ProcParamString, Len(ProcParamString) - 1)
+   End If
+
+   ProcParams = Split(ProcParamString, ",")
+
+   Dim i As Long
+   For i = LBound(ProcParams) To UBound(ProcParams)
+      ProcParams(i) = Trim(ProcParams(i))
+      If Left(ProcParams(i), 1) = """" Then
+         ProcParams(i) = Mid(ProcParams(i), 2, Len(ProcParams(i)) - 2)
+      End If
+   Next
+
+   GetProcNameAndParams = UBound(ProcParams) + 1
+
+End Function
 
 Private Function IgnoreFolder(ByRef TestFolder As Object) As Boolean
 '/*

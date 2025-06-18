@@ -153,7 +153,7 @@ Begin Form
                     TextAlign =1
                     IMESentenceMode =3
                     Left =2070
-                    Top =3135
+                    Top =3143
                     Width =4740
                     Height =300
                     TabIndex =5
@@ -165,9 +165,9 @@ Begin Form
                     ShowDatePicker =0
 
                     LayoutCachedLeft =2070
-                    LayoutCachedTop =3135
+                    LayoutCachedTop =3143
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =3435
+                    LayoutCachedHeight =3443
                     RowStart =6
                     RowEnd =6
                     ColumnStart =1
@@ -180,7 +180,7 @@ Begin Form
                             OverlapFlags =85
                             TextAlign =1
                             Left =570
-                            Top =3135
+                            Top =3143
                             Width =1440
                             Height =300
                             Name ="lbltxtAddInName"
@@ -191,9 +191,9 @@ Begin Form
                             BottomPadding =150
                             HorizontalAnchor =2
                             LayoutCachedLeft =570
-                            LayoutCachedTop =3135
+                            LayoutCachedTop =3143
                             LayoutCachedWidth =2010
-                            LayoutCachedHeight =3435
+                            LayoutCachedHeight =3443
                             RowStart =6
                             RowEnd =6
                             LayoutGroup =1
@@ -262,7 +262,7 @@ Begin Form
                     TextAlign =1
                     IMESentenceMode =3
                     Left =2070
-                    Top =3615
+                    Top =3623
                     Width =4740
                     Height =300
                     TabIndex =6
@@ -274,9 +274,9 @@ Begin Form
                     ShowDatePicker =0
 
                     LayoutCachedLeft =2070
-                    LayoutCachedTop =3615
+                    LayoutCachedTop =3623
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =3915
+                    LayoutCachedHeight =3923
                     RowStart =7
                     RowEnd =7
                     ColumnStart =1
@@ -289,7 +289,7 @@ Begin Form
                             OverlapFlags =85
                             TextAlign =1
                             Left =570
-                            Top =3615
+                            Top =3623
                             Width =1440
                             Height =300
                             Name ="lblAddInAuthor"
@@ -300,9 +300,9 @@ Begin Form
                             BottomPadding =150
                             HorizontalAnchor =2
                             LayoutCachedLeft =570
-                            LayoutCachedTop =3615
+                            LayoutCachedTop =3623
                             LayoutCachedWidth =2010
-                            LayoutCachedHeight =3915
+                            LayoutCachedHeight =3923
                             RowStart =7
                             RowEnd =7
                             LayoutGroup =1
@@ -318,7 +318,7 @@ Begin Form
                     TextAlign =1
                     IMESentenceMode =3
                     Left =2070
-                    Top =4095
+                    Top =4103
                     Width =4740
                     Height =300
                     TabIndex =7
@@ -330,9 +330,9 @@ Begin Form
                     ShowDatePicker =0
 
                     LayoutCachedLeft =2070
-                    LayoutCachedTop =4095
+                    LayoutCachedTop =4103
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =4395
+                    LayoutCachedHeight =4403
                     RowStart =8
                     RowEnd =8
                     ColumnStart =1
@@ -345,7 +345,7 @@ Begin Form
                             OverlapFlags =85
                             TextAlign =1
                             Left =570
-                            Top =4095
+                            Top =4103
                             Width =1440
                             Height =300
                             Name ="lblAddInCompany"
@@ -356,9 +356,9 @@ Begin Form
                             BottomPadding =150
                             HorizontalAnchor =2
                             LayoutCachedLeft =570
-                            LayoutCachedTop =4095
+                            LayoutCachedTop =4103
                             LayoutCachedWidth =2010
-                            LayoutCachedHeight =4395
+                            LayoutCachedHeight =4403
                             RowStart =8
                             RowEnd =8
                             LayoutGroup =1
@@ -374,7 +374,7 @@ Begin Form
                     TextAlign =1
                     IMESentenceMode =3
                     Left =2070
-                    Top =4575
+                    Top =4583
                     Width =4740
                     Height =1125
                     TabIndex =8
@@ -387,9 +387,9 @@ Begin Form
                     ShowDatePicker =0
 
                     LayoutCachedLeft =2070
-                    LayoutCachedTop =4575
+                    LayoutCachedTop =4583
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =5700
+                    LayoutCachedHeight =5708
                     RowStart =9
                     RowEnd =9
                     ColumnStart =1
@@ -402,7 +402,7 @@ Begin Form
                             OverlapFlags =85
                             TextAlign =1
                             Left =570
-                            Top =4575
+                            Top =4583
                             Width =1440
                             Height =1125
                             Name ="lblAddInComment"
@@ -414,9 +414,9 @@ Begin Form
                             HorizontalAnchor =2
                             VerticalAnchor =2
                             LayoutCachedLeft =570
-                            LayoutCachedTop =4575
+                            LayoutCachedTop =4583
                             LayoutCachedWidth =2010
-                            LayoutCachedHeight =5700
+                            LayoutCachedHeight =5708
                             RowStart =9
                             RowEnd =9
                             LayoutGroup =1
@@ -428,7 +428,7 @@ Begin Form
                 Begin CommandButton
                     OverlapFlags =85
                     Left =570
-                    Top =6240
+                    Top =6255
                     Width =6240
                     Height =450
                     TabIndex =10
@@ -442,9 +442,9 @@ Begin Form
                     HorizontalAnchor =2
 
                     LayoutCachedLeft =570
-                    LayoutCachedTop =6240
+                    LayoutCachedTop =6255
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =6690
+                    LayoutCachedHeight =6705
                     RowStart =11
                     RowEnd =11
                     ColumnEnd =2
@@ -596,7 +596,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     Left =570
-                    Top =2805
+                    Top =2813
                     Width =6240
                     Height =300
                     FontWeight =700
@@ -609,9 +609,9 @@ Begin Form
                     BottomPadding =0
                     HorizontalAnchor =2
                     LayoutCachedLeft =570
-                    LayoutCachedTop =2805
+                    LayoutCachedTop =2813
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =3105
+                    LayoutCachedHeight =3113
                     RowStart =5
                     RowEnd =5
                     ColumnEnd =2
@@ -687,7 +687,7 @@ Begin Form
                 Begin CheckBox
                     OverlapFlags =85
                     Left =3015
-                    Top =5880
+                    Top =5888
                     Width =3795
                     Height =300
                     TabIndex =9
@@ -697,9 +697,9 @@ Begin Form
                     RightPadding =567
 
                     LayoutCachedLeft =3015
-                    LayoutCachedTop =5880
+                    LayoutCachedTop =5888
                     LayoutCachedWidth =6810
-                    LayoutCachedHeight =6180
+                    LayoutCachedHeight =6188
                     RowStart =10
                     RowEnd =10
                     ColumnStart =2
@@ -711,7 +711,7 @@ Begin Form
                             OverlapFlags =85
                             TextAlign =1
                             Left =570
-                            Top =5880
+                            Top =5888
                             Width =2415
                             Height =300
                             ForeColor =0
@@ -722,9 +722,9 @@ Begin Form
                             RightPadding =0
                             HorizontalAnchor =2
                             LayoutCachedLeft =570
-                            LayoutCachedTop =5880
+                            LayoutCachedTop =5888
                             LayoutCachedWidth =2985
-                            LayoutCachedHeight =6180
+                            LayoutCachedHeight =6188
                             RowStart =10
                             RowEnd =10
                             ColumnEnd =1
