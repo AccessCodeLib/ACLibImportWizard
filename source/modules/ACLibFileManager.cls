@@ -452,18 +452,22 @@ End Sub
 
 Private Function TryRunAddInProcedure(ByVal ProcedureCall As String) As Boolean
 
-    Dim AddInFilePath As String
+   Dim AddInFilePath As String
 
-    ProcedureCall = Replace(ProcedureCall, "%addins%", Environ$("appdata") & "\Microsoft\AddIns", , , vbTextCompare)
-    ProcedureCall = Replace(ProcedureCall, "%appdata%", Environ("appdata"), , , vbTextCompare)
+   ProcedureCall = Replace(ProcedureCall, "%addins%", Environ$("appdata") & "\Microsoft\AddIns", , , vbTextCompare)
+   ProcedureCall = Replace(ProcedureCall, "%appdata%", Environ("appdata"), , , vbTextCompare)
 
-    AddInFilePath = Left(ProcedureCall, InStrRev(ProcedureCall, ".")) & "accda"
-    If Len(VBA.Dir(AddInFilePath)) = 0 Then
-        Exit Function
-    End If
+   AddInFilePath = Left(ProcedureCall, InStrRev(ProcedureCall, ".")) & "accda"
+   If Len(VBA.Dir(AddInFilePath)) = 0 Then
+      If Mid(ProcedureCall, 2, 1) = ":" Then ' is an add-in call, but add-in is not available => ignore it
+         VBA.MsgBox "Add-in '" & AddInFilePath & "' is not available, procedure call is skipped", vbInformation, "Call procedure skipped"
+         TryRunAddInProcedure = True
+      End If
+      Exit Function
+   End If
 
-    TryRunAddInProcedure = True
-    CallApplicationRun ProcedureCall
+   TryRunAddInProcedure = True
+   CallApplicationRun ProcedureCall
 
 End Function
 
