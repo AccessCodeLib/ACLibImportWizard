@@ -22,7 +22,6 @@ Attribute VB_Exposed = False
 '<codelib>
 '  <file>_codelib/addins/shared/AddInConfiguration.cls</file>
 '  <license>_codelib/license.bas</license>
-'  <use>base/ApplicationHandler.cls</use>
 '  <ref><name>DAO</name><major>5</major><minor>0</minor><guid>{00025E01-0000-0000-C000-000000000046}</guid></ref>
 '</codelib>
 '---------------------------------------------------------------------------------------
@@ -260,7 +259,7 @@ HandleErr:
       Resume ExitHere
    End If
 
-   HandleError Err.Number, Err.Source, Err.Description, aclibErrRaise
+   Err.Raise Err.Number, "AddInConfiguration.SetDbProperty->" & Err.Source, Err.Description
 
 End Sub
 
@@ -281,7 +280,7 @@ HandleErr:
       Resume ExitHere
    End If
 
-   HandleError Err.Number, Err.Source, Err.Description, aclibErrRaise
+   Err.Raise Err.Number, "AddInConfiguration.SetDocProperty->" & Err.Source, Err.Description
 
 End Sub
 
