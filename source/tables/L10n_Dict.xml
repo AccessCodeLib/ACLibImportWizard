@@ -303,6 +303,11 @@ C:\Daten\Projekte\CodeLib\GitHub\base\SqlTools.cls</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
+    <KeyText>incl. &amp;examples</KeyText>
+    <LngText>incl. &amp;examples</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
     <KeyText>incl. &amp;test classes</KeyText>
     <LngText>incl. &amp;test classes</LngText>
   </L10n_Dict>
@@ -365,6 +370,11 @@ Marked entries can be removed from the list with {Del} key.</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
+    <KeyText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</KeyText>
+    <LngText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
     <KeyText>This file does not exist</KeyText>
     <LngText>This file does not exist</LngText>
   </L10n_Dict>
@@ -385,12 +395,22 @@ Marked entries can be removed from the list with {Del} key.</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
-    <KeyText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</KeyText>
-    <LngText>The add-in must be installed into the Access add-in directory using the add-in manager. Afterwards it has to be started via the menu entry 'ACLib Import Wizard'.</LngText>
+    <KeyText>Export abgeschlossen</KeyText>
+    <LngText>Export abgeschlossen</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
+    <KeyText>Update is completed</KeyText>
+    <LngText>Update is completed</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
     <KeyText>incl. &amp;examples</KeyText>
-    <LngText>incl. &amp;examples</LngText>
+    <LngText>inkl. B&amp;eispielen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>Import process running ...</KeyText>
+    <LngText>Importvorgang läuft …</LngText>
   </L10n_Dict>
 </dataroot>
