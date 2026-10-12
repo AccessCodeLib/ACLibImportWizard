@@ -2,13 +2,13 @@
 <dataroot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <USysRegInfo>
     <Subkey>HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard</Subkey>
-    <Type>4</Type>
-    <ValName>BitmapID</ValName>
-    <Value>339</Value>
+    <Type>0</Type>
   </USysRegInfo>
   <USysRegInfo>
     <Subkey>HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard</Subkey>
-    <Type>0</Type>
+    <Type>1</Type>
+    <ValName>Expression</ValName>
+    <Value>=StartApplication()</Value>
   </USysRegInfo>
   <USysRegInfo>
     <Subkey>HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard</Subkey>
@@ -18,9 +18,9 @@
   </USysRegInfo>
   <USysRegInfo>
     <Subkey>HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard</Subkey>
-    <Type>1</Type>
-    <ValName>Expression</ValName>
-    <Value>=StartApplication()</Value>
+    <Type>4</Type>
+    <ValName>BitmapID</ValName>
+    <Value>339</Value>
   </USysRegInfo>
   <USysRegInfo>
     <Subkey>HKEY_CURRENT_ACCESS_PROFILE\Menu Add-Ins\ACLib Import Wizard</Subkey>
