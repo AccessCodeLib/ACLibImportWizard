@@ -105,6 +105,9 @@ Private m_LocalRepositoryRootDirectory As String   ' Local root directory for re
 Private m_PrivateRepositoryRootDirectory As String ' Local root directory for private repository export
 Private m_ExportAllToApplicationSourceFolder As Boolean
 
+Private m_SilentMode As Boolean       ' Collect messages instead of showing a MsgBox (used by API)
+Private m_Messages As Collection
+
 ' Events
 Public Event PropertyMissingLocalRepositoryRootDirectory(ByRef NewValue As String)
 Public Event MissingLocalRepositoryFile(ByVal ACLibPath As String, ByVal FullFilePath As String)
@@ -206,6 +209,47 @@ End Sub
 Public Property Let ExportAllToApplicationSourceFolder(ByVal NewValue As Boolean)
    m_ExportAllToApplicationSourceFolder = NewValue
 End Property
+
+'---------------------------------------------------------------------------------------
+' Property: SilentMode
+'---------------------------------------------------------------------------------------
+'
+' True: messages are collected in Messages instead of being shown in a MsgBox
+'
+'---------------------------------------------------------------------------------------
+Public Property Get SilentMode() As Boolean
+   SilentMode = m_SilentMode
+End Property
+
+Public Property Let SilentMode(ByVal NewValue As Boolean)
+   m_SilentMode = NewValue
+End Property
+
+Public Property Get Messages() As Collection
+   If m_Messages Is Nothing Then
+      Set m_Messages = New Collection
+   End If
+   Set Messages = m_Messages
+End Property
+
+Public Sub ClearMessages()
+   Set m_Messages = Nothing
+End Sub
+
+Private Sub AddMessage(ByVal Message As String)
+   Messages.Add Message
+End Sub
+
+'---------------------------------------------------------------------------------------
+' Sub: ResetRepositoryRootDirectory
+'---------------------------------------------------------------------------------------
+'
+' Remove cached local repository root, the next access raises PropertyMissingLocalRepositoryRootDirectory again
+'
+'---------------------------------------------------------------------------------------
+Public Sub ResetRepositoryRootDirectory()
+   m_LocalRepositoryRootDirectory = vbNullString
+End Sub
 
 Public Sub ExportAll()
 
@@ -460,7 +504,11 @@ Private Function TryRunAddInProcedure(ByVal ProcedureCall As String) As Boolean
    AddInFilePath = Left(ProcedureCall, InStrRev(ProcedureCall, ".")) & "accda"
    If Len(VBA.Dir(AddInFilePath)) = 0 Then
       If Mid(ProcedureCall, 2, 1) = ":" Then ' is an add-in call, but add-in is not available => ignore it
-         VBA.MsgBox "Add-in '" & AddInFilePath & "' is not available, procedure call is skipped", vbInformation, "Call procedure skipped"
+         If m_SilentMode Then
+            AddMessage "Add-in '" & AddInFilePath & "' is not available, procedure call is skipped"
+         Else
+            VBA.MsgBox "Add-in '" & AddInFilePath & "' is not available, procedure call is skipped", vbInformation, "Call procedure skipped"
+         End If
          TryRunAddInProcedure = True
       End If
       Exit Function
@@ -1837,7 +1885,11 @@ Private Sub RefreshAllAccessObjects(ByVal AoType As AcObjectType, _
    ImportFilesFromImportCollection
 
    If ShowMessageAfterRefresh Then
-      MsgBox "Update is completed"
+      If m_SilentMode Then
+         AddMessage "Update is completed"
+      Else
+         MsgBox "Update is completed"
+      End If
    End If
 
 End Sub

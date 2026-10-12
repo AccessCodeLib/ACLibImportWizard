@@ -16,3 +16,6 @@ vcs-index.json
 
 # Ignore any dotenv files (used for external database connections)
 *.env
+
+# Local MCP server configuration (contains machine-specific paths)
+.mcp.json
