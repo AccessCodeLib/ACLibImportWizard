@@ -27,14 +27,6 @@
           "Value": "Access Code Library - Import Wizard"
         }
       }
-    },
-    "Tables": {
-      "tab1DS": {
-        "Description": {
-          "Type": 10,
-          "Value": "Tabelle mit einem DS (ist in Abfragen hilfeich)"
-        }
-      }
     }
   }
 }

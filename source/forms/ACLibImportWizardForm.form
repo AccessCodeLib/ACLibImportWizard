@@ -14,13 +14,13 @@ Begin Form
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
     GridY =10
-    Width =10214
+    Width =10260
     DatasheetFontHeight =11
     ItemSuffix =95
-    Left =4178
-    Top =3030
-    Right =16673
-    Bottom =10673
+    Left =1000
+    Top =1000
+    Right =50000
+    Bottom =50000
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -119,7 +119,7 @@ Begin Form
             GridlineShade =65.0
         End
         Begin Section
-            Height =8196
+            Height =8220
             Name ="Detail"
             Begin
                 Begin CommandButton
@@ -175,10 +175,6 @@ Begin Form
                     ControlTipText ="Select local root directory"
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =9698
-                    LayoutCachedTop =548
-                    LayoutCachedWidth =10095
-                    LayoutCachedHeight =945
                     Overlaps =1
                 End
                 Begin CommandButton
@@ -210,10 +206,6 @@ Begin Form
                     UnicodeAccessKey =83
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =9695
-                    LayoutCachedTop =1350
-                    LayoutCachedWidth =10092
-                    LayoutCachedHeight =1747
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -233,10 +225,6 @@ Begin Form
                     AfterUpdate ="[Event Procedure]"
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =4709
-                    LayoutCachedTop =593
-                    LayoutCachedWidth =9605
-                    LayoutCachedHeight =908
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -247,10 +235,6 @@ Begin Form
                             Name ="Label5"
                             Caption ="Local root directory of the code library:"
                             Tag ="LANG:"
-                            LayoutCachedLeft =120
-                            LayoutCachedTop =593
-                            LayoutCachedWidth =4695
-                            LayoutCachedHeight =908
                         End
                     End
                 End
@@ -270,10 +254,6 @@ Begin Form
                     UnicodeAccessKey =65
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =1375
-                    LayoutCachedWidth =9141
-                    LayoutCachedHeight =1690
                     Begin
                         Begin Label
                             OverlapFlags =93
@@ -284,10 +264,6 @@ Begin Form
                             Name ="Label11"
                             Caption ="&Attach file"
                             Tag ="LANG:"
-                            LayoutCachedLeft =120
-                            LayoutCachedTop =1035
-                            LayoutCachedWidth =1530
-                            LayoutCachedHeight =1350
                         End
                     End
                 End
@@ -308,10 +284,6 @@ Begin Form
                     ControlTipText ="Attach file from text line"
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =9202
-                    LayoutCachedTop =1350
-                    LayoutCachedWidth =9599
-                    LayoutCachedHeight =1747
                 End
                 Begin ListBox
                     OverlapFlags =247
@@ -339,10 +311,6 @@ Begin Form
                     HorizontalAnchor =2
                     VerticalAnchor =2
 
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =2114
-                    LayoutCachedWidth =10099
-                    LayoutCachedHeight =5346
                     Begin
                         Begin Label
                             OverlapFlags =85
@@ -353,10 +321,6 @@ Begin Form
                             Name ="Label13"
                             Caption ="Selected &files:"
                             Tag ="LANG:"
-                            LayoutCachedLeft =127
-                            LayoutCachedTop =1770
-                            LayoutCachedWidth =2407
-                            LayoutCachedHeight =2085
                         End
                     End
                 End
@@ -377,10 +341,6 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7042
-                    LayoutCachedTop =7456
-                    LayoutCachedWidth =9247
-                    LayoutCachedHeight =8011
                     Overlaps =1
                 End
                 Begin OptionGroup
@@ -397,10 +357,6 @@ Begin Form
                     HorizontalAnchor =2
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =5520
-                    LayoutCachedWidth =10102
-                    LayoutCachedHeight =8136
                     Begin
                         Begin Label
                             OverlapFlags =215
@@ -412,10 +368,6 @@ Begin Form
                             Caption ="Import &mode"
                             Tag ="LANG:"
                             VerticalAnchor =1
-                            LayoutCachedLeft =229
-                            LayoutCachedTop =5577
-                            LayoutCachedWidth =6814
-                            LayoutCachedHeight =5892
                         End
                         Begin OptionButton
                             OverlapFlags =87
@@ -425,10 +377,6 @@ Begin Form
                             Name ="Option17"
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =359
-                            LayoutCachedTop =6350
-                            LayoutCachedWidth =619
-                            LayoutCachedHeight =6590
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -440,10 +388,6 @@ Begin Form
                                     Caption ="do not overwrite existing elements"
                                     Tag ="LANG:"
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =584
-                                    LayoutCachedTop =6320
-                                    LayoutCachedWidth =6824
-                                    LayoutCachedHeight =6635
                                 End
                             End
                         End
@@ -455,10 +399,6 @@ Begin Form
                             Name ="Option19"
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =359
-                            LayoutCachedTop =6740
-                            LayoutCachedWidth =619
-                            LayoutCachedHeight =6980
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -470,10 +410,6 @@ Begin Form
                                     Caption ="overwrite existing elements"
                                     Tag ="LANG:"
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =589
-                                    LayoutCachedTop =6710
-                                    LayoutCachedWidth =6814
-                                    LayoutCachedHeight =7025
                                 End
                             End
                         End
@@ -485,10 +421,6 @@ Begin Form
                             Name ="Option21"
                             VerticalAnchor =1
 
-                            LayoutCachedLeft =359
-                            LayoutCachedTop =7595
-                            LayoutCachedWidth =619
-                            LayoutCachedHeight =7835
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -500,10 +432,6 @@ Begin Form
                                     Caption ="import only the selected file(s)"
                                     Tag ="LANG:"
                                     VerticalAnchor =1
-                                    LayoutCachedLeft =584
-                                    LayoutCachedTop =7565
-                                    LayoutCachedWidth =6824
-                                    LayoutCachedHeight =7880
                                 End
                             End
                         End
@@ -519,10 +447,6 @@ Begin Form
                     Caption ="Automatically fill in missing dependencies"
                     Tag ="LANG:"
                     VerticalAnchor =1
-                    LayoutCachedLeft =292
-                    LayoutCachedTop =5970
-                    LayoutCachedWidth =6817
-                    LayoutCachedHeight =6255
                 End
                 Begin Label
                     OverlapFlags =215
@@ -534,10 +458,6 @@ Begin Form
                     Caption ="no dependency check"
                     Tag ="LANG:"
                     VerticalAnchor =1
-                    LayoutCachedLeft =290
-                    LayoutCachedTop =7216
-                    LayoutCachedWidth =6815
-                    LayoutCachedHeight =7501
                 End
                 Begin Label
                     Visible = NotDefault
@@ -555,10 +475,6 @@ Begin Form
                     Tag ="LANG:"
                     HorizontalAnchor =1
                     VerticalAnchor =1
-                    LayoutCachedLeft =7042
-                    LayoutCachedTop =7020
-                    LayoutCachedWidth =9937
-                    LayoutCachedHeight =7335
                 End
                 Begin TextBox
                     OverlapFlags =85
@@ -582,10 +498,6 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7042
-                    LayoutCachedTop =5640
-                    LayoutCachedWidth =7302
-                    LayoutCachedHeight =5880
                     Begin
                         Begin Label
                             OverlapFlags =215
@@ -598,10 +510,6 @@ Begin Form
                             Tag ="LANG:"
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =7318
-                            LayoutCachedTop =5580
-                            LayoutCachedWidth =10048
-                            LayoutCachedHeight =5895
                         End
                     End
                 End
@@ -632,10 +540,6 @@ Begin Form
                     BorderColor =0
                     Name ="txtCodeModuleDescription"
 
-                    LayoutCachedLeft =6986
-                    LayoutCachedTop =2436
-                    LayoutCachedWidth =10106
-                    LayoutCachedHeight =5346
                 End
                 Begin TextBox
                     Locked = NotDefault
@@ -652,10 +556,6 @@ Begin Form
                     BorderColor =0
                     Name ="txtCodeModuleName"
 
-                    LayoutCachedLeft =6986
-                    LayoutCachedTop =2114
-                    LayoutCachedWidth =10106
-                    LayoutCachedHeight =2399
                 End
                 Begin ToggleButton
                     OverlapFlags =85
@@ -673,10 +573,6 @@ Begin Form
                     Tag ="LANG:"
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =6982
-                    LayoutCachedTop =1800
-                    LayoutCachedWidth =10087
-                    LayoutCachedHeight =2073
                 End
                 Begin CommandButton
                     OverlapFlags =215
@@ -693,10 +589,6 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =9364
-                    LayoutCachedTop =7456
-                    LayoutCachedWidth =9919
-                    LayoutCachedHeight =8011
                     Overlaps =1
                 End
                 Begin ComboBox
@@ -726,10 +618,6 @@ Begin Form
                     AllowValueListEdits =0
                     InheritValueList =0
 
-                    LayoutCachedLeft =9581
-                    LayoutCachedTop =56
-                    LayoutCachedWidth =10142
-                    LayoutCachedHeight =284
                     ThemeFontIndex =-1
                     BackThemeColorIndex =-1
                     BorderThemeColorIndex =-1
@@ -751,10 +639,6 @@ Begin Form
                     Name ="ogRepositorySource"
                     AfterUpdate ="[Event Procedure]"
 
-                    LayoutCachedLeft =53
-                    LayoutCachedTop =53
-                    LayoutCachedWidth =9467
-                    LayoutCachedHeight =507
                     Begin
                         Begin OptionButton
                             OverlapFlags =87
@@ -763,10 +647,6 @@ Begin Form
                             OptionValue =2
                             Name ="Option56"
 
-                            LayoutCachedLeft =3878
-                            LayoutCachedTop =195
-                            LayoutCachedWidth =4138
-                            LayoutCachedHeight =435
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -776,10 +656,6 @@ Begin Form
                                     Height =293
                                     Name ="Label57"
                                     Caption ="GitHub (web access)"
-                                    LayoutCachedLeft =4108
-                                    LayoutCachedTop =165
-                                    LayoutCachedWidth =6029
-                                    LayoutCachedHeight =458
                                 End
                             End
                         End
@@ -792,10 +668,6 @@ Begin Form
                             OptionValue =6
                             Name ="Option91"
 
-                            LayoutCachedLeft =6180
-                            LayoutCachedTop =195
-                            LayoutCachedWidth =6545
-                            LayoutCachedHeight =435
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -805,10 +677,6 @@ Begin Form
                                     Height =293
                                     Name ="Label92"
                                     Caption ="Packages"
-                                    LayoutCachedLeft =6410
-                                    LayoutCachedTop =165
-                                    LayoutCachedWidth =7423
-                                    LayoutCachedHeight =458
                                 End
                             End
                         End
@@ -820,10 +688,6 @@ Begin Form
                             OptionValue =1
                             Name ="Option58"
 
-                            LayoutCachedLeft =7507
-                            LayoutCachedTop =195
-                            LayoutCachedWidth =7767
-                            LayoutCachedHeight =435
                             Begin
                                 Begin Label
                                     OverlapFlags =247
@@ -833,10 +697,6 @@ Begin Form
                                     Height =293
                                     Name ="Label59"
                                     Caption ="Local repository"
-                                    LayoutCachedLeft =7737
-                                    LayoutCachedTop =165
-                                    LayoutCachedWidth =9380
-                                    LayoutCachedHeight =458
                                 End
                             End
                         End
@@ -850,10 +710,6 @@ Begin Form
                     Height =293
                     Name ="Label60"
                     Caption ="Access Code Library repository source:"
-                    LayoutCachedLeft =120
-                    LayoutCachedTop =158
-                    LayoutCachedWidth =3690
-                    LayoutCachedHeight =451
                 End
                 Begin TextBox
                     TabStop = NotDefault
@@ -870,10 +726,6 @@ Begin Form
                     AfterUpdate ="[Event Procedure]"
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =5212
-                    LayoutCachedTop =593
-                    LayoutCachedWidth =10085
-                    LayoutCachedHeight =908
                     Begin
                         Begin Label
                             OverlapFlags =255
@@ -884,10 +736,6 @@ Begin Form
                             Name ="Label62"
                             Caption ="GitHub Authorization PersonalAccessToken (optional):"
                             Tag ="LANG:"
-                            LayoutCachedLeft =120
-                            LayoutCachedTop =593
-                            LayoutCachedWidth =5223
-                            LayoutCachedHeight =886
                         End
                     End
                 End
@@ -899,19 +747,15 @@ Begin Form
                     Width =10093
                     Name ="Line63"
                     HorizontalAnchor =2
-                    LayoutCachedLeft =57
-                    LayoutCachedTop =510
-                    LayoutCachedWidth =10150
-                    LayoutCachedHeight =510
                 End
                 Begin TextBox
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =6150
+                    Left =6240
                     Top =960
-                    Width =1785
-                    Height =293
+                    Width =1800
+                    Height =300
                     TabIndex =8
                     Name ="txtRepoName"
                     AfterUpdate ="[Event Procedure]"
@@ -920,10 +764,6 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =6150
-                    LayoutCachedTop =960
-                    LayoutCachedWidth =7935
-                    LayoutCachedHeight =1253
                     ColumnStart =4
                     ColumnEnd =4
                     LayoutGroup =1
@@ -935,18 +775,14 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =5378
+                            Left =5460
                             Top =960
-                            Width =705
-                            Height =293
+                            Width =720
+                            Height =300
                             Name ="Label65"
                             Caption ="Name:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =5378
-                            LayoutCachedTop =960
-                            LayoutCachedWidth =6083
-                            LayoutCachedHeight =1253
                             ColumnStart =3
                             ColumnEnd =3
                             LayoutGroup =1
@@ -960,10 +796,10 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =3608
+                    Left =3660
                     Top =960
-                    Width =1710
-                    Height =293
+                    Width =1680
+                    Height =300
                     TabIndex =7
                     Name ="txtRepoOwner"
                     AfterUpdate ="[Event Procedure]"
@@ -971,10 +807,6 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
 
-                    LayoutCachedLeft =3608
-                    LayoutCachedTop =960
-                    LayoutCachedWidth =5318
-                    LayoutCachedHeight =1253
                     ColumnStart =2
                     ColumnEnd =2
                     LayoutGroup =1
@@ -985,18 +817,14 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =2730
+                            Left =2760
                             Top =960
-                            Width =810
-                            Height =293
+                            Width =840
+                            Height =300
                             Name ="Label69"
                             Caption ="Owner:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =2730
-                            LayoutCachedTop =960
-                            LayoutCachedWidth =3540
-                            LayoutCachedHeight =1253
                             ColumnStart =1
                             ColumnEnd =1
                             LayoutGroup =1
@@ -1009,19 +837,15 @@ Begin Form
                 Begin Label
                     OverlapFlags =215
                     TextAlign =3
-                    Left =1425
+                    Left =1440
                     Top =960
-                    Width =1245
-                    Height =293
+                    Width =1260
+                    Height =300
                     FontWeight =700
                     Name ="labRepositoryData"
                     Caption ="Repository:"
                     GroupTable =1
                     BottomPadding =150
-                    LayoutCachedLeft =1425
-                    LayoutCachedTop =960
-                    LayoutCachedWidth =2670
-                    LayoutCachedHeight =1253
                     LayoutGroup =1
                     GridlineThemeColorIndex =1
                     GridlineShade =65.0
@@ -1031,10 +855,10 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =8813
+                    Left =8940
                     Top =960
-                    Width =1290
-                    Height =293
+                    Width =1320
+                    Height =300
                     TabIndex =9
                     Name ="txtRepoBranch"
                     AfterUpdate ="[Event Procedure]"
@@ -1043,10 +867,6 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =8813
-                    LayoutCachedTop =960
-                    LayoutCachedWidth =10103
-                    LayoutCachedHeight =1253
                     ColumnStart =6
                     ColumnEnd =6
                     LayoutGroup =1
@@ -1058,18 +878,14 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =7995
+                            Left =8100
                             Top =960
-                            Width =750
-                            Height =293
+                            Width =720
+                            Height =300
                             Name ="Label78"
                             Caption ="Branch:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =7995
-                            LayoutCachedTop =960
-                            LayoutCachedWidth =8745
-                            LayoutCachedHeight =1253
                             ColumnStart =5
                             ColumnEnd =5
                             LayoutGroup =1
@@ -1092,10 +908,6 @@ Begin Form
                     HorizontalAnchor =1
                     VerticalAnchor =1
 
-                    LayoutCachedLeft =7043
-                    LayoutCachedTop =6015
-                    LayoutCachedWidth =7303
-                    LayoutCachedHeight =6255
                     Begin
                         Begin Label
                             OverlapFlags =215
@@ -1108,10 +920,6 @@ Begin Form
                             Tag ="LANG:"
                             HorizontalAnchor =1
                             VerticalAnchor =1
-                            LayoutCachedLeft =7319
-                            LayoutCachedTop =5955
-                            LayoutCachedWidth =10049
-                            LayoutCachedHeight =6270
                         End
                     End
                 End

@@ -15,10 +15,10 @@ Begin Form
     Width =7370
     DatasheetFontHeight =11
     ItemSuffix =6
-    Left =10830
-    Top =4065
-    Right =18210
-    Bottom =10673
+    Left =1000
+    Top =1000
+    Right =50000
+    Bottom =50000
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0xcb7e8e855105e640
@@ -278,10 +278,6 @@ Begin Form
                     HorizontalAnchor =2
                     VerticalAnchor =2
 
-                    LayoutCachedLeft =53
-                    LayoutCachedTop =53
-                    LayoutCachedWidth =5438
-                    LayoutCachedHeight =6856
                 End
                 Begin CommandButton
                     OverlapFlags =85
@@ -294,10 +290,6 @@ Begin Form
                     OnClick ="[Event Procedure]"
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =5555
-                    LayoutCachedTop =113
-                    LayoutCachedWidth =7256
-                    LayoutCachedHeight =453
                 End
                 Begin CommandButton
                     Cancel = NotDefault
@@ -311,10 +303,6 @@ Begin Form
                     OnClick ="[Event Procedure]"
                     HorizontalAnchor =1
 
-                    LayoutCachedLeft =5555
-                    LayoutCachedTop =850
-                    LayoutCachedWidth =7256
-                    LayoutCachedHeight =1190
                 End
                 Begin Label
                     OverlapFlags =247
@@ -327,10 +315,6 @@ Begin Form
                     ForeColor =0
                     Name ="labStartInfo"
                     Caption ="Loading ..."
-                    LayoutCachedLeft =110
-                    LayoutCachedTop =283
-                    LayoutCachedWidth =5324
-                    LayoutCachedHeight =2264
                     ForeTint =100.0
                 End
             End
