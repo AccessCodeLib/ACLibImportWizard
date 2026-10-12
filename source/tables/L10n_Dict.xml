@@ -97,8 +97,18 @@
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>DE</LangCode>
+    <KeyText>Import process running ...</KeyText>
+    <LngText>Importvorgang läuft …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
     <KeyText>Import process running …</KeyText>
     <LngText>Importvorgang läuft …</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>DE</LangCode>
+    <KeyText>incl. &amp;examples</KeyText>
+    <LngText>inkl. B&amp;eispielen</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>DE</LangCode>
@@ -249,6 +259,11 @@ Markierte Einträge können mit {Entf}-Taste aus der Liste entfernt werden.</Lng
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
+    <KeyText>Export abgeschlossen</KeyText>
+    <LngText>Export abgeschlossen</LngText>
+  </L10n_Dict>
+  <L10n_Dict>
+    <LangCode>EN</LangCode>
     <KeyText>Export all existing CodeModules</KeyText>
     <LngText>Export all existing CodeModules</LngText>
   </L10n_Dict>
@@ -395,22 +410,7 @@ Marked entries can be removed from the list with {Del} key.</LngText>
   </L10n_Dict>
   <L10n_Dict>
     <LangCode>EN</LangCode>
-    <KeyText>Export abgeschlossen</KeyText>
-    <LngText>Export abgeschlossen</LngText>
-  </L10n_Dict>
-  <L10n_Dict>
-    <LangCode>EN</LangCode>
     <KeyText>Update is completed</KeyText>
     <LngText>Update is completed</LngText>
-  </L10n_Dict>
-  <L10n_Dict>
-    <LangCode>DE</LangCode>
-    <KeyText>incl. &amp;examples</KeyText>
-    <LngText>inkl. B&amp;eispielen</LngText>
-  </L10n_Dict>
-  <L10n_Dict>
-    <LangCode>DE</LangCode>
-    <KeyText>Import process running ...</KeyText>
-    <LngText>Importvorgang läuft …</LngText>
   </L10n_Dict>
 </dataroot>

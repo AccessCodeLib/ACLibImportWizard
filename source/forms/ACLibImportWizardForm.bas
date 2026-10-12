@@ -20,7 +20,7 @@ Begin Form
     Left =4178
     Top =3030
     Right =16673
-    Bottom =12195
+    Bottom =10673
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0x212b6fd80e9ce340
@@ -908,7 +908,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =6135
+                    Left =6150
                     Top =960
                     Width =1785
                     Height =293
@@ -920,9 +920,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =6135
+                    LayoutCachedLeft =6150
                     LayoutCachedTop =960
-                    LayoutCachedWidth =7920
+                    LayoutCachedWidth =7935
                     LayoutCachedHeight =1253
                     ColumnStart =4
                     ColumnEnd =4
@@ -935,7 +935,7 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =5370
+                            Left =5378
                             Top =960
                             Width =705
                             Height =293
@@ -943,9 +943,9 @@ Begin Form
                             Caption ="Name:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =5370
+                            LayoutCachedLeft =5378
                             LayoutCachedTop =960
-                            LayoutCachedWidth =6075
+                            LayoutCachedWidth =6083
                             LayoutCachedHeight =1253
                             ColumnStart =3
                             ColumnEnd =3
@@ -960,7 +960,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =3600
+                    Left =3608
                     Top =960
                     Width =1710
                     Height =293
@@ -971,9 +971,9 @@ Begin Form
                     GroupTable =1
                     BottomPadding =150
 
-                    LayoutCachedLeft =3600
+                    LayoutCachedLeft =3608
                     LayoutCachedTop =960
-                    LayoutCachedWidth =5310
+                    LayoutCachedWidth =5318
                     LayoutCachedHeight =1253
                     ColumnStart =2
                     ColumnEnd =2
@@ -1031,7 +1031,7 @@ Begin Form
                     OverlapFlags =85
                     TextAlign =1
                     IMESentenceMode =3
-                    Left =8790
+                    Left =8813
                     Top =960
                     Width =1290
                     Height =293
@@ -1043,9 +1043,9 @@ Begin Form
                     BottomPadding =150
                     HorizontalAnchor =2
 
-                    LayoutCachedLeft =8790
+                    LayoutCachedLeft =8813
                     LayoutCachedTop =960
-                    LayoutCachedWidth =10080
+                    LayoutCachedWidth =10103
                     LayoutCachedHeight =1253
                     ColumnStart =6
                     ColumnEnd =6
@@ -1058,7 +1058,7 @@ Begin Form
                         Begin Label
                             OverlapFlags =85
                             TextAlign =3
-                            Left =7980
+                            Left =7995
                             Top =960
                             Width =750
                             Height =293
@@ -1066,9 +1066,9 @@ Begin Form
                             Caption ="Branch:"
                             GroupTable =1
                             BottomPadding =150
-                            LayoutCachedLeft =7980
+                            LayoutCachedLeft =7995
                             LayoutCachedTop =960
-                            LayoutCachedWidth =8730
+                            LayoutCachedWidth =8745
                             LayoutCachedHeight =1253
                             ColumnStart =5
                             ColumnEnd =5

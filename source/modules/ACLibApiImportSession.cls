@@ -787,7 +787,7 @@ Private Function GetReferenceItems() As Collection
    For Each ref In Access.References
       RefJson = "{" & _
             JsonPair("name", JsonString(ref.Name)) & "," & _
-            JsonPair("guid", JsonString(ref.Guid)) & "," & _
+            JsonPair("guid", JsonString(ref.GUID)) & "," & _
             JsonPair("major", CStr(ref.Major)) & "," & _
             JsonPair("minor", CStr(ref.Minor)) & "}"
       If Not CollectionContains(RefItems, RefJson) Then
@@ -848,18 +848,18 @@ Private Function CollectionDifference(ByVal SourceCollection As Collection, ByVa
 
 End Function
 
-Private Function CollectionContains(ByVal Col As Collection, ByVal Key As String) As Boolean
+Private Function CollectionContains(ByVal col As Collection, ByVal Key As String) As Boolean
    Dim Item As Variant
-   CollectionContains = TryGetCollectionItem(Col, Key, Item)
+   CollectionContains = TryGetCollectionItem(col, Key, Item)
 End Function
 
-Private Function TryGetCollectionItem(ByVal Col As Collection, ByVal Key As String, ByRef Item As Variant) As Boolean
+Private Function TryGetCollectionItem(ByVal col As Collection, ByVal Key As String, ByRef Item As Variant) As Boolean
 ' Collection has no Exists method => check via error (not found is a valid result)
 
 On Error GoTo HandleErr
 
-   If Col Is Nothing Then Exit Function
-   Item = Col.Item(Key)
+   If col Is Nothing Then Exit Function
+   Item = col.Item(Key)
    TryGetCollectionItem = True
 
    Exit Function

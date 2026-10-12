@@ -6,16 +6,34 @@
   "Items": {
     "Databases": {
       "SummaryInfo": {
-        "Author": "Josef Pötzl",
-        "Comments": "Access add-in for importing elements from the Access Code Library.",
-        "Company": "access-codelib.net",
-        "Manager": "Josef Pötzl",
-        "Title": "Access Code Library - Import Wizard"
+        "Author": {
+          "Type": 10,
+          "Value": "Josef Pötzl"
+        },
+        "Comments": {
+          "Type": 10,
+          "Value": "Access add-in for importing elements from the Access Code Library."
+        },
+        "Company": {
+          "Type": 10,
+          "Value": "access-codelib.net"
+        },
+        "Manager": {
+          "Type": 10,
+          "Value": "Josef Pötzl"
+        },
+        "Title": {
+          "Type": 10,
+          "Value": "Access Code Library - Import Wizard"
+        }
       }
     },
     "Tables": {
       "tab1DS": {
-        "Description": "Tabelle mit einem DS (ist in Abfragen hilfeich)"
+        "Description": {
+          "Type": 10,
+          "Value": "Tabelle mit einem DS (ist in Abfragen hilfeich)"
+        }
       }
     }
   }

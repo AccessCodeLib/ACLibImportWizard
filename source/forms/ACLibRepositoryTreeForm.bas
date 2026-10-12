@@ -18,7 +18,7 @@ Begin Form
     Left =10830
     Top =4065
     Right =18210
-    Bottom =10980
+    Bottom =10673
     OnUnload ="[Event Procedure]"
     RecSrcDt = Begin
         0xcb7e8e855105e640

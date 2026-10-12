@@ -450,8 +450,6 @@ Private Sub ImportFilesFromImportCollection( _
        i = i + 1
    Loop
 
-
-
    If CompileAfterImport Then
       ActivateCurrentProject
       CurrentProject.Application.DoCmd.RunCommand acCmdCompileAndSaveAllModules
