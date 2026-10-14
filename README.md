@@ -53,3 +53,6 @@ Notes:
 * Compile the project after `Import` and check the result.
 * With [msaccess-vcs-mcp](https://github.com/joyfullservice/msaccess-vcs-mcp):
   `vcs_call_vba(database_path="<target>.accdb", function_name="<add-in path without .accda>.API", args=["Resolve", "text/String2.cls"])`
+
+#### Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branches, releases and development.
