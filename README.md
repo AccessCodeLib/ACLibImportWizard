@@ -10,6 +10,9 @@ Details: https://wiki.access-codelib.net/ACLib-Import-Wizard
 
 #### Automation API
 The wizard can be used without UI, e.g. from scripts or AI agents.
+For AI agents (MCP clients like Claude Code) there is an MCP server for this API:
+[ACLibImportWizard-MCP](https://github.com/AccessCodeLib/ACLibImportWizard-MCP)
+
 `API` returns a JSON string:
 
 ```vba
