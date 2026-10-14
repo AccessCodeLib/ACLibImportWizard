@@ -23,6 +23,7 @@ jobs:
       id: build_access_file
       uses: AccessCodeLib/msaccess-vcs-build@main
       with:
+        vcs-url: ""
         source-dir: "source"
         target-dir: "access-add-in"
         file-name: "ACLibImportWizard.accda"
