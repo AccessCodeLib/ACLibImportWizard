@@ -10,6 +10,9 @@ Details: https://wiki.access-codelib.net/ACLib-Import-Wizard
 
 #### Automation API
 The wizard can be used without UI, e.g. from scripts or AI agents.
+For AI agents (MCP clients like Claude Code) there is an MCP server for this API:
+[ACLibImportWizard-MCP](https://github.com/AccessCodeLib/ACLibImportWizard-MCP)
+
 `API` returns a JSON string:
 
 ```vba
@@ -50,3 +53,6 @@ Notes:
 * Compile the project after `Import` and check the result.
 * With [msaccess-vcs-mcp](https://github.com/joyfullservice/msaccess-vcs-mcp):
   `vcs_call_vba(database_path="<target>.accdb", function_name="<add-in path without .accda>.API", args=["Resolve", "text/String2.cls"])`
+
+#### Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branches, releases and development.
