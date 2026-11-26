@@ -7,10 +7,11 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Option Compare Database
+Option Compare Text
 Option Explicit
 
 Private Const GitHubApiTreesUrl As String = "https://api.github.com/repos/{owner}/{repo}/git/trees/{SHA}"
+Private Const GitHubApiRecursiveTreeQuery As String = "?recursive=1"
 
 Private m_Properties As Dictionary
 Private m_Nodes As Dictionary
@@ -72,6 +73,21 @@ Public Sub BuildFromSHA(ByVal Sha As String, _
    End With
 
 End Sub
+
+' Returns the raw JSON of the recursive tree (one API call). Raises like BuildFromSHA on a GitHub message.
+Public Function ReadRecursiveTreeJson(ByVal Sha As String) As String
+
+   Dim JsonString As String
+
+   JsonString = ACLibGitHubImporter.GetJsonString(Replace(GitHubApiTreesUrl, "{SHA}", Sha & GitHubApiRecursiveTreeQuery))
+
+   If JsonString Like "{""message"":*" Then
+      Err.Raise vbObjectError, "GitHubTreeNode.ReadRecursiveTreeJson", BuildErrMsgFromGitHubApiMessage(JsonString)
+   End If
+
+   ReadRecursiveTreeJson = JsonString
+
+End Function
 
 Private Function BuildErrMsgFromGitHubApiMessage(ByVal MsgJson As String) As String
 ' {"message":"API rate limit exceeded for 84.112.118.32. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)","documentation_url":"https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
