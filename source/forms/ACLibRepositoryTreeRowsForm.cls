@@ -10,8 +10,8 @@ Attribute VB_Exposed = False
 '
 ' Remarks:
 '---------------------------------------------------------------------------------------
-'| The rows are stored in a private temp database (TempDbHandler) and bound via Set Me.Recordset;
-'| no table of the add-in or of the host database is used.
+'| The rows are temporary data: they are held in a disconnected ADODB recordset (late bound,
+'| built in memory) and bound via Set Me.Recordset; nothing is written to a table or file.
 '| The form holds no tree logic: it shows the items it gets and raises events for clicks.
 '---------------------------------------------------------------------------------------
 '
@@ -23,12 +23,18 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Private Const RowsTableName As String = "RepositoryTreeRows"
-Private Const RowsTableDdl As String = "CREATE TABLE " & RowsTableName & " (" & _
-      "ItemKey TEXT(255) CONSTRAINT PK_" & RowsTableName & " PRIMARY KEY, " & _
-      "SortIndex LONG, IsFolder BIT, CheckGlyph TEXT(1), TreeLabelHtml MEMO)"
-Private Const RowsSelectSql As String = "SELECT ItemKey, SortIndex, IsFolder, CheckGlyph, TreeLabelHtml" & _
-      " FROM " & RowsTableName & " ORDER BY SortIndex"
+' ADO constants (late binding, the project has no ADODB reference)
+Private Const AdoProgId As String = "ADODB.Recordset"
+Private Const AdoUseClient As Long = 3
+Private Const AdoOpenStatic As Long = 3
+Private Const AdoLockBatchOptimistic As Long = 4
+Private Const AdoStateClosed As Long = 0
+' adLongVarWChar: the form cannot read the other text field types (adVarWChar: "Reserved Error")
+Private Const AdoTypeText As Long = 203
+Private Const AdoTextFieldSize As Long = 4096
+' IsFolder is stored as text as well: a bound boolean field cannot be read from its text box ("Reserved Error")
+Private Const FolderFlagYes As String = "1"
+Private Const FolderFlagNo As String = "0"
 
 ' Code points of the font Segoe MDL2 Assets (Windows 10 and 11; also in Segoe Fluent Icons)
 Private Const GlyphFontName As String = "Segoe MDL2 Assets"
@@ -48,9 +54,10 @@ Private Const FallbackHiddenGlyphColor As String = "#FFFFFF"
 Private Const SystemColorFlag As Long = &H80000000
 Private Const IndentSpacesPerLevel As Long = 4
 Private Const HtmlSpace As String = "&nbsp;"
+' Equal gaps between check box, chevron, icon and name (the chevron glyph touches the icon otherwise)
+Private Const GlyphGapHtml As String = "&nbsp;&nbsp;"
 
-Private m_TempDb As TempDbHandler
-Private m_RowsRecordset As DAO.Recordset
+Private m_RowsRecordset As Object
 Private m_HiddenGlyphColor As String
 
 Public Event CheckClicked(ByVal Key As String)
@@ -61,7 +68,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-   DisposeRowsDatabase
+   ReleaseRows
 End Sub
 
 Private Sub txtCheckGlyph_Click()
@@ -77,6 +84,7 @@ End Sub
 '---------------------------------------------------------------------------------------
 '
 ' Replaces all rows by the given items (display order) and moves to the row of CurrentKey
+' and keeps the position of that row in the list (it does not jump to the top)
 '
 ' Parameters:
 '     Items       - Collection of RepositoryTreeItem in display order
@@ -85,23 +93,31 @@ End Sub
 '---------------------------------------------------------------------------------------
 Public Sub ShowItems(ByVal Items As Collection, Optional ByVal CurrentKey As String = vbNullString)
 
-   Dim TransactionStarted As Boolean
+   Dim NewRows As Object
+   Dim OldRows As Object
+   Dim CurrentRowIndex As Long
+   Dim RowOffset As Long
    Dim ErrNumber As Long
    Dim ErrSource As String
    Dim ErrDescription As String
 
 On Error GoTo HandleErr
 
+   RowOffset = GetCurrentRowOffset
+
    Me.Painting = False
 
-   DBEngine.Workspaces(0).BeginTrans
-   TransactionStarted = True
-   WriteRows Items
-   DBEngine.Workspaces(0).CommitTrans
-   TransactionStarted = False
+   ' The recordset is built offline: changes of a bound recordset update the form row by row (slow).
+   Set NewRows = BuildRows(Items, CurrentKey, CurrentRowIndex)
+   Set OldRows = m_RowsRecordset
+   Set Me.Recordset = NewRows
+   ' Take over the bound recordset before closing the old one, so that a failing Close
+   ' can neither leave the form bound to a closed recordset nor let HandleErr close the bound one.
+   Set m_RowsRecordset = NewRows
+   Set NewRows = Nothing
+   CloseRows OldRows
 
-   RefreshRows
-   MoveToItem CurrentKey
+   MoveToRow CurrentRowIndex, RowOffset
 
    Me.Painting = True
    Exit Sub
@@ -112,8 +128,8 @@ HandleErr:
    ErrDescription = Err.Description
 
    Me.Painting = True
-   If TransactionStarted Then
-      DBEngine.Workspaces(0).Rollback
+   If Not (NewRows Is Nothing) Then
+      CloseRows NewRows
    End If
 
    Err.Raise ErrNumber, ErrSource, ErrDescription
@@ -122,7 +138,6 @@ End Sub
 
 Private Sub InitRowsForm()
    m_HiddenGlyphColor = GetHtmlColor(Me.txtTreeLabel.BackColor)
-   InitRowsDatabase
 End Sub
 
 Private Function GetHtmlColor(ByVal AccessColor As Long) As String
@@ -139,83 +154,123 @@ Private Function GetHtmlColor(ByVal AccessColor As Long) As String
 
 End Function
 
-Private Sub InitRowsDatabase()
+Private Sub ReleaseRows()
 
-   Set m_TempDb = New TempDbHandler
-   m_TempDb.CreateDatabase
-   m_TempDb.CreateTable RowsTableName, RowsTableDdl
-
-   Set m_RowsRecordset = m_TempDb.CurrentDatabase.OpenRecordset(RowsSelectSql, dbOpenDynaset)
-   Set Me.Recordset = m_RowsRecordset
-
-End Sub
-
-Private Sub DisposeRowsDatabase()
-
-   ' The form and the recordset must release the file first: Dispose deletes it under On Error Resume Next.
    Set Me.Recordset = Nothing
+   CloseRows m_RowsRecordset
+   Set m_RowsRecordset = Nothing
 
-   If Not (m_RowsRecordset Is Nothing) Then
-      m_RowsRecordset.Close
-      Set m_RowsRecordset = Nothing
-   End If
+End Sub
 
-   If Not (m_TempDb Is Nothing) Then
-      m_TempDb.Dispose
-      Set m_TempDb = Nothing
+Private Sub CloseRows(ByVal Rows As Object)
+
+   If Not (Rows Is Nothing) Then
+      If Rows.State <> AdoStateClosed Then
+         Rows.Close
+      End If
    End If
 
 End Sub
 
-Private Sub WriteRows(ByVal Items As Collection)
+' Builds the disconnected recordset in display order and returns the 1-based index of CurrentKey
+' (0 if there is no such row)
+Private Function BuildRows(ByVal Items As Collection, ByVal CurrentKey As String, _
+                           ByRef CurrentRowIndex As Long) As Object
 
-   Dim Rows As DAO.Recordset
+   Dim Rows As Object
    Dim Item As RepositoryTreeItem
-   Dim SortIndex As Long
+   Dim RowIndex As Long
 
-   m_TempDb.CurrentDatabase.Execute "DELETE FROM " & RowsTableName, dbFailOnError
+   Set Rows = CreateObject(AdoProgId)
+   With Rows
+      .CursorLocation = AdoUseClient
+      .Fields.Append "ItemKey", AdoTypeText, AdoTextFieldSize
+      .Fields.Append "IsFolder", AdoTypeText, AdoTextFieldSize
+      .Fields.Append "CheckGlyph", AdoTypeText, AdoTextFieldSize
+      .Fields.Append "TreeLabelHtml", AdoTypeText, AdoTextFieldSize
+      .Open , , AdoOpenStatic, AdoLockBatchOptimistic
 
-   Set Rows = m_TempDb.CurrentDatabase.OpenRecordset(RowsTableName, dbOpenDynaset, dbAppendOnly)
-   For Each Item In Items
-      SortIndex = SortIndex + 1
-      Rows.AddNew
-      Rows.Fields("ItemKey").Value = Item.Key
-      Rows.Fields("SortIndex").Value = SortIndex
-      Rows.Fields("IsFolder").Value = Item.IsFolder
-      Rows.Fields("CheckGlyph").Value = GetCheckGlyph(Item.CheckState)
-      Rows.Fields("TreeLabelHtml").Value = GetTreeLabelHtml(Item)
-      Rows.Update
-   Next
-   Rows.Close
-   Set Rows = Nothing
+      For Each Item In Items
+         RowIndex = RowIndex + 1
+         .AddNew
+         .Fields("ItemKey").Value = Item.Key
+         .Fields("IsFolder").Value = IIf(Item.IsFolder, FolderFlagYes, FolderFlagNo)
+         .Fields("CheckGlyph").Value = GetCheckGlyph(Item.CheckState)
+         .Fields("TreeLabelHtml").Value = GetTreeLabelHtml(Item)
+         .Update
+         If StrComp(Item.Key, CurrentKey, vbBinaryCompare) = 0 Then
+            CurrentRowIndex = RowIndex
+         End If
+      Next
 
-End Sub
+      If .RecordCount > 0 Then
+         .MoveFirst
+      End If
+   End With
 
-Private Sub RefreshRows()
-   Me.Requery
-End Sub
+   Set BuildRows = Rows
 
-Private Sub MoveToItem(ByVal Key As String)
+End Function
 
-   If Len(Key) = 0 Then
+' Number of rows between the top of the list and the current row (0 if there is no current row)
+Private Function GetCurrentRowOffset() As Long
+
+   Dim RowHeight As Long
+
+   If m_RowsRecordset Is Nothing Then
+      Exit Function
+   End If
+   If m_RowsRecordset.RecordCount = 0 Then
+      Exit Function
+   End If
+
+   RowHeight = Me.Section(acDetail).Height
+   If RowHeight > 0 Then
+      GetCurrentRowOffset = Me.CurrentSectionTop \ RowHeight
+   End If
+
+End Function
+
+Private Sub MoveToRow(ByVal RowIndex As Long, ByVal RowOffset As Long)
+
+   ' The key is always a visible item; if it is not found, the current record simply stays.
+   If RowIndex < 1 Then
       Exit Sub
    End If
 
-   ' The key is always a visible item; if it is not found, the current record simply stays.
-   Me.Recordset.FindFirst "ItemKey = " & SqlTools.TextToSqlText(Key)
+   Me.Recordset.MoveFirst
+   Me.Recordset.Move RowIndex - 1
+   KeepRowOffset RowOffset
+
+End Sub
+
+' Binding a new recordset scrolls the current row to the top of the list: scroll to the row that
+' was at the top before, then back to the current row, so that it keeps its place.
+' Two steps are needed because a single SelTop = CurrentRow puts the row at the top;
+' the first SelTop makes the former top row visible, the second one moves the current
+' row back to its old position (measured: row offset stays unchanged).
+Private Sub KeepRowOffset(ByVal RowOffset As Long)
+
+   Dim CurrentRow As Long
+
+   CurrentRow = Me.CurrentRecord
+   If CurrentRow > RowOffset Then
+      Me.SelTop = CurrentRow - RowOffset
+      Me.SelTop = CurrentRow
+   End If
 
 End Sub
 
 Private Sub RaiseCheckClicked()
-   RaiseEvent CheckClicked(Me!ItemKey)
+   RaiseEvent CheckClicked(Me.txtItemKey.Value)
 End Sub
 
 Private Sub RaiseTreeLabelClicked()
 
-   If Me!IsFolder Then
-      RaiseEvent ExpandClicked(Me!ItemKey)
+   If Me.txtIsFolder.Value = FolderFlagYes Then
+      RaiseEvent ExpandClicked(Me.txtItemKey.Value)
    Else
-      RaiseEvent CheckClicked(Me!ItemKey)
+      RaiseEvent CheckClicked(Me.txtItemKey.Value)
    End If
 
 End Sub
@@ -235,10 +290,10 @@ End Function
 
 Private Function GetTreeLabelHtml(ByVal Item As RepositoryTreeItem) As String
 
-   GetTreeLabelHtml = GetIndentHtml(Item.Level) & _
-                      GetExpanderHtml(Item) & _
+   GetTreeLabelHtml = GlyphGapHtml & GetIndentHtml(Item.Level) & _
+                      GetExpanderHtml(Item) & GlyphGapHtml & _
                       GetGlyphHtml(GetItemIconGlyph(Item)) & _
-                      HtmlSpace & HtmlEncode(Item.Name)
+                      GlyphGapHtml & HtmlEncode(Item.Name)
 
 End Function
 

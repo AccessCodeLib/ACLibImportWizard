@@ -6,14 +6,13 @@ Begin Form
     AllowDeletions = NotDefault
     DividingLines = NotDefault
     AllowAdditions = NotDefault
-    ScrollBars =2
     ViewsAllowed =1
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
     GridY =10
-    Width =5100
+    Width =8460
     DatasheetFontHeight =11
-    ItemSuffix =2
+    ItemSuffix =4
     Top =1000
     Right =50000
     Bottom =50000
@@ -67,7 +66,7 @@ Begin Form
                     Locked = NotDefault
                     TabStop = NotDefault
                     OldBorderStyle =0
-                    OverlapFlags =85
+                    OverlapFlags =93
                     TextAlign =2
                     TextFontFamily =18
                     IMESentenceMode =3
@@ -88,7 +87,7 @@ Begin Form
                     OverlapFlags =85
                     IMESentenceMode =3
                     Left =390
-                    Width =4680
+                    Width =8040
                     Height =300
                     TabIndex =1
                     Name ="txtTreeLabel"
@@ -97,6 +96,32 @@ Begin Form
                     TextFormat =1
 
                     ThemeFontIndex =-1
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =255
+                    IMESentenceMode =3
+                    Left =30
+                    Width =330
+                    Height =300
+                    TabIndex =2
+                    Name ="txtItemKey"
+                    ControlSource ="ItemKey"
+
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =247
+                    IMESentenceMode =3
+                    Left =30
+                    Width =330
+                    Height =300
+                    TabIndex =3
+                    Name ="txtIsFolder"
+                    ControlSource ="IsFolder"
+
                 End
             End
         End

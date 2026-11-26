@@ -12,9 +12,9 @@ Begin Form
     PictureAlignment =2
     DatasheetGridlinesBehavior =3
     GridY =10
-    Width =7370
+    Width =8432
     DatasheetFontHeight =11
-    ItemSuffix =10
+    ItemSuffix =11
     Left =1000
     Top =1000
     Right =50000
@@ -132,23 +132,24 @@ Begin Form
             Begin
                 Begin CommandButton
                     OverlapFlags =85
-                    Left =5555
+                    Left =6555
                     Top =113
                     Height =340
-                    TabIndex =1
+                    TabIndex =2
                     Name ="cmdCommit"
                     Caption ="Commit"
                     OnClick ="[Event Procedure]"
                     HorizontalAnchor =1
 
+                    Overlaps =1
                 End
                 Begin CommandButton
                     Cancel = NotDefault
                     OverlapFlags =85
-                    Left =5555
+                    Left =6555
                     Top =850
                     Height =340
-                    TabIndex =2
+                    TabIndex =3
                     Name ="cmdCancel"
                     Caption ="Cancel"
                     OnClick ="[Event Procedure]"
@@ -160,7 +161,7 @@ Begin Form
                     TextAlign =2
                     Left =110
                     Top =680
-                    Width =5214
+                    Width =6276
                     Height =1981
                     FontSize =14
                     ForeColor =0
@@ -176,6 +177,9 @@ Begin Form
                     Width =4588
                     Height =340
                     Name ="txtFilter"
+                    AfterUpdate ="[Event Procedure]"
+                    OnGotFocus ="[Event Procedure]"
+                    OnLostFocus ="[Event Procedure]"
                     OnChange ="[Event Procedure]"
                     HorizontalAnchor =2
 
@@ -196,9 +200,9 @@ Begin Form
                     OverlapFlags =215
                     Left =53
                     Top =567
-                    Width =5385
+                    Width =6447
                     Height =5953
-                    TabIndex =3
+                    TabIndex =4
                     Name ="subRepositoryTree"
                     SourceObject ="Form.ACLibRepositoryTreeRowsForm"
                     HorizontalAnchor =2
@@ -209,12 +213,27 @@ Begin Form
                     OverlapFlags =85
                     Left =53
                     Top =6576
-                    Width =5385
+                    Width =6447
                     Height =300
                     Name ="labSelectionInfo"
                     Caption ="0 files selected"
                     HorizontalAnchor =2
                     VerticalAnchor =1
+                End
+                Begin CommandButton
+                    OverlapFlags =85
+                    Left =5500
+                    Top =113
+                    Width =1000
+                    Height =340
+                    TabIndex =1
+                    Name ="cmdFilter"
+                    Caption ="Filter"
+                    OnClick ="[Event Procedure]"
+                    ControlTipText ="Apply filter"
+                    HorizontalAnchor =1
+
+                    Overlaps =1
                 End
             End
         End

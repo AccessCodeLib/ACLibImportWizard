@@ -16,15 +16,17 @@ Attribute VB_Exposed = False
 Option Compare Text
 Option Explicit
 
-Private Const FilterDelayMilliseconds As Long = 300
+Private Const FilterButtonCaption As String = "Filter"
+Private Const FilterButtonPendingCaption As String = "Filter *"
 Private Const NothingSelectedMessage As String = "Nothing has been selected."
 Private Const MessageTitle As String = "ACLib Import Wizard"
 
 Private m_TreeModel As RepositoryTreeModel
 Private WithEvents m_TreeRows As Form_ACLibRepositoryTreeRowsForm
 Attribute m_TreeRows.VB_VarHelpID = -1
-Private m_PendingFilterText As String
+Private m_AppliedFilterText As String
 Private m_IsTreeShown As Boolean
+Private m_IsFilterFieldFocused As Boolean
 
 Public Event FilesSelected(ByRef FileArray() As String)
 Public Event Unload()
@@ -40,7 +42,7 @@ Private Sub Form_Timer()
 On Error GoTo HandleErr
 
    Me.TimerInterval = 0
-   LoadOrFilterRepositoryTree
+   LoadRepositoryTree
 
 ExitHere:
    If CloseAfterError Then
@@ -68,7 +70,57 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub txtFilter_Change()
-   ScheduleFilter Me.txtFilter.Text
+   UpdateFilterButtonState
+End Sub
+
+Private Sub txtFilter_GotFocus()
+   TrackFilterFieldFocus True
+End Sub
+
+Private Sub txtFilter_LostFocus()
+   TrackFilterFieldFocus False
+End Sub
+
+Private Sub txtFilter_AfterUpdate()
+
+On Error GoTo HandleErr
+
+   ApplyFilter
+
+ExitHere:
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "txtFilter_AfterUpdate", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
+End Sub
+
+Private Sub cmdFilter_Click()
+
+On Error GoTo HandleErr
+
+   ApplyFilter
+
+ExitHere:
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "cmdFilter_Click", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
 End Sub
 
 Private Sub cmdCommit_Click()
@@ -133,14 +185,6 @@ Private Sub ReleaseTreeAndRaiseUnload()
    RaiseEvent Unload
 End Sub
 
-Private Sub LoadOrFilterRepositoryTree()
-   If Not m_IsTreeShown Then
-      LoadRepositoryTree
-   Else
-      ApplyFilter
-   End If
-End Sub
-
 Private Sub LoadRepositoryTree()
 
    Dim TreeModel As RepositoryTreeModel
@@ -149,10 +193,12 @@ Private Sub LoadRepositoryTree()
 
    Set TreeModel = New RepositoryTreeModel
    TreeModel.Initialize New RepositoryTreeSource
-   TreeModel.FilterText = m_PendingFilterText
+   TreeModel.FilterText = GetFilterText
+   m_AppliedFilterText = TreeModel.FilterText
    Set m_TreeModel = TreeModel
 
    ShowTree
+   UpdateFilterButtonState
    Me.subRepositoryTree.Visible = True
    Me.labStartInfo.Visible = False
    m_IsTreeShown = True
@@ -161,15 +207,59 @@ Private Sub LoadRepositoryTree()
 
 End Sub
 
-Private Sub ScheduleFilter(ByVal FilterText As String)
-   ' the filter runs after a short pause, not on every key stroke
-   m_PendingFilterText = FilterText
-   Me.TimerInterval = FilterDelayMilliseconds
+' The text of the field is only valid while the field has the focus (.Text), afterwards .Value is used.
+' Only reads: the field is never assigned, focused or moved here.
+Private Function GetFilterText() As String
+   If m_IsFilterFieldFocused Then
+      GetFilterText = Trim$(Me.txtFilter.Text)
+   Else
+      GetFilterText = Trim$(Nz(Me.txtFilter.Value, vbNullString))
+   End If
+End Function
+
+' Enter in the filter field presses the Filter button; elsewhere the form has no default button
+Private Sub TrackFilterFieldFocus(ByVal HasFocus As Boolean)
+   m_IsFilterFieldFocused = HasFocus
+   Me.cmdFilter.Default = HasFocus
 End Sub
 
+' The button shows that the entered text is not applied yet (bold, marked caption)
+Private Sub UpdateFilterButtonState()
+
+   Dim IsFilterPending As Boolean
+
+   IsFilterPending = StrComp(GetFilterText, m_AppliedFilterText, vbBinaryCompare) <> 0
+
+   Me.cmdFilter.FontBold = IsFilterPending
+   If IsFilterPending Then
+      Me.cmdFilter.Caption = FilterButtonPendingCaption
+   Else
+      Me.cmdFilter.Caption = FilterButtonCaption
+   End If
+
+End Sub
+
+' Enter or leaving the field (AfterUpdate) and the Filter button both end up here:
+' the tree is rebuilt only if the text differs from the text that is already applied.
+' Before the tree is shown nothing happens: loading the tree applies the text of the field.
 Private Sub ApplyFilter()
-   m_TreeModel.FilterText = m_PendingFilterText
+
+   Dim FilterText As String
+
+   If Not m_IsTreeShown Then
+      Exit Sub
+   End If
+
+   FilterText = GetFilterText
+   If StrComp(FilterText, m_AppliedFilterText, vbBinaryCompare) = 0 Then
+      Exit Sub
+   End If
+
+   m_TreeModel.FilterText = FilterText
+   m_AppliedFilterText = FilterText
    ShowTree
+   UpdateFilterButtonState
+
 End Sub
 
 Private Sub ToggleItemExpanded(ByVal Key As String)

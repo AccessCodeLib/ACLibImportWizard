@@ -66,6 +66,7 @@ Private Const PROPNAME_LOCALREPOSITORYROOT As String = "LocalRepositoryRoot"
 Private Const PROPNAME_PRIVATEREPOSITORYROOT As String = "PrivateRepositoryRoot"
 Private Const PROPNAME_IMPORTTESTDEFAULTVALUE As String = "ImportTestDefaultValue"
 Private Const PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN As String = "GitHubAuthPersonalAccessToken"
+Private Const PROPNAME_REPOSITORYADDITIONALFILEEXTENSIONS As String = "RepositoryAdditionalFileExtensions"
 
 ' Hilfsvariablen
 Private m_LocalRepositoryPath As String   ' allg. Repository-Verzeichnis
@@ -242,6 +243,17 @@ Public Property Let GitHubAuthPersonalAccessToken(ByVal NewValue As String)
    m_GitHubAuthPersonalAccessToken = NewValue
    SetACLibGlobalProperty PROPNAME_GITHUBAUTHPERSONALACCESSTOKEN, m_GitHubAuthPersonalAccessToken
 
+End Property
+
+' List of additional file extensions shown in the repository tree (extensions separated by ";" or ",", dot optional),
+' e.g. RepositoryAdditionalFileExtensions = ".txt;.md"; empty = none.
+' The default list (.bas, .cls, .frm, .rep, .package) is part of the code and is not stored here.
+Public Property Get RepositoryAdditionalFileExtensions() As String
+   RepositoryAdditionalFileExtensions = GetACLibGlobalProperty(PROPNAME_REPOSITORYADDITIONALFILEEXTENSIONS)
+End Property
+
+Public Property Let RepositoryAdditionalFileExtensions(ByVal NewValue As String)
+   SetACLibGlobalProperty PROPNAME_REPOSITORYADDITIONALFILEEXTENSIONS, NewValue
 End Property
 
 Friend Function GetACLibGlobalProperty(ByRef PropertyName As String) As String
