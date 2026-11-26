@@ -13,34 +13,62 @@ Attribute VB_Exposed = False
 '
 '---------------------------------------------------------------------------------------
 
-Option Compare Database
+Option Compare Text
 Option Explicit
 
-#Const TreeViewEarlyBinding = 0
+Private Const FilterDelayMilliseconds As Long = 300
+Private Const NothingSelectedMessage As String = "Nothing has been selected."
+Private Const MessageTitle As String = "ACLib Import Wizard"
 
-' MSComctlLib GUID = {831FDD16-0C5C-11D2-A9FC-0000F8754DA1}
-#If TreeViewEarlyBinding = 1 Then
-Private m_TreeView As MSComctlLib.TreeView
-#Else
-Private m_TreeView As Object
-Const tvwChild As Long = 4
-#End If
-
-Private m_RepoRootNode As GitHubTreeNode
-Private m_TreeviewEventHandlerOn As Boolean
+Private m_TreeModel As RepositoryTreeModel
+Private WithEvents m_TreeRows As Form_ACLibRepositoryTreeRowsForm
+Attribute m_TreeRows.VB_VarHelpID = -1
+Private m_PendingFilterText As String
+Private m_IsTreeShown As Boolean
 
 Public Event FilesSelected(ByRef FileArray() As String)
 Public Event Unload()
 
 Private Sub Form_Load()
-   Me.TimerInterval = 1
+   InitTreeForm
 End Sub
 
 Private Sub Form_Timer()
+
+   Dim CloseAfterError As Boolean
+
+On Error GoTo HandleErr
+
    Me.TimerInterval = 0
-   InitTreeView
-   Me.labStartInfo.Visible = False
-   Me.tvRepositoryTree.Visible = True
+   LoadOrFilterRepositoryTree
+
+ExitHere:
+   If CloseAfterError Then
+      DoCmd.Close acForm, Me.Name
+   End If
+   Exit Sub
+
+HandleErr:
+   DoCmd.Hourglass False
+   ' an error before the tree is shown for the first time closes the form (the wizard stays usable)
+   CloseAfterError = Not m_IsTreeShown
+   Select Case HandleError(Err.Number, "Form_Timer", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+   ReleaseTreeAndRaiseUnload
+End Sub
+
+Private Sub txtFilter_Change()
+   ScheduleFilter Me.txtFilter.Text
 End Sub
 
 Private Sub cmdCommit_Click()
@@ -51,236 +79,156 @@ Private Sub cmdCancel_Click()
    DoCmd.Close
 End Sub
 
+Private Sub m_TreeRows_ExpandClicked(ByVal Key As String)
+
+On Error GoTo HandleErr
+
+   ToggleItemExpanded Key
+
+ExitHere:
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "m_TreeRows_ExpandClicked", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
+End Sub
+
+Private Sub m_TreeRows_CheckClicked(ByVal Key As String)
+
+On Error GoTo HandleErr
+
+   ToggleItemChecked Key
+
+ExitHere:
+   Exit Sub
+
+HandleErr:
+   Select Case HandleError(Err.Number, "m_TreeRows_CheckClicked", Err.Description, ACLibErrorHandlerMode.aclibErrMsgBox)
+   Case ACLibErrorResumeMode.aclibErrResume
+      Resume
+   Case ACLibErrorResumeMode.aclibErrResumeNext
+      Resume Next
+   Case Else
+      Resume ExitHere
+   End Select
+
+End Sub
+
+Private Sub InitTreeForm()
+   Set m_TreeRows = Me.subRepositoryTree.Form
+   ' show the form before the first (slow) GitHub call
+   Me.TimerInterval = 1
+End Sub
+
+Private Sub ReleaseTreeAndRaiseUnload()
+   Set m_TreeRows = Nothing
+   Set m_TreeModel = Nothing
+   RaiseEvent Unload
+End Sub
+
+Private Sub LoadOrFilterRepositoryTree()
+   If Not m_IsTreeShown Then
+      LoadRepositoryTree
+   Else
+      ApplyFilter
+   End If
+End Sub
+
+Private Sub LoadRepositoryTree()
+
+   Dim TreeModel As RepositoryTreeModel
+
+   DoCmd.Hourglass True
+
+   Set TreeModel = New RepositoryTreeModel
+   TreeModel.Initialize New RepositoryTreeSource
+   TreeModel.FilterText = m_PendingFilterText
+   Set m_TreeModel = TreeModel
+
+   ShowTree
+   Me.subRepositoryTree.Visible = True
+   Me.labStartInfo.Visible = False
+   m_IsTreeShown = True
+
+   DoCmd.Hourglass False
+
+End Sub
+
+Private Sub ScheduleFilter(ByVal FilterText As String)
+   ' the filter runs after a short pause, not on every key stroke
+   m_PendingFilterText = FilterText
+   Me.TimerInterval = FilterDelayMilliseconds
+End Sub
+
+Private Sub ApplyFilter()
+   m_TreeModel.FilterText = m_PendingFilterText
+   ShowTree
+End Sub
+
+Private Sub ToggleItemExpanded(ByVal Key As String)
+   m_TreeModel.ToggleExpanded Key
+   ShowTree Key
+End Sub
+
+Private Sub ToggleItemChecked(ByVal Key As String)
+   m_TreeModel.ToggleChecked Key
+   ShowTree Key
+End Sub
+
+Private Sub ShowTree(Optional ByVal CurrentKey As String = vbNullString)
+   m_TreeRows.ShowItems m_TreeModel.GetVisibleItems, CurrentKey
+   ShowSelectionInfo m_TreeModel.CheckedFileCount
+End Sub
+
+Private Sub ShowSelectionInfo(ByVal SelectedFileCount As Long)
+   If SelectedFileCount = 1 Then
+      Me.labSelectionInfo.Caption = "1 file selected"
+   Else
+      Me.labSelectionInfo.Caption = SelectedFileCount & " files selected"
+   End If
+End Sub
+
 Private Sub SendSelectedFiles()
 
-#If TreeViewEarlyBinding = 1 Then
-   Dim TvNode As Node
-#Else
-   Dim TvNode As Object
-#End If
-
    Dim Files() As String
-   Dim SelectedIndex As Long
 
-   ReDim Files(m_TreeView.Nodes.Count) As String
-
-   SelectedIndex = -1
-   For Each TvNode In m_TreeView.Nodes
-      If TvNode.Checked Then
-      If TvNode.Children = 0 Then
-         SelectedIndex = SelectedIndex + 1
-         Files(SelectedIndex) = TvNode.Key
-      End If
-      End If
-   Next
-
-   If SelectedIndex = -1 Then
-      MsgBox "Nothing has been selected.", vbInformation, "ACLib Import Wizard"
+   If GetCheckedFileCount() = 0 Then
+      MsgBox NothingSelectedMessage, vbInformation, MessageTitle
       Exit Sub
    End If
 
-   ReDim Preserve Files(SelectedIndex)
+   Files = GetCheckedFileArray()
 
+   ' last statement: the wizard releases this form instance in its event handler
    RaiseEvent FilesSelected(Files)
 
 End Sub
 
-Private Sub InitTreeView()
-   Set m_TreeView = Me.tvRepositoryTree.Object
-   FillRepositoryTree
-End Sub
-
-Private Sub FillRepositoryTree()
-
-   m_TreeView.Nodes.Clear
-   Set m_RepoRootNode = GetRootTreeNode()
-   FillSubTree Nothing, m_RepoRootNode
-
-End Sub
-
-#If TreeViewEarlyBinding = 1 Then
-Private Sub CheckSubTree(ByVal ParentNode As Node)
-#Else
-Private Sub CheckSubTree(ByVal ParentNode As Object)
-#End If
-
-   Dim ReproNode As GitHubTreeNode
-
-#If TreeViewEarlyBinding = 1 Then
-   Dim TvNode As Node
-#Else
-   Dim TvNode As Object
-#End If
-
-   If ParentNode.Children = 0 Then
-      FillTreeViewSubNode ParentNode
-      Exit Sub
+Private Function GetCheckedFileCount() As Long
+   If Not (m_TreeModel Is Nothing) Then
+      GetCheckedFileCount = m_TreeModel.CheckedFileCount
    End If
-
-   Set ReproNode = GetReproNode(ParentNode.Key)
-
-   Set TvNode = ParentNode.Child
-   Do While Not (TvNode Is Nothing)
-      If TvNode.Children = 0 Then
-         FillTreeViewSubNode TvNode
-      End If
-      Set TvNode = TvNode.Next
-   Loop
-
-End Sub
-
-#If TreeViewEarlyBinding = 1 Then
-Private Sub FillSubTree(ByVal ParentNode As Node, ByVal ReproParentNode As GitHubTreeNode)
-#Else
-Private Sub FillSubTree(ByVal ParentNode As Object, ByVal ReproParentNode As GitHubTreeNode)
-#End If
-
-   Dim NodeKey As Variant
-   Dim ReproNode As GitHubTreeNode
-
-#If TreeViewEarlyBinding = 1 Then
-   Dim TvNode As Node
-#Else
-   Dim TvNode As Object
-#End If
-
-
-   For Each NodeKey In ReproParentNode.Nodes.Keys
-      Set ReproNode = ReproParentNode.Nodes.Item(NodeKey)
-
-      If CheckShowGitHubNode(ReproNode) Then
-
-         If ParentNode Is Nothing Then
-            Set TvNode = m_TreeView.Nodes.Add(, , ReproNode.Path, ReproNode.Path)
-         Else
-            Set TvNode = m_TreeView.Nodes.Add(ParentNode.Key, tvwChild, ParentNode.Key & "/" & ReproNode.Path, ReproNode.Path)
-         End If
-
-         If ReproNode.IsFolder Then
-            TvNode.Tag = "FLDR"
-            FillSubTree TvNode, ReproNode
-         End If
-
-      End If
-   Next
-
-End Sub
-
-Private Function CheckShowGitHubNode(ByVal ReproNode As GitHubTreeNode) As Boolean
-
-   Select Case ReproNode.Path
-      Case "_info.txt", "_tools"
-         CheckShowGitHubNode = False
-      Case Else
-         CheckShowGitHubNode = True
-   End Select
-
 End Function
 
-Private Function GetRootTreeNode() As GitHubTreeNode
+Private Function GetCheckedFileArray() As String()
 
-   Dim Node As GitHubTreeNode
+   Dim CheckedKeys As Collection
+   Dim Files() As String
+   Dim Index As Long
 
-   Set Node = New GitHubTreeNode
-   With New ACLibConfiguration
-      Node.BuildFromSHA "{branch}", 1
-   End With
-   Set GetRootTreeNode = Node
-
-End Function
-
-Private Sub Form_Unload(Cancel As Integer)
-   RaiseEvent Unload
-End Sub
-
-Private Sub tvRepositoryTree_Expand(ByVal Node As Object)
-   If m_TreeviewEventHandlerOn Then
-      CheckSubTree Node
-   End If
-End Sub
-
-Private Sub tvRepositoryTree_GotFocus()
-  m_TreeviewEventHandlerOn = True
-End Sub
-
-Private Sub tvRepositoryTree_LostFocus()
-   m_TreeviewEventHandlerOn = False
-End Sub
-
-Private Sub tvRepositoryTree_NodeCheck(ByVal Node As Object)
-
-   If Node.Children > 0 Then
-      CheckSubBlobNodes Node
-   End If
-
-End Sub
-
-Private Sub tvRepositoryTree_NodeClick(ByVal Node As Object)
-   'FillTreeViewSubNode Node
-   CheckSubTree Node
-End Sub
-
-Private Sub CheckSubBlobNodes(ByVal Node As Object)
-
-#If TreeViewEarlyBinding = 1 Then
-   Dim ChildNode As MSComctlLib.Node
-#Else
-   Dim ChildNode As Object
-#End If
-
-   Set ChildNode = Node.Child
-   Do While Not (ChildNode Is Nothing)
-      If ChildNode.Tag = "FLDR" Then
-         ' do not check sub nodes
-      Else
-         ChildNode.Checked = Node.Checked
-      End If
-      Set ChildNode = ChildNode.Next
-   Loop
-
-End Sub
-
-#If TreeViewEarlyBinding = 1 Then
-Private Sub FillTreeViewSubNode(ByVal Node As MSComctlLib.Node)
-#Else
-Private Sub FillTreeViewSubNode(ByVal Node As Object)
-#End If
-
-   Dim ReproNode As GitHubTreeNode
-
-   If Node.Children > 0 Then
-      ' Childs exists + no refresh => exit
-      If Node.Child.Children > 0 Then
-         Exit Sub
-      End If
-
-   End If
-
-   Set ReproNode = GetReproNode(Node.Key)
-   If ReproNode.NodeType = "tree" Then
-      FillSubTree Node, ReproNode
-   End If
-
-End Sub
-
-Private Function GetReproNode(ByVal NodeKey As String, Optional ByVal ReadSubTreeLevel As Long = 1) As GitHubTreeNode
-
-   Dim ReproNode As GitHubTreeNode
-   Dim Keys() As String
-   Dim i As Long
-
-   NodeKey = Replace(NodeKey, ACLibGitHubImporter.BranchName & "/", vbNullString)
-   Keys = Split(NodeKey, "/")
-
-   Set ReproNode = m_RepoRootNode
-   For i = LBound(Keys) To UBound(Keys)
-      Set ReproNode = ReproNode.Nodes(Keys(i))
+   Set CheckedKeys = m_TreeModel.GetCheckedFileKeys
+   ReDim Files(0 To CheckedKeys.Count - 1)
+   For Index = 1 To CheckedKeys.Count
+      Files(Index - 1) = CheckedKeys(Index)
    Next
 
-   If ReproNode.Nodes.Count = 0 Then
-      ReproNode.FillNextTreeLevel ReadSubTreeLevel
-   End If
-
-   Set GetReproNode = ReproNode
+   GetCheckedFileArray = Files
 
 End Function
