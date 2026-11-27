@@ -21,8 +21,6 @@ Attribute VB_Exposed = False
 '| Folders without a visible file (recursively) are removed.
 '| The folders .git and .github are always hidden, including everything below them.
 '| The default list is part of the code, so later extensions of it reach every installation.
-'| Additional extensions (setting of the wizard): separated by ";" or ",", with or without leading dot,
-'| case insensitive; they are added to the default list (duplicates are ignored).
 '---------------------------------------------------------------------------------------
 '
 Option Compare Text
@@ -33,25 +31,15 @@ Private Const ExcludedFolderNames As String = ".git|.github"
 
 Private Const PathSeparator As String = "/"
 Private Const NameListSeparator As String = "|"
-Private Const ExtensionSeparators As String = ";,"
+Private Const ExtensionSeparator As String = ";"
 Private Const ExtensionDot As String = "."
 Private Const EntryTypeFolder As String = "tree"
 
 Private m_Extensions As Scripting.Dictionary
 
 Private Sub Class_Initialize()
-   Initialize vbNullString
+   Set m_Extensions = ParseExtensionList(DefaultExtensionList)
 End Sub
-
-' Shown extensions = default list + AdditionalExtensions (empty or only separators = no additions)
-Public Sub Initialize(ByVal AdditionalExtensions As String)
-   Set m_Extensions = ParseExtensionList(DefaultExtensionList & Left$(ExtensionSeparators, 1) & AdditionalExtensions)
-End Sub
-
-' The effective extensions without dot, lower case, separated by ";" (e.g. "bas;cls")
-Public Property Get ExtensionList() As String
-   ExtensionList = Join(m_Extensions.Keys, ";")
-End Property
 
 ' True if the path is a file with a listed extension outside of the excluded folders
 Public Function IsVisibleFile(ByVal EntryPath As String) As Boolean
@@ -179,34 +167,16 @@ Private Function ParseExtensionList(ByVal ExtensionList As String) As Scripting.
    Dim Extensions As Scripting.Dictionary
    Dim Parts() As String
    Dim Index As Long
-   Dim Extension As String
 
    Set Extensions = New Scripting.Dictionary
    Extensions.CompareMode = TextCompare
 
-   Parts = Split(NormalizeSeparators(ExtensionList), Left$(ExtensionSeparators, 1))
+   Parts = Split(ExtensionList, ExtensionSeparator)
 
    For Index = 0 To UBound(Parts)
-      Extension = Trim$(Parts(Index))
-      If Left$(Extension, 1) = ExtensionDot Then Extension = Mid$(Extension, 2)
-      If Len(Extension) > 0 Then Extensions.Item(LCase$(Extension)) = True
+      Extensions.Item(LCase$(Mid$(Parts(Index), Len(ExtensionDot) + 1))) = True
    Next
 
    Set ParseExtensionList = Extensions
-
-End Function
-
-Private Function NormalizeSeparators(ByVal ExtensionList As String) As String
-
-   Dim Index As Long
-   Dim Result As String
-
-   Result = ExtensionList
-
-   For Index = 2 To Len(ExtensionSeparators)
-      Result = Replace(Result, Mid$(ExtensionSeparators, Index, 1), Left$(ExtensionSeparators, 1))
-   Next
-
-   NormalizeSeparators = Result
 
 End Function

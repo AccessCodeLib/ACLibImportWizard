@@ -16,8 +16,8 @@ Attribute VB_Exposed = False
 ' Remarks:
 '---------------------------------------------------------------------------------------
 '| Repository, branch and token come from the predeclared ACLibGitHubImporter.
-'| Files that cannot be imported (and Git metadata) are removed here (RepositoryPathFilter, default extensions + additions
-'| from ACLibConfiguration.RepositoryAdditionalFileExtensions); hiding items by the search filter is model logic.
+'| Files that cannot be imported (and Git metadata) are removed here (RepositoryPathFilter);
+'| hiding items by the search filter is model logic.
 '| Test doubles implement this class (Implements RepositoryTreeSource).
 '---------------------------------------------------------------------------------------
 '
@@ -47,7 +47,6 @@ Private Function ReadTreeEntries() As Scripting.Dictionary
    End With
 
    With New RepositoryPathFilter
-      .Initialize CurrentACLibConfiguration.RepositoryAdditionalFileExtensions
       Set ReadTreeEntries = .RemoveHiddenEntries(Entries)
    End With
 

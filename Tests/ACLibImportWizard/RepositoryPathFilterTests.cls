@@ -1,4 +1,4 @@
-VERSION 1.0 CLASS
+﻿VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
@@ -14,8 +14,6 @@ Option Explicit
 
 'TestSuite.AddByClassName("RepositoryPathFilterTests").Run
 
-Private Const DefaultExtensions As String = "bas;cls;frm;rep;package"
-
 Private m_Filter As RepositoryPathFilter
 
 Public Sub Setup()
@@ -24,39 +22,6 @@ End Sub
 
 Public Sub Teardown()
    Set m_Filter = Nothing
-End Sub
-
-'--- extension list
-
-'AccUnit:Row("", "").Name("empty = no additions")
-'AccUnit:Row("   ", "").Name("blanks = no additions")
-'AccUnit:Row(" ;, ; ", "").Name("only separators = no additions")
-'AccUnit:Row(".txt;md", ";txt;md").Name("with and without dot, semicolon")
-'AccUnit:Row("txt, md ", ";txt;md").Name("comma and blanks")
-'AccUnit:Row("txt,md;json", ";txt;md;json").Name("mixed separators")
-'AccUnit:Row(" .TXT ; Md", ";txt;md").Name("case and blanks")
-'AccUnit:Row("txt;;md;", ";txt;md").Name("empty parts")
-'AccUnit:Row("txt;TXT", ";txt").Name("duplicates in additions")
-'AccUnit:Row(".CLS;bas", "").Name("duplicates of the default list")
-'AccUnit:Row("md;.Package;txt", ";md;txt").Name("default entry between additions")
-Public Sub Initialize_AdditionalExtensions_AddsToDefaultList(ByVal Additions As String, ByVal ExpectedAdded As String)
-
-   m_Filter.Initialize Additions
-
-   Assert.That m_Filter.ExtensionList, Iz.EqualTo(DefaultExtensions & ExpectedAdded)
-
-End Sub
-
-Public Sub Initialize_CalledTwice_DoesNotKeepEarlierAdditions()
-
-   m_Filter.Initialize "md"
-   m_Filter.Initialize "txt"
-
-   Assert.That m_Filter.ExtensionList, Iz.EqualTo(DefaultExtensions & ";txt")
-
-End Sub
-Public Sub ExtensionList_NewInstance_IsDefaultList()
-   Assert.That m_Filter.ExtensionList, Iz.EqualTo(DefaultExtensions)
 End Sub
 
 '--- single files
@@ -86,17 +51,6 @@ End Sub
 'AccUnit:Row(".github", False).Name("file named github")
 Public Sub IsVisibleFile_Path_ReturnsExpected(ByVal EntryPath As String, ByVal Expected As Boolean)
    Assert.That m_Filter.IsVisibleFile(EntryPath), Iz.EqualTo(Expected)
-End Sub
-
-Public Sub IsVisibleFile_AdditionalExtensions_AreShownBesideDefault()
-
-   m_Filter.Initialize "md, .TXT"
-
-   Assert.That m_Filter.IsVisibleFile("README.md"), Iz.EqualTo(True)
-   Assert.That m_Filter.IsVisibleFile("notes.txt"), Iz.EqualTo(True)
-   Assert.That m_Filter.IsVisibleFile("data/SqlTools.cls"), Iz.EqualTo(True)
-   Assert.That m_Filter.IsVisibleFile(".github/README.md"), Iz.EqualTo(False)
-
 End Sub
 
 '--- entries
@@ -196,21 +150,6 @@ End Sub
 
 Public Sub RemoveHiddenEntries_NoEntries_ReturnsEmpty()
    Assert.That m_Filter.RemoveHiddenEntries(New Scripting.Dictionary).Count, Iz.EqualTo(0)
-End Sub
-
-Public Sub RemoveHiddenEntries_AdditionalExtensions_ShowsAddedFilesAndFolders()
-
-   m_Filter.Initialize "md"
-
-   Dim Entries As Scripting.Dictionary
-   Set Entries = New Scripting.Dictionary
-   Entries.Add "docs", "tree"
-   Entries.Add "docs/README.md", "blob"
-   Entries.Add "src", "tree"
-   Entries.Add "src/a.cls", "blob"
-
-   Assert.That KeyList(m_Filter.RemoveHiddenEntries(Entries)), Iz.EqualTo("docs|docs/README.md|src|src/a.cls")
-
 End Sub
 
 Private Function KeyList(ByVal Entries As Scripting.Dictionary) As String
