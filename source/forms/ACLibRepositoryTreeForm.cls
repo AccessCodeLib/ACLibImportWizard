@@ -198,6 +198,7 @@ Private Sub LoadRepositoryTree()
    Set m_TreeModel = TreeModel
 
    ShowTree
+   KeepCaretInFilterField
    UpdateFilterButtonState
    Me.subRepositoryTree.Visible = True
    Me.labStartInfo.Visible = False
@@ -216,6 +217,15 @@ Private Function GetFilterText() As String
       GetFilterText = Trim$(Nz(Me.txtFilter.Value, vbNullString))
    End If
 End Function
+
+' Binding the rows to the subform for the first time moves the caret of the text box that has the focus
+' (measured: Access still reports txtFilter as active control, the caret appears at the start of the first row).
+' Setting SelStart puts it back; the text is not changed.
+Private Sub KeepCaretInFilterField()
+   If m_IsFilterFieldFocused Then
+      Me.txtFilter.SelStart = Len(Me.txtFilter.Text)
+   End If
+End Sub
 
 ' Enter in the filter field presses the Filter button; elsewhere the form has no default button
 Private Sub TrackFilterFieldFocus(ByVal HasFocus As Boolean)
