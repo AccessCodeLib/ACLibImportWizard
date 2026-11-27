@@ -1,0 +1,131 @@
+﻿Version =20
+VersionRequired =20
+Begin Form
+    RecordSelectors = NotDefault
+    NavigationButtons = NotDefault
+    AllowDeletions = NotDefault
+    DividingLines = NotDefault
+    AllowAdditions = NotDefault
+    ViewsAllowed =1
+    PictureAlignment =2
+    DatasheetGridlinesBehavior =3
+    GridY =10
+    Width =8460
+    DatasheetFontHeight =11
+    ItemSuffix =4
+    Top =1000
+    Right =50000
+    Bottom =50000
+    OnUnload ="[Event Procedure]"
+    RecSrcDt = Begin
+        0xc54b85150ca2e640
+    End
+    DatasheetFontName ="Calibri"
+    OnLoad ="[Event Procedure]"
+    AllowDatasheetView =0
+    FilterOnLoad =0
+    ShowPageMargins =0
+    DisplayOnSharePointSite =1
+    AllowLayoutView =0
+    DatasheetAlternateBackColor =15921906
+    DatasheetGridlinesColor12 =0
+    FitToScreen =1
+    DatasheetBackThemeColorIndex =1
+    BorderThemeColorIndex =3
+    ThemeFontIndex =1
+    ForeThemeColorIndex =0
+    AlternateBackThemeColorIndex =1
+    AlternateBackShade =95.0
+    Begin
+        Begin TextBox
+            AddColon = NotDefault
+            FELineBreak = NotDefault
+            BorderLineStyle =0
+            Width =1701
+            LabelX =-1701
+            FontSize =11
+            FontName ="Calibri"
+            AsianLineBreak =1
+            BackThemeColorIndex =1
+            BorderThemeColorIndex =1
+            BorderShade =65.0
+            ThemeFontIndex =1
+            ForeThemeColorIndex =0
+            ForeTint =75.0
+            GridlineThemeColorIndex =1
+            GridlineShade =65.0
+        End
+        Begin Section
+            Height =300
+            Name ="Detail"
+            AutoHeight =1
+            AlternateBackThemeColorIndex =1
+            BackThemeColorIndex =1
+            Begin
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OldBorderStyle =0
+                    OverlapFlags =93
+                    TextAlign =2
+                    TextFontFamily =18
+                    IMESentenceMode =3
+                    Left =30
+                    Width =330
+                    Height =300
+                    Name ="txtCheckGlyph"
+                    ControlSource ="CheckGlyph"
+                    FontName ="Segoe MDL2 Assets"
+                    OnClick ="[Event Procedure]"
+
+                    ThemeFontIndex =-1
+                End
+                Begin TextBox
+                    Locked = NotDefault
+                    TabStop = NotDefault
+                    OldBorderStyle =0
+                    OverlapFlags =85
+                    IMESentenceMode =3
+                    Left =390
+                    Width =8040
+                    Height =300
+                    TabIndex =1
+                    Name ="txtTreeLabel"
+                    ControlSource ="TreeLabelHtml"
+                    OnClick ="[Event Procedure]"
+                    TextFormat =1
+
+                    ThemeFontIndex =-1
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =255
+                    IMESentenceMode =3
+                    Left =30
+                    Width =330
+                    Height =300
+                    TabIndex =2
+                    Name ="txtItemKey"
+                    ControlSource ="ItemKey"
+
+                End
+                Begin TextBox
+                    Visible = NotDefault
+                    TabStop = NotDefault
+                    OverlapFlags =247
+                    IMESentenceMode =3
+                    Left =30
+                    Width =330
+                    Height =300
+                    TabIndex =3
+                    Name ="txtIsFolder"
+                    ControlSource ="IsFolder"
+
+                End
+            End
+        End
+    End
+End
+CodeBehindForm
+' See "ACLibRepositoryTreeRowsForm.cls"
